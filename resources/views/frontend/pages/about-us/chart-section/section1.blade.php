@@ -16,7 +16,7 @@
     </div>
 
     {{-- chart --}}
-    <div class=" col-9 ">
+    <div class=" col-10 ">
         {!! $chart->container() !!}
     </div>
 
