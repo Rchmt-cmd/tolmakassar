@@ -18,6 +18,7 @@ class LaluLintasHarian
         return $this->chart->lineChart()
             ->addData('Physical sales', [40, 93, 35, 42, 18, 82])
             ->addData('Digital sales', [70, 29, 77, 28, 55, 45])
+            ->setFontFamily('poppins')
             ->setXAxis(['January', 'February', 'March', 'April', 'May', 'June']);
     }
 }

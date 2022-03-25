@@ -23,11 +23,17 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
             'chart' => $chart->build(),
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart2' => $chart2->build(),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
             'chart3' => $chart3->build(),
+            'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
             'chart4' => $chart4->build(),
+            'chartTitle4' => 'Komposisi Gerbang',
             'chart5' => $chart5->build(),
+            'chartTitle5' => 'Komposisi Golongan',
             'chart6' => $chart6->build(),
+            'chartTitle6' => 'Traffic History',
         ]);
     }
 
