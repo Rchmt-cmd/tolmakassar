@@ -16,9 +16,9 @@ class KomposisiGerbang
     public function build(): \ArielMejiaDev\LarapexCharts\DonutChart
     {
         return $this->chart->donutChart()
-            ->setTitle('Top 3 scorers of the team.')
-            ->setSubtitle('Season 2021.')
-            ->addData([20, 24, 30])
-            ->setLabels(['Player 7', 'Player 10', 'Player 9']);
+            ->setFontFamily('poppins')
+            ->setColors(['#25507D', '#5A5CE6', '#54D352', '#A8E96F', '#716FE9', '#FF9D05'])
+            ->addData([27.6, 27.0, 21.8, 9.1, 8.7, 5.9])
+            ->setLabels(['Kaluku Bodoa', 'Parangloe', 'Cambaya', 'Tallo Timur', 'Parangloe Ramp', 'Tallo Barat']);
     }
 }

@@ -16,9 +16,10 @@ class KomposisiGolongan
     public function build(): \ArielMejiaDev\LarapexCharts\DonutChart
     {
         return $this->chart->donutChart()
-            ->setTitle('Top 3 scorers of the team.')
-            ->setSubtitle('Season 2021.')
-            ->addData([20, 24, 30])
-            ->setLabels(['Player 7', 'Player 10', 'Player 9']);
+            ->setFontFamily('poppins')
+            ->setColors(['#25507D', '#5A5CE6', '#54D352', '#A8E96F', '#FF9D05'])
+            ->setHeight(320)
+            ->addData([85.4, 7.3, 5.2, 1.8, 0.21])
+            ->setLabels(['Gol. I', 'Gol. II', 'Gol. III', 'Gol. IV', 'Gol. V']);
     }
 }

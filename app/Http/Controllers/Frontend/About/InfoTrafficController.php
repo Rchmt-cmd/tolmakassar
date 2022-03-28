@@ -7,7 +7,9 @@ use App\Charts\Mmn\KomposisiGolongan;
 use App\Charts\Mmn\LaluLintasBulanan;
 use App\Charts\Mmn\LaluLintasHarian;
 use App\Charts\Mmn\LaluLintasHarianGerbang;
+use App\Charts\Mmn\PerbandinganGerbang;
 use App\Charts\Mmn\TrafficHistory;
+use App\Charts\Mmn\PerbandinganGolongan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -18,7 +20,7 @@ class InfoTrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6)
+    public function index(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
     {
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
@@ -34,6 +36,10 @@ class InfoTrafficController extends Controller
             'chartTitle5' => 'Komposisi Golongan',
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
+            'chart7' => $chart7->build(),
+            'chartTitle7' => 'Perbandingan Gerbang',
+            'chart8' => $chart8->build(),
+            'chartTitle8' => 'Perbandingan Gerbang',
         ]);
     }
 

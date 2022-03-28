@@ -16,10 +16,9 @@ class TrafficHistory
     public function build(): \ArielMejiaDev\LarapexCharts\BarChart
     {
         return $this->chart->barChart()
-            ->setTitle('San Francisco vs Boston.')
-            ->setSubtitle('Wins during season 2021.')
-            ->addData('San Francisco', [6, 9, 3, 4, 10, 8])
-            ->addData('Boston', [7, 3, 8, 2, 6, 4])
-            ->setXAxis(['January', 'February', 'March', 'April', 'May', 'June']);
+            ->setFontFamily('poppins')
+            ->setColors(['#25507D'])
+            ->addData('Traffic History', [14588, 18147, 21138, 22508, 24474, 26562, 27919, 28096, 26401, 26201, 25096, 34789, 38980, 43972, 48412, 54035, 55604, 57232, 58501, 62732, 62479, 56382, 39665, 44629, 47344])
+            ->setXAxis(['1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']);
     }
 }

@@ -8,9 +8,11 @@
             Scope
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">Januari</a></li>
-            <li><a class="dropdown-item" href="#">Februari</a></li>
-            <li><a class="dropdown-item" href="#">Maret</a></li>
+            <li><a class="dropdown-item" href="#">Cambayya</a></li>
+            <li><a class="dropdown-item" href="#">Parangloe</a></li>
+            <li><a class="dropdown-item" href="#">Kaluku Bodoa</a></li>
+            <li><a class="dropdown-item" href="#">Tallo Timur</a></li>
+            <li><a class="dropdown-item" href="#">Tallo Barat</a></li>
         </ul>
     </div>
     <div class="row align-items-center">

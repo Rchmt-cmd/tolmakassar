@@ -16,10 +16,10 @@ class LaluLintasBulanan
     public function build(): \ArielMejiaDev\LarapexCharts\BarChart
     {
         return $this->chart->barChart()
-            ->setTitle('San Francisco vs Boston.')
-            ->setSubtitle('Wins during season 2021.')
-            ->addData('San Francisco', [6, 9, 3, 4, 10, 8])
-            ->addData('Boston', [7, 3, 8, 2, 6, 4])
-            ->setXAxis(['January', 'February', 'March', 'April', 'May', 'June']);
+            ->setFontFamily('poppins')
+            ->setColors(['#FFC469', '#25507D'])
+            ->addData('2021', [39164, 41771, 48437, 51068, 41675, 46524, 38513, 36892, 43622, 47563, 49359, 51074])
+            ->addData('2022', [49087, 45414, 47288])
+            ->setXAxis(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des']);
     }
 }
