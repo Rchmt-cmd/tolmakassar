@@ -24,7 +24,7 @@
         {{-- description --}}
         <div class="col">
             <h6>LHR Terkini</h6>
-            <h1><strong>47.288</strong></h1>
+            <h1><strong>{{ $test }}</strong></h1>
             <br>
             <h6>Mar 2021</h6>
             <div class="row justify-content-start">

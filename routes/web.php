@@ -46,6 +46,7 @@ Route::get('/csr', 'Frontend\About\CSRController@index')->name('csr');
 
 // Info Traffic
 Route::get('/info-traffic', [InfoTrafficController::class, 'index'])->name('info-traffic');
+Route::get('/test', [InfoTrafficController::class, 'test']);
 
 /*Menu Layanan Jalan Tol*/
 //Struk

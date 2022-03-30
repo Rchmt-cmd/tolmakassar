@@ -1,0 +1,27 @@
+section 1
+    - LHR Terkini
+        LHR Terkini = sum(jumlah trafik tiap hari hingga hari berjalan) / jumlah hari
+
+    - LHR Mar 2021
+        LHR Mar 2021 = sum(jumlah trafik tiap hari hingga hari akhir maret) / jumlah hari
+        growth =  ((LHR Maret 2021 - LHR Terkini) / LHR Maret 2021) * 100 
+            if growth > 0
+                print("LHR terkini meningkat")
+            else
+                print("LHR terkini menurun")
+
+    - LHR Feb 2022
+        LHR Feb 2022 = sum(jumlah trafik tiap hari hingga hari akhir februari) / jumlah hari
+        growth =  ((LHR Feb 2022 - LHR Terkini) / LHR Feb 2022) * 100 
+            if growth > 0
+                print("LHR terkini meningkat")
+            else
+                print("LHR terkini menurun")
+
+section 2
+
+section 3
+    - LHR YTD Aktual
+    - Aktual 2021
+section 4
+section 5

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Frontend\About;
 
+use Illuminate\Http\Request;
+use App\Charts\Mmn\TrafficHistory;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use App\Charts\Mmn\KomposisiGerbang;
+use App\Charts\Mmn\LaluLintasHarian;
 use App\Charts\Mmn\KomposisiGolongan;
 use App\Charts\Mmn\LaluLintasBulanan;
-use App\Charts\Mmn\LaluLintasHarian;
-use App\Charts\Mmn\LaluLintasHarianGerbang;
 use App\Charts\Mmn\PerbandinganGerbang;
-use App\Charts\Mmn\TrafficHistory;
 use App\Charts\Mmn\PerbandinganGolongan;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
+use App\Charts\Mmn\LaluLintasHarianGerbang;
 
 class InfoTrafficController extends Controller
 {
@@ -22,9 +23,15 @@ class InfoTrafficController extends Controller
      */
     public function index(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
     {
+        $traffic = DB::table('info_traffic')
+            ->whereMonth('date', '02')
+            ->where('company','MMN')
+            ->sum('traffic');
+        $rata = round($traffic / 28);
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
             'chart' => $chart->build(),
+            'test' => $rata,
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart2' => $chart2->build(),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
@@ -40,6 +47,19 @@ class InfoTrafficController extends Controller
             'chartTitle7' => 'Perbandingan Gerbang',
             'chart8' => $chart8->build(),
             'chartTitle8' => 'Perbandingan Gerbang',
+        ]);
+    }
+
+    public function test()
+    {
+        $traffic = DB::table('info_traffic')
+            ->whereMonth('date', '02')
+            ->where('company','MMN')
+            ->sum('traffic');
+        $rata = $traffic / 28;
+        return view('frontend.pages.about-us.test', [
+            'title' => 'Info Traffic',
+            'test' => $rata,
         ]);
     }
 
