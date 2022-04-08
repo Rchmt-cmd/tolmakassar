@@ -27,8 +27,7 @@ class InfoTrafficController extends Controller
             'title' => 'Info Traffic',
             'chart' => $chart->build(),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
-            'lhrTerkini' => $chart,
-            'lhrPrev' => $chart,
+            'lhr' => $chart,
             'chart2' => $chart2->build(),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
             'chart3' => $chart3->build(),
@@ -46,13 +45,35 @@ class InfoTrafficController extends Controller
         ]);
     }
 
+    public function getLhrData($year, $month, $company = 'MMN') //pembagian dengan jumlah hari masih statis,dan butuh parameter fungsi agar inputan lebih dinamis
+    {
+        $date = DB::table('info_traffic')
+        ->where('company', $company)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->select(DB::raw('date(date) as day'))
+            ->groupBy('date')
+            ->get()
+            ->last();
+        $countDay = date('d', strtotime($date->day));
+
+        $traffic = DB::table('info_traffic')
+        ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->where('company', $company)
+            ->sum('traffic');
+        $mean = $traffic / ($countDay);
+
+        return number_format(round($mean), 0, '.', '.');
+        // return intval($countDay);
+    }
+
     public function test()
     {
-        $countDay = LaluLintasHarian::getCurrentTime('day');
-
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $countDay,
+            'test' => $this->getLhrData('2021', '01', 'MMN')
+
         ]);
     }
 

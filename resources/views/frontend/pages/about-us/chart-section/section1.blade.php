@@ -24,23 +24,35 @@
         {{-- description --}}
         <div class="col">
             <h6>LHR Terkini</h6>
-            <h1><strong>{{ $lhrTerkini->getLhrData('2022', '03', 'MMN') }}</strong></h1>
+            <h1><strong>{{ $lhr->getLhrData('2022', '03', 'MMN') }}</strong></h1>
             <br>
             <h6>Mar 2021</h6>
             <div class="row justify-content-start">
-                <h4 class="col-7"><strong>{{ $lhrTerkini->getLhrData('2021', '03', 'MMN') }}</strong></h4>
-                <span class="col p-0 text-danger">    &#9660; 2.4%</span>
+                <h4 class="col-7"><strong>{{ $lhr->getLhrData('2021', '03', 'MMN') }}</strong></h4>
+                @if($lhr->getGrowth('year', '2022', '03', 'MMN') <= 0)
+                    <span class="col p-0 text-danger">    &#9660; {{ $lhr->getGrowth('year', '2022', '03', 'MMN') }}%</span>  
+                @else
+                    <span class="col p-0 text-success">    &#9650; {{ $lhr->getGrowth('year', '2022', '03', 'MMN') }}%</span>
+                @endif
             </div>
+            
 
             <h6>Feb 2022</h6>
             <div class="row">
-                <h4 class="col-7"><strong>{{ $lhrTerkini->getLhrData('2022', '02', 'MMN') }}</strong></h4>
-                <span class="col p-0 text-success">    &#9650; 4.1%</span>
+                <h4 class="col-7"><strong>{{ $lhr->getLhrData('2022', '02', 'MMN') }}</strong></h4>
+                @if($lhr->getGrowth('month', '2022', '03', 'MMN') <= 0)
+                    <span class="col p-0 text-danger">    &#9660; {{ abs($lhr->getGrowth('month', '2022', '03', 'MMN')) }}%</span>  
+                @else
+                    <span class="col p-0 text-success">    &#9650; {{ abs($lhr->getGrowth('month', '2022', '03', 'MMN')) }}%</span>
+                @endif
             </div>
         </div>
     </div>
 </div>
 
 <script src="{{ $chart->cdn() }}"></script>
+<script>
+    
+</script>
 
 {{ $chart->script() }}

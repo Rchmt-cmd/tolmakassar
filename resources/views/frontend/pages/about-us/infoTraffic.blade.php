@@ -10,9 +10,11 @@
     <nav aria-label="MMN-JTSE">
         <ul class="pagination pagination-md justify-content-center">
             <li class="page-item active" aria-current="page">
-            <span class="page-link">MMN</span>
+                <span class="page-link">MMN</span>
             </li>
-            <li class="page-item"><a class="page-link" href="#">JTSE</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">JTSE</a>
+            </li>
         </ul>
     </nav>
     {{-- End Switch Pagination --}}
