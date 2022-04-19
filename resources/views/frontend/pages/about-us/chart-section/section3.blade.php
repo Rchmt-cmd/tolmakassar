@@ -6,13 +6,13 @@
         
         {{-- chart --}}
         <div class=" col-10 ">
-            {!! $chart3->container() !!}
+            {!! $graph3->container() !!}
         </div>
     
         {{-- description --}}
         <div class="col">
             <h6>LHR YTD Aktual</h6>
-            <h1><strong>47.339</strong></h1>
+            <h1><strong>{{ $chart3->getLhrYtd() }}</strong></h1>
             <br>
             <h6>Aktual 2021</h6>
             <div class="row justify-content-start">
@@ -23,6 +23,6 @@
     </div>
 </div>
 
-<script src="{{ $chart3->cdn() }}"></script>
+<script src="{{ $graph3->cdn() }}"></script>
 
-{{ $chart3->script() }}
+{{ $graph3->script() }}

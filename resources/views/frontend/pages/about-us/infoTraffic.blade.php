@@ -6,7 +6,7 @@
 <br>
 <div class="container p-0">
 
-    {{-- Switch Pagination --}}
+    {{-- Switch --}}
     <nav aria-label="MMN-JTSE">
         <ul class="pagination pagination-md justify-content-center">
             <li class="page-item active" aria-current="page">
@@ -17,7 +17,7 @@
             </li>
         </ul>
     </nav>
-    {{-- End Switch Pagination --}}
+    {{-- End Switch --}}
 
     <br>
     @include('frontend.pages.about-us.chart-section.section1')

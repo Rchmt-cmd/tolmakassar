@@ -20,14 +20,40 @@ class LaluLintasHarian
     public static function getCurrentTime($scope)
     {
         $queryDate = DB::table('info_traffic')
-                ->select(DB::raw($scope . '(date) as '.$scope))
-                ->groupBy('date')
-                ->get('date')
-                ->last();
-        $currentDate = $queryDate->$scope;
-        return $currentDate;
+            ->select(DB::raw('date(date) as date'))
+            ->groupBy('date')
+            ->get('date')
+            ->last();
+        if ($scope == 'year') {
+            return date('Y', strtotime($queryDate->date));
+        } elseif ($scope == 'month') {
+            return date('M', strtotime($queryDate->date));
+        } elseif ($scope == 'monthfullname') {
+            return date('F', strtotime($queryDate->date));
+        } elseif ($scope == 'monthnumber') {
+            return date('m', strtotime($queryDate->date));
+        }
+
+        // return $queryDate->date;
     }
 
+    public function getPrevTime($scope)
+    {
+        $queryDate = DB::table('info_traffic')
+            ->select(DB::raw('date(date) as date'))
+            ->groupBy('date')
+            ->get('date')
+            ->last();
+        if ($scope == 'year') {
+            return date('Y', strtotime($queryDate->date . ' -1 year'));
+        } elseif ($scope == 'month') {
+            return date('M', strtotime($queryDate->date . 'first day of last month'));
+        } elseif ($scope == 'monthfullname') {
+            return date('F', strtotime($queryDate->date . 'first day of last month'));
+        } elseif ($scope == 'monthnumber') {
+            return date('m', strtotime($queryDate->date . 'first day of last month'));
+        }
+    }
 
     // query dan perhitungan data traffic untuk disajikan ke grafik
     protected function getGraphData($switch = 'curr', $year, $month, $company = 'MMN')
@@ -67,7 +93,7 @@ class LaluLintasHarian
     }
 
     // perhitungan data lhr traffic
-    public function getLhrData($year, $month, $company = 'MMN') //pembagian dengan jumlah hari masih statis,dan butuh parameter fungsi agar inputan lebih dinamis
+    public function getLhrData($year, $month, $company = 'MMN') 
     {
         $date = DB::table('info_traffic')
             ->where('company', $company)
@@ -80,8 +106,8 @@ class LaluLintasHarian
         $countDay = date('d', strtotime($date->day));
 
         $traffic = DB::table('info_traffic')
-        ->whereYear('date', $year)
-        ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
             ->where('company', $company)
             ->sum('traffic');
         $mean = $traffic / ($countDay);
@@ -110,8 +136,8 @@ class LaluLintasHarian
     public function build(): \ArielMejiaDev\LarapexCharts\LineChart
     {
         return $this->chart->lineChart()
-            ->addData('2021', $this->getGraphData('prev', '2022', '03', 'MMN'))
-            ->addData('2022', $this->getGraphData('curr','2022', '03', 'MMN'))
+            ->addData('2021', $this->getGraphData('prev', $this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
+            ->addData('2022', $this->getGraphData('curr',$this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
             ->setGrid()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])

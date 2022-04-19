@@ -23,21 +23,34 @@ class InfoTrafficController extends Controller
      */
     public function index(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
     {
+
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
-            'chart' => $chart->build(),
+            // section 1
+            'graph' => $chart->build(),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
-            'lhr' => $chart,
+            'chart' => $chart,
+
+            // section2
             'chart2' => $chart2->build(),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
-            'chart3' => $chart3->build(),
+
+            // section3
+            'graph3' => $chart3->build(),
             'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
+            'chart3' => $chart3,
+
+            // section4
             'chart4' => $chart4->build(),
             'chartTitle4' => 'Komposisi Gerbang',
             'chart5' => $chart5->build(),
             'chartTitle5' => 'Komposisi Golongan',
+
+            // section5
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
+
+            // section4.1
             'chart7' => $chart7->build(),
             'chartTitle7' => 'Perbandingan Gerbang',
             'chart8' => $chart8->build(),
@@ -45,7 +58,45 @@ class InfoTrafficController extends Controller
         ]);
     }
 
-    public function getLhrData($year, $month, $company = 'MMN') //pembagian dengan jumlah hari masih statis,dan butuh parameter fungsi agar inputan lebih dinamis
+    public static function getCurrentTime($scope)
+    {
+        $queryDate = DB::table('info_traffic')
+        ->select(DB::raw('date(date) as date'))
+        ->groupBy('date')
+        ->get('date')
+        ->last();
+        if ($scope == 'year') {
+            return date('Y', strtotime($queryDate->date));
+        } elseif ($scope == 'month') {
+            return date('M', strtotime($queryDate->date));
+        } elseif ($scope == 'monthfullname') {
+            return date('F', strtotime($queryDate->date));
+        } elseif ($scope == 'monthnumber') {
+            return date('m', strtotime($queryDate->date));
+        }
+
+        // return $queryDate->date;
+    }
+
+    public function getPrevTime($scope)
+    {
+        $queryDate = DB::table('info_traffic')
+        ->select(DB::raw('date(date) as date'))
+        ->groupBy('date')
+        ->get('date')
+        ->last();
+        if ($scope == 'year') {
+            return date('Y', strtotime($queryDate->date . ' -1 year'));
+        } elseif ($scope == 'month') {
+            return date('M', strtotime($queryDate->date . 'first day of last month'));
+        } elseif ($scope == 'monthfullname') {
+            return date('F', strtotime($queryDate->date . 'first day of last month'));
+        } elseif ($scope == 'monthnumber') {
+            return date('m', strtotime($queryDate->date . 'first day of last month'));
+        }
+    }
+
+    public function getLhrData($year, $month, $company = 'MMN')
     {
         $date = DB::table('info_traffic')
         ->where('company', $company)
@@ -65,15 +116,55 @@ class InfoTrafficController extends Controller
         $mean = $traffic / ($countDay);
 
         return number_format(round($mean), 0, '.', '.');
-        // return intval($countDay);
+    }
+
+    protected function getGraphData($switch = 'curr')
+    {
+        if ($switch == 'curr') {
+            $a = array();
+            for ($month = 1; $month <= 12; $month++) {
+                $graph = $this->getLhrData($this->getCurrentTime('year'), $month);
+                array_push($a, $graph);
+            }
+            return $a;
+        } elseif ($switch == 'prev') {
+            $a = array();
+            for ($month = 1; $month <= 12; $month++) {
+                $graph = $this->getLhrData($this->getPrevTime('year'), $month);
+                array_push($a, $graph);
+            }
+            return $a;
+        }
+    }
+
+    public function getLhrYtd($switch = 'curr')
+    {
+        if ($switch == 'curr') {
+            $a = array();
+            for ($month = 1; $month <= $this->getCurrentTime('monthnumber'); $month++) {
+                $graph = $this->getLhrData($this->getCurrentTime('year'), $month);
+                array_push($a, $graph);
+            }
+            $a = array_sum($a);
+            $ytd = $a / $this->getCurrentTime('monthnumber');
+            return $ytd;
+        } elseif ($switch == 'prev') {
+            $a = array();
+            for ($month = 1; $month <= 12; $month++) {
+                $graph = $this->getLhrData($this->getPrevTime('year'), $month);
+                array_push($a, $graph);
+            }
+            $a = array_sum($a);
+            $ytd = $a / 12;
+            return $a;
+        }
     }
 
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->getLhrData('2021', '01', 'MMN')
-
+            'test' => $this->getLhrYtd('prev')
         ]);
     }
 
