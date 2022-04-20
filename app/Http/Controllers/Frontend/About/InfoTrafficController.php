@@ -41,10 +41,12 @@ class InfoTrafficController extends Controller
             'chart3' => $chart3,
 
             // section4
-            'chart4' => $chart4->build(),
+            'graph4' => $chart4->build(),
             'chartTitle4' => 'Komposisi Gerbang',
-            'chart5' => $chart5->build(),
+            'chart4' => $chart4,
+            'graph5' => $chart5->build(),
             'chartTitle5' => 'Komposisi Golongan',
+            'chart5' => $chart5,
 
             // section5
             'chart6' => $chart6->build(),
@@ -74,8 +76,6 @@ class InfoTrafficController extends Controller
         } elseif ($scope == 'monthnumber') {
             return date('m', strtotime($queryDate->date));
         }
-
-        // return $queryDate->date;
     }
 
     public function getPrevTime($scope)
@@ -96,67 +96,40 @@ class InfoTrafficController extends Controller
         }
     }
 
-    public function getLhrData($year, $month, $company = 'MMN')
+    public function getGraphData($switch, $time = 'curr')
     {
-        $date = DB::table('info_traffic')
-        ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
-            ->get()
-            ->last();
-        $countDay = date('d', strtotime($date->day));
-
-        $traffic = DB::table('info_traffic')
-        ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->where('company', $company)
-            ->sum('traffic');
-        $mean = $traffic / ($countDay);
-
-        return number_format(round($mean), 0, '.', '.');
-    }
-
-    protected function getGraphData($switch = 'curr')
-    {
-        if ($switch == 'curr') {
-            $a = array();
-            for ($month = 1; $month <= 12; $month++) {
-                $graph = $this->getLhrData($this->getCurrentTime('year'), $month);
-                array_push($a, $graph);
-            }
-            return $a;
-        } elseif ($switch == 'prev') {
-            $a = array();
-            for ($month = 1; $month <= 12; $month++) {
-                $graph = $this->getLhrData($this->getPrevTime('year'), $month);
-                array_push($a, $graph);
-            }
-            return $a;
+        if ($time == 'curr') {
+            $data = DB::table('info_traffic')
+            ->where('company', 'MMN')
+                ->whereYear('date', self::getCurrentTime('year'))
+                ->whereMonth('date', self::getCurrentTime('monthnumber'))
+                ->select(DB::raw('gate as gate, sum(traffic) as traffic'))
+                ->groupBy('gate')
+                ->get()
+                ->toArray();
+        } elseif ($time == 'prev') {
+            $data = DB::table('info_traffic')
+            ->where('company', 'MMN')
+                ->whereYear('date', self::getPrevTime('year'))
+                ->whereMonth('date', self::getPrevTime('monthnumber'))
+                ->select(DB::raw('gate as gate, sum(traffic) as traffic'))
+                ->groupBy('gate')
+                ->get()
+                ->toArray();
         }
-    }
 
-    public function getLhrYtd($switch = 'curr')
-    {
-        if ($switch == 'curr') {
-            $a = array();
-            for ($month = 1; $month <= $this->getCurrentTime('monthnumber'); $month++) {
-                $graph = $this->getLhrData($this->getCurrentTime('year'), $month);
-                array_push($a, $graph);
+        if ($switch == 'traffic') {
+            $traffic = array();
+            foreach ($data as $d) {
+                array_push($traffic, $d->traffic);
             }
-            $a = array_sum($a);
-            $ytd = $a / $this->getCurrentTime('monthnumber');
-            return $ytd;
-        } elseif ($switch == 'prev') {
-            $a = array();
-            for ($month = 1; $month <= 12; $month++) {
-                $graph = $this->getLhrData($this->getPrevTime('year'), $month);
-                array_push($a, $graph);
+            return $traffic;
+        } elseif ($switch == 'gate') {
+            $gate = array();
+            foreach ($data as $d) {
+                array_push($gate, $d->gate);
             }
-            $a = array_sum($a);
-            $ytd = $a / 12;
-            return $a;
+            return $gate;
         }
     }
 
@@ -164,7 +137,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->getLhrYtd('prev')
+            'test' => $this->getGraphData('traffic'),
         ]);
     }
 

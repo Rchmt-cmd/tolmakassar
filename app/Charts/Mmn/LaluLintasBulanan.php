@@ -92,16 +92,48 @@ class LaluLintasBulanan
         }
     }
 
-    public function getLhrYtd()
+    public function getLhrYtd($switch = 'curr')
     {
-        $a = array();
-        for ($month = 1; $month <= 12; $month++) {
-            $lhr = $this->getLhrData($this->getCurrentTime('year'), $month);
-            array_push($a, $lhr);
+        if ($switch == 'curr') {
+            $data = DB::table('info_traffic')
+            ->where('company', 'MMN')
+                ->whereYear('date', $this->getCurrentTime('year'))
+                ->sum('traffic');
+            $countDay = DB::table('info_traffic')
+            ->where('company', 'MMN')
+                ->whereYear('date', $this->getCurrentTime('year'))
+                ->select(DB::raw('date(date) as day'))
+                ->groupBy('date')
+                ->get('date')
+                ->toArray();
+            $countDay = count($countDay);
+            $lhr = round($data / $countDay);
+            return number_format(round($lhr), 0, '.', '.');
+        } elseif ($switch == 'prev') {
+            $data = DB::table('info_traffic')
+            ->where('company', 'MMN')
+                ->whereYear('date', $this->getPrevTime('year'))
+                ->sum('traffic');
+            $countDay = DB::table('info_traffic')
+            ->where('company', 'MMN')
+                ->whereYear('date', $this->getPrevTime('year'))
+                ->select(DB::raw('date(date) as day'))
+                ->groupBy('date')
+                ->get('date')
+                ->toArray();
+            $countDay = count($countDay);
+            $lhr = round($data / $countDay);
+            return number_format(round($lhr), 0, '.', '.');
         }
-        $traffic = array_sum($a);
-        $ytd = $traffic / 12;
-        return $ytd;
+    }
+
+    public function getGrowth()
+    {
+        $currLhr = $this->getLhrYtd('curr');
+        $prevLhr = $this->getLhrYtd('prev');
+        $growth = ($currLhr - $prevLhr) / $prevLhr * 100;
+
+        return number_format($growth, 1, '.', '.');
     }
 
     public function build(): \ArielMejiaDev\LarapexCharts\BarChart
@@ -110,8 +142,8 @@ class LaluLintasBulanan
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])
             ->setGrid()
-            ->addData('2021', $this->getGraphData('prev'))
-            ->addData('2022', $this->getGraphData())
+            ->addData($this->getPrevTime('year'), $this->getGraphData('prev'))
+            ->addData($this->getCurrentTime('year'), $this->getGraphData())
             ->setXAxis(['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des']);
     }
 }

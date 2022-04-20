@@ -136,8 +136,8 @@ class LaluLintasHarian
     public function build(): \ArielMejiaDev\LarapexCharts\LineChart
     {
         return $this->chart->lineChart()
-            ->addData('2021', $this->getGraphData('prev', $this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
-            ->addData('2022', $this->getGraphData('curr',$this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
+            ->addData( $this->getPrevTime('year'), $this->getGraphData('prev', $this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
+            ->addData( $this->getCurrentTime('year'), $this->getGraphData('curr',$this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
             ->setGrid()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])
