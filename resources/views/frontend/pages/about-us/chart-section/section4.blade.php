@@ -11,21 +11,21 @@
                     <tr>
                         <th scope="col-9"></th>
                         @foreach ($chart4->getGraphData('gate') as $gate)
-                            <th scope="col-1">{{ $gate }}</th>
+                            <th scope="col-1" class="test">{{ $gate }}</th>
                         @endforeach
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">{{ $chart4->getCurrentTime('year') }}</th>
+                        <th scope="row" class="test">{{ $chart4->getCurrentTime('year') }}</th>
                         @foreach ($chart4->getGraphData('percentage') as $percentage)
-                            <td>{{ $percentage }}%</td>
+                            <td class="test">{{ $percentage }}%</td>
                         @endforeach
                     </tr>
                     <tr>
-                        <th scope="row">{{ $chart4->getPrevTime('year') }}</th>
+                        <th scope="row" class="test">{{ $chart4->getPrevTime('year') }}</th>
                         @foreach ($chart4->getGraphData('percentage', 'prev') as $percentage)
-                            <td>{{ $percentage }}%</td>
+                            <td class="test">{{ $percentage }}%</td>
                         @endforeach
                     </tr>
                 </tbody>
@@ -45,21 +45,21 @@
                     <tr>
                         <th scope="col-9"></th>
                         @foreach ($chart5->getGraphData('class') as $class)
-                            <th scope="col-1">{{ $class }}</th>
+                            <th scope="col-1" class="test">{{ $class }}</th>
                         @endforeach
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">{{ $chart5->getCurrentTime('year') }}</th>
+                        <th scope="row" class="test">{{ $chart5->getCurrentTime('year') }}</th>
                         @foreach ($chart5->getGraphData('percentage') as $percentage)
-                            <td>{{ $percentage }}%</td>
+                            <td class="test">{{ $percentage }}%</td>
                         @endforeach
                     </tr>
                     <tr>
-                        <th scope="row">{{ $chart5->getPrevTime('year') }}</th>
+                        <th scope="row" class="test">{{ $chart5->getPrevTime('year') }}</th>
                         @foreach ($chart5->getGraphData('percentage', 'prev') as $percentage)
-                            <td>{{ $percentage }}%</td>
+                            <td class="test">{{ $percentage }}%</td>
                         @endforeach
                     </tr>
                 </tbody>

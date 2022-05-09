@@ -2,6 +2,14 @@
 
 namespace App\Http\Controllers\Frontend\About;
 
+use App\Charts\Jtse\KomposisiGerbang as JtseKomposisiGerbang;
+use App\Charts\Jtse\KomposisiGolongan as JtseKomposisiGolongan;
+use App\Charts\Jtse\LaluLintasBulanan as JtseLaluLintasBulanan;
+use App\Charts\Jtse\LaluLintasHarian as JtseLaluLintasHarian;
+use App\Charts\Jtse\LaluLintasHarianGerbang as JtseLaluLintasHarianGerbang;
+use App\Charts\Jtse\PerbandinganGerbang as JtsePerbandinganGerbang;
+use App\Charts\Jtse\PerbandinganGolongan as JtsePerbandinganGolongan;
+use App\Charts\Jtse\TrafficHistory as JtseTrafficHistory;
 use Illuminate\Http\Request;
 use App\Charts\Mmn\TrafficHistory;
 use Illuminate\Routing\Controller;
@@ -21,7 +29,7 @@ class InfoTrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
+    public function mmn(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
     {
 
         return view('frontend.pages.about-us.infoTraffic', [
@@ -32,8 +40,9 @@ class InfoTrafficController extends Controller
             'chart' => $chart,
 
             // section2
-            'chart2' => $chart2->build(),
+            'graph2' => $chart2->build(),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
+            'chart2' => $chart2,
 
             // section3
             'graph3' => $chart3->build(),
@@ -60,84 +69,50 @@ class InfoTrafficController extends Controller
         ]);
     }
 
-    public static function getCurrentTime($scope)
+    public function jtse(JtseLaluLintasHarian $chart, JtseLaluLintasHarianGerbang $chart2, JtseLaluLintasBulanan $chart3, JtseKomposisiGerbang $chart4, JtseKomposisiGolongan $chart5, JtseTrafficHistory $chart6, JtsePerbandinganGerbang $chart7, JtsePerbandinganGolongan $chart8)
     {
-        $queryDate = DB::table('info_traffic')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date));
-        }
-    }
+        return view('frontend.pages.about-us.infoTraffic', [
+            'title' => 'Info Traffic',
+            // section 1
+            'graph' => $chart->build(),
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'chart' => $chart,
 
-    public function getPrevTime($scope)
-    {
-        $queryDate = DB::table('info_traffic')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date . ' -1 year'));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date . 'first day of last month'));
-        }
-    }
+            // section2
+            'graph2' => $chart2->build(),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
+            'chart2' => $chart2,
 
-    public function getGraphData($switch, $time = 'curr')
-    {
-        if ($time == 'curr') {
-            $data = DB::table('info_traffic')
-            ->where('company', 'MMN')
-                ->whereYear('date', self::getCurrentTime('year'))
-                ->whereMonth('date', self::getCurrentTime('monthnumber'))
-                ->select(DB::raw('gate as gate, sum(traffic) as traffic'))
-                ->groupBy('gate')
-                ->get()
-                ->toArray();
-        } elseif ($time == 'prev') {
-            $data = DB::table('info_traffic')
-            ->where('company', 'MMN')
-                ->whereYear('date', self::getPrevTime('year'))
-                ->whereMonth('date', self::getPrevTime('monthnumber'))
-                ->select(DB::raw('gate as gate, sum(traffic) as traffic'))
-                ->groupBy('gate')
-                ->get()
-                ->toArray();
-        }
+            // section3
+            'graph3' => $chart3->build(),
+            'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
+            'chart3' => $chart3,
 
-        if ($switch == 'traffic') {
-            $traffic = array();
-            foreach ($data as $d) {
-                array_push($traffic, $d->traffic);
-            }
-            return $traffic;
-        } elseif ($switch == 'gate') {
-            $gate = array();
-            foreach ($data as $d) {
-                array_push($gate, $d->gate);
-            }
-            return $gate;
-        }
+            // section4
+            'graph4' => $chart4->build(),
+            'chartTitle4' => 'Komposisi Gerbang',
+            'chart4' => $chart4,
+            'graph5' => $chart5->build(),
+            'chartTitle5' => 'Komposisi Golongan',
+            'chart5' => $chart5,
+
+            // section5
+            'chart6' => $chart6->build(),
+            'chartTitle6' => 'Traffic History',
+
+            // section4.1
+            'chart7' => $chart7->build(),
+            'chartTitle7' => 'Perbandingan Gerbang',
+            'chart8' => $chart8->build(),
+            'chartTitle8' => 'Perbandingan Gerbang',
+        ]);
     }
 
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->getGraphData('traffic'),
+            'test' => $this->getLhrData('2022', '03', 'KALUKU BODOA', 'MMN'),
         ]);
     }
 

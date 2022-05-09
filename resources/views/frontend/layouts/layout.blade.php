@@ -10,6 +10,7 @@
     <meta name="author" content="IT BSD TOLL">
     <title>MMN & JTSE Toll</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <link rel="stylesheet" href="css/app.css">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('vendor/crudbooster/assets/logo_crudbooster.png') }}">
@@ -71,9 +72,9 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
     <div class="wrapper">
-        <div class="header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center" role="navigation" data-menu="menu-wrapper">
+        <div class="m-0 p-0 header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center" role="navigation" data-menu="menu-wrapper">
             <!-- Horizontal menu content-->
-            <div class="navbar-container main-menu-content center-layout" data-menu="menu-container">
+            <div class="main-menu-content center-layout container p-0" data-menu="menu-container">
                 @include('frontend.partials.menu')
             </div>
         </div>

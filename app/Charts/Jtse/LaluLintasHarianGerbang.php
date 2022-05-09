@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Charts\Mmn;
+namespace App\Charts\Jtse;
 
 use Illuminate\Support\Facades\DB;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
@@ -56,7 +56,7 @@ class LaluLintasHarianGerbang
     }
 
     // query dan perhitungan data traffic untuk disajikan ke grafik
-    protected function getGraphData($switch = 'curr', $gate = 'KALUKU BODOA', $company = 'MMN')
+    protected function getGraphData($switch = 'curr', $gate = 'TAMALANREA', $company = 'JTSE')
     {
         $date = DB::table('info_traffic')
         ->where('company', $company)
@@ -95,7 +95,7 @@ class LaluLintasHarianGerbang
     }
 
     // perhitungan data lhr traffic
-    public function getLhrData($year, $month, $gate = 'KALUKU BODOA', $company = 'MMN')
+    public function getLhrData($year, $month, $gate = 'TAMALANREA', $company = 'JTSE')
     {
         $date = DB::table('info_traffic')
         ->where('company', $company)
@@ -119,7 +119,7 @@ class LaluLintasHarianGerbang
         return number_format(round($mean), 0, '.', '.');
     }
 
-    public function getGrowth($switch, $year, $month, $company = 'MMN', $gate = 'KALUKU BODOA')
+    public function getGrowth($switch, $year, $month, $company = 'JTSE', $gate = 'TAMALANREA')
     {
         $currLhr = $this->getLhrData($year, $month, $gate,$company);
 
