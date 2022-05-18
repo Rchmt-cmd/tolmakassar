@@ -37,10 +37,10 @@
             <h6>{{ $chart->getCurrentTime('month') }} {{ $chart->getPrevTime('year') }}</h6>
             <div class="row justify-content-start">
                 <h4 class="col-7"><strong>{{ $chart->getLhrData($chart->getPrevTime('year'), $chart->getCurrentTime('monthnumber')) }}</strong></h4>
-                @if($chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'), 'JTSE') <= 0)
-                    <span class="col p-0 text-danger">    &#9660; {{ $chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber')) }}%</span>  
+                @if($chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber')) <= 0)
+                    <span class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'))) }}%</span>  
                 @else
-                    <span class="col p-0 text-success">    &#9650; {{ $chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber')) }}%</span>
+                    <span class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'))) }}%</span>
                 @endif
             </div>
             {{-- end LHR last year --}}
@@ -49,11 +49,11 @@
             {{-- Lhr last month --}}
             <h6>{{ $chart->getPrevTime('month') }} {{ $chart->getCurrentTime('year') }}</h6>
             <div class="row">
-                <h4 class="col-7"><strong>{{ $chart->getLhrData($chart->getCurrentTime('year'), $chart->getPrevTime('monthnumber'), 'JTSE') }}</strong></h4>
-                @if($chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'), 'JTSE') <= 0)
-                    <span class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'), 'JTSE')) }}%</span>  
+                <h4 class="col-7"><strong>{{ $chart->getLhrData($chart->getCurrentTime('year'), $chart->getPrevTime('monthnumber')) }}</strong></h4>
+                @if($chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber')) <= 0)
+                    <span class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'))) }}%</span>  
                 @else
-                    <span class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'), 'JTSE')) }}%</span>
+                    <span class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'))) }}%</span>
                 @endif
             </div>
             {{-- end LHR last month --}}
@@ -69,7 +69,7 @@
 <script>
     function getData(value) {
         const a = document.getElementById('lhr-terkini');
-        a.innerHTML = "{{ $chart->getLhrData('2022', '02', 'JTSE') }}";
+        a.innerHTML = "{{ $chart->getLhrData('2022', '02') }}";
     }
 </script>
 {{-- end function --}}

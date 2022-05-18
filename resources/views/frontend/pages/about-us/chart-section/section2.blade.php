@@ -32,9 +32,9 @@
             <div class="row">
                 <h4 class="col"><strong>{{ $chart2->getLhrData($chart2->getPrevTime('year'), $chart2->getCurrentTime('monthnumber')) }}</strong></h4>
                 @if($chart2->getGrowth('year', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber')) <= 0)
-                    <span class="col p-0 text-danger">    &#9660; {{ $chart2->getGrowth('year', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber')) }}%</span>  
+                    <span class="col p-0 text-danger">    &#9660; {{ abs($chart2->getGrowth('year', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber'))) }}%</span>  
                 @else
-                    <span class="col p-0 text-success">    &#9650; {{ $chart2->getGrowth('year', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber')) }}%</span>
+                    <span class="col p-0 text-success">    &#9650; {{ abs($chart2->getGrowth('year', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber'))) }}%</span>
                 @endif
             </div>
 
@@ -42,9 +42,9 @@
             <div class="row">
                 <h4 class="col"><strong>{{ $chart2->getLhrData($chart2->getCurrentTime('year'), $chart2->getPrevTime('monthnumber')) }}</strong></h4>
                 @if($chart2->getGrowth('month', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber')) <= 0)
-                    <span class="col p-0 text-danger">    &#9660; {{ $chart2->getGrowth('month', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber')) }}%</span>  
+                    <span class="col p-0 text-danger">    &#9660; {{ abs($chart2->getGrowth('month', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber'))) }}%</span>  
                 @else
-                    <span class="col p-0 text-success">    &#9650; {{ $chart2->getGrowth('month', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber')) }}%</span>
+                    <span class="col p-0 text-success">    &#9650; {{ abs($chart2->getGrowth('month', $chart2->getCurrentTime('year'), $chart2->getCurrentTime('monthnumber'))) }}%</span>
                 @endif
             </div>
         </div>

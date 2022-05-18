@@ -3,7 +3,7 @@ $conn = mysqli_connect('localhost', 'root', '', 'web_mks2');
 if (!$conn) {
     die('Connection failed: ' . mysqli_connect_error());
 } else {
-    //echo "Database Connected successfully";
+    echo "Database Connected successfully";
 }
 
 if (isset($_REQUEST['date']) && isset($_REQUEST['company']) && isset($_REQUEST['gate']) && isset($_REQUEST['class']) && isset($_REQUEST['traffic']) && isset($_REQUEST['source'])) {
@@ -22,15 +22,6 @@ if (isset($_REQUEST['date']) && isset($_REQUEST['company']) && isset($_REQUEST['
     } else {
         echo ("Error description: " . mysqli_error($conn));
     }
-    // if (mysqli_num_rows($result) > 0) {
-        // $rowcount = mysqli_num_rows($result);
-        // printf("Total rows in this table :  %d\n", $rowcount);
-        // while ($data = mysqli_fetch_assoc($result)) {
-            //echo $data["name"];
-        // }
-    // } else {
-        // echo "No Records Found!";
-    // }
 } else {
     echo "Please fill all the fields";
 }
