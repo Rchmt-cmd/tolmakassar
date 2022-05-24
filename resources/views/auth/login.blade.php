@@ -88,7 +88,7 @@
                                                         <input type="text" class="form-control mb-3" placeholder="Email" name="email">
                                                         <input type="password" class="form-control mb-2" placeholder="Password" name="password">
                                                         <div class="d-sm-flex justify-content-between mb-3 font-small-2">
-                                                            <a href="{{route('homes')}}">Kembali ke halaman utama</a>
+                                                            {{-- <a href="{{route('homes')}}">Kembali ke halaman utama</a> --}}
                                                             <a href="auth-forgot-password.html" style="visibility: hidden;">Lupa Password?</a>
                                                         </div>
                                                         <div class="d-flex justify-content-between flex-sm-row flex-column">

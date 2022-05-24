@@ -58,8 +58,10 @@ class LaluLintasHarianGerbang
     // query dan perhitungan data traffic untuk disajikan ke grafik
     protected function getGraphData($switch = 'curr', $gate = 'KALUKU BODOA', $company = 'MMN')
     {
-        $date = DB::table('info_traffic')
-        ->where('company', $company)
+
+        if ($switch == 'curr') {
+            $date = DB::table('info_traffic')
+            ->where('company', $company)
             ->whereYear('date', $this->getCurrentTime('year'))
             ->whereMonth('date', $this->getCurrentTime('monthnumber'))
             ->where('gate', $gate)
@@ -67,9 +69,7 @@ class LaluLintasHarianGerbang
             ->groupBy('date')
             ->get()
             ->last();
-        $countDay = date('d', strtotime($date->day));
-
-        if ($switch == 'curr') {
+            $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
                 $graph = DB::table('info_traffic')
@@ -81,6 +81,16 @@ class LaluLintasHarianGerbang
             }
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
+            $date = DB::table('info_traffic')
+            ->where('company', $company)
+            ->whereYear('date', $this->getCurrentTime('year')-1)
+            ->whereMonth('date', $this->getCurrentTime('monthnumber'))
+            ->where('gate', $gate)
+            ->select(DB::raw('date(date) as day'))
+            ->groupBy('date')
+            ->get()
+            ->last();
+            $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
                 $graph = DB::table('info_traffic')

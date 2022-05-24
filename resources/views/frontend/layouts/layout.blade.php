@@ -98,7 +98,7 @@
             <button class="btn btn-primary scroll-top" type="button"><i class="ft-arrow-up"></i></button>
 
         </div>
-        @include('frontend.partials.modal')
+        {{-- @include('frontend.partials.modal') --}}
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 

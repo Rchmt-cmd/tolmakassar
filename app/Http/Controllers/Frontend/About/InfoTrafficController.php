@@ -35,7 +35,6 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
             // section 1
-            'graph' => $chart->build(),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
 

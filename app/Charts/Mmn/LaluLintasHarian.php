@@ -58,7 +58,9 @@ class LaluLintasHarian
     // query dan perhitungan data traffic untuk disajikan ke grafik
     protected function getGraphData($switch = 'curr', $year, $month, $company = 'MMN')
     {
-        $date = DB::table('info_traffic')
+        if ($switch == 'curr') 
+        {
+            $date = DB::table('info_traffic')
             ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
@@ -66,10 +68,7 @@ class LaluLintasHarian
             ->groupBy('date')
             ->get()
             ->last();
-        $countDay = date('d', strtotime($date->day));
-
-        if ($switch == 'curr') 
-        {
+            $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
                 $graph = DB::table('info_traffic')
@@ -80,6 +79,15 @@ class LaluLintasHarian
             }
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
+            $date = DB::table('info_traffic')
+            ->where('company', $company)
+            ->whereYear('date', $year-1)
+            ->whereMonth('date', $month)
+            ->select(DB::raw('date(date) as day'))
+            ->groupBy('date')
+            ->get()
+            ->last();
+            $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
                 $graph = DB::table('info_traffic')
@@ -133,11 +141,12 @@ class LaluLintasHarian
     }
 
     // SETTER
-    public function build(): \ArielMejiaDev\LarapexCharts\LineChart
+    public function build($year, $month): \ArielMejiaDev\LarapexCharts\LineChart
     {
-        return $this->chart->lineChart()
-            ->addData( $this->getPrevTime('year'), $this->getGraphData('prev', $this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
-            ->addData( $this->getCurrentTime('year'), $this->getGraphData('curr',$this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'MMN'))
+        $lineChart = $this->chart->lineChart();
+        return $lineChart
+            ->addData( $year-1, $this->getGraphData('prev', $year, $month, 'MMN'))
+            ->addData( $year, $this->getGraphData('curr',$year, $month, 'MMN'))
             ->setGrid()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])

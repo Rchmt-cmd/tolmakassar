@@ -25,7 +25,7 @@
 @else
 <ul class="navigation-main d-inline nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
     <li class="nav-item">
-        <a class="nav-link align-items-center " href="{{ route('home') }}">
+        <a class="nav-link align-items-center " href="{{ route('mmn') }}">
             <i class="ft-user"></i>
             <span data-i18n="billboard">Profil</span>
         </a>

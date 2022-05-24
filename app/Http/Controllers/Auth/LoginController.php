@@ -53,7 +53,7 @@ class LoginController extends Controller
         );
 
         if(Auth::attempt($data)){
-            return redirect()->route('home')->with(['success'=>"Selamat Datang ".Auth::user()->name]);
+            return redirect()->route('mmn')->with(['success'=>"Selamat Datang ".Auth::user()->name]);
         }else{
             $datas = DB::table('users')->where('email', $request->email)->get();
             if(count($datas)>0){
