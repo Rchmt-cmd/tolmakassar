@@ -14,7 +14,7 @@ class CreateInfoTrafficsTable extends Migration
     public function up()
     {
         Schema::create('info_traffics', function (Blueprint $table) {
-            $table->id()->autoIncrement();
+            $table->id()->autoIncrement()->primary();
             $table->date('date');
             $table->string('company')->nullable();
             $table->string('gate');
