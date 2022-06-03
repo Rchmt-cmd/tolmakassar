@@ -16,7 +16,7 @@ class KomposisiGolongan
 
     public static function getCurrentTime($scope)
     {
-        $queryDate = DB::table('info_traffic')
+        $queryDate = DB::table('info_traffics')
         ->select(DB::raw('date(date) as date'))
         ->groupBy('date')
         ->get('date')
@@ -34,7 +34,7 @@ class KomposisiGolongan
 
     public function getPrevTime($scope)
     {
-        $queryDate = DB::table('info_traffic')
+        $queryDate = DB::table('info_traffics')
         ->select(DB::raw('date(date) as date'))
         ->groupBy('date')
         ->get('date')
@@ -54,7 +54,7 @@ class KomposisiGolongan
     {
         if ($time == 'curr') {
 
-            $data = DB::table('info_traffic')
+            $data = DB::table('info_traffics')
                 ->where('company', 'JTSE')
                 ->whereYear('date', self::getCurrentTime('year'))
                 ->whereMonth('date', self::getCurrentTime('monthnumber'))
@@ -63,13 +63,13 @@ class KomposisiGolongan
                 ->get()
                 ->toArray();
 
-            $total = DB::table('info_traffic')
+            $total = DB::table('info_traffics')
                 ->where('company', 'JTSE')
                 ->whereYear('date', self::getCurrentTime('year'))
                 ->whereMonth('date', self::getCurrentTime('monthnumber'))
                 ->sum('traffic');
         } elseif ($time == 'prev') {
-            $data = DB::table('info_traffic')
+            $data = DB::table('info_traffics')
                 ->where('company', 'JTSE')
                 ->whereYear('date', self::getPrevTime('year'))
                 ->whereMonth('date', self::getPrevTime('monthnumber'))
@@ -78,7 +78,7 @@ class KomposisiGolongan
                 ->get()
                 ->toArray();
 
-            $total = DB::table('info_traffic')
+            $total = DB::table('info_traffics')
                 ->where('company', 'JTSE')
                 ->whereYear('date', self::getPrevTime('year'))
                 ->whereMonth('date', self::getPrevTime('monthnumber'))

@@ -14,13 +14,15 @@ class CreateInfoTrafficsTable extends Migration
     public function up()
     {
         Schema::create('info_traffics', function (Blueprint $table) {
-            $table->id()->autoIncrement()->primary();
+            $table->id()->autoIncrement();
             $table->date('date');
-            $table->string('company')->nullable();
-            $table->string('gate');
-            $table->string('class');
+            $table->string('company', 5);
+            $table->string('gate', 20);
+            $table->string('class', 5);
             $table->integer('traffic');
-            $table->string('source');
+            $table->string('source', 20);
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

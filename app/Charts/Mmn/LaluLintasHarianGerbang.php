@@ -19,7 +19,7 @@ class LaluLintasHarianGerbang
     // tambahkan properti untuk memberi nilai default tahun, bulan dan perusahaan
     public static function getCurrentTime($scope)
     {
-        $queryDate = DB::table('info_traffic')
+        $queryDate = DB::table('info_traffics')
         ->select(DB::raw('date(date) as date'))
         ->groupBy('date')
         ->get('date')
@@ -39,7 +39,7 @@ class LaluLintasHarianGerbang
 
     public function getPrevTime($scope)
     {
-        $queryDate = DB::table('info_traffic')
+        $queryDate = DB::table('info_traffics')
         ->select(DB::raw('date(date) as date'))
         ->groupBy('date')
         ->get('date')
@@ -60,7 +60,7 @@ class LaluLintasHarianGerbang
     {
 
         if ($switch == 'curr') {
-            $date = DB::table('info_traffic')
+            $date = DB::table('info_traffics')
             ->where('company', $company)
             ->whereYear('date', $this->getCurrentTime('year'))
             ->whereMonth('date', $this->getCurrentTime('monthnumber'))
@@ -72,7 +72,7 @@ class LaluLintasHarianGerbang
             $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
-                $graph = DB::table('info_traffic')
+                $graph = DB::table('info_traffics')
                     ->where('company', $company)
                     ->where('gate', $gate)
                     ->whereDate('date', '=', $this->getCurrentTime('year') . '-' . $this->getCurrentTime('monthnumber') . '-' . $day)
@@ -81,7 +81,7 @@ class LaluLintasHarianGerbang
             }
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
-            $date = DB::table('info_traffic')
+            $date = DB::table('info_traffics')
             ->where('company', $company)
             ->whereYear('date', $this->getCurrentTime('year')-1)
             ->whereMonth('date', $this->getCurrentTime('monthnumber'))
@@ -93,7 +93,7 @@ class LaluLintasHarianGerbang
             $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
-                $graph = DB::table('info_traffic')
+                $graph = DB::table('info_traffics')
                     ->where('company', $company)
                     ->where('gate', $gate)
                     ->whereDate('date', date('Y-m-d', strtotime($this->getCurrentTime('year') . '-' . $this->getCurrentTime('monthnumber') . '-' . $day . ' -364 days')))
@@ -107,7 +107,7 @@ class LaluLintasHarianGerbang
     // perhitungan data lhr traffic
     public function getLhrData($year, $month, $gate = 'KALUKU BODOA', $company = 'MMN')
     {
-        $date = DB::table('info_traffic')
+        $date = DB::table('info_traffics')
         ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
@@ -118,7 +118,7 @@ class LaluLintasHarianGerbang
             ->last();
         $countDay = date('d', strtotime($date->day));
 
-        $traffic = DB::table('info_traffic')
+        $traffic = DB::table('info_traffics')
         ->whereYear('date', $year)
         ->whereMonth('date', $month)
         ->where('company', $company)

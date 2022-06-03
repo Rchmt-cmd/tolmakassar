@@ -16,7 +16,7 @@ class LaluLintasBulanan
 
     public static function getCurrentTime($scope)
     {
-        $queryDate = DB::table('info_traffic')
+        $queryDate = DB::table('info_traffics')
         ->select(DB::raw('date(date) as date'))
         ->groupBy('date')
         ->get('date')
@@ -35,7 +35,7 @@ class LaluLintasBulanan
 
     public function getPrevTime($scope)
     {
-        $queryDate = DB::table('info_traffic')
+        $queryDate = DB::table('info_traffics')
         ->select(DB::raw('date(date) as date'))
         ->groupBy('date')
         ->get('date')
@@ -53,7 +53,7 @@ class LaluLintasBulanan
 
     public function getLhrData($year, $month, $company = 'JTSE')
     {
-        $date = DB::table('info_traffic')
+        $date = DB::table('info_traffics')
         ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
@@ -63,7 +63,7 @@ class LaluLintasBulanan
             ->last();
         $countDay = date('d', strtotime($date->day));
 
-        $traffic = DB::table('info_traffic')
+        $traffic = DB::table('info_traffics')
         ->whereYear('date', $year)
             ->whereMonth('date', $month)
             ->where('company', $company)
@@ -95,11 +95,11 @@ class LaluLintasBulanan
     public function getLhrYtd($switch = 'curr')
     {
         if ($switch == 'curr') {
-            $data = DB::table('info_traffic')
+            $data = DB::table('info_traffics')
             ->where('company', 'JTSE')
                 ->whereYear('date', $this->getCurrentTime('year'))
                 ->sum('traffic');
-            $countDay = DB::table('info_traffic')
+            $countDay = DB::table('info_traffics')
             ->where('company', 'JTSE')
                 ->whereYear('date', $this->getCurrentTime('year'))
                 ->select(DB::raw('date(date) as day'))
@@ -110,11 +110,11 @@ class LaluLintasBulanan
             $lhr = round($data / $countDay);
             return number_format(round($lhr), 0, '.', '.');
         } elseif ($switch == 'prev') {
-            $data = DB::table('info_traffic')
+            $data = DB::table('info_traffics')
             ->where('company', 'JTSE')
                 ->whereYear('date', $this->getPrevTime('year'))
                 ->sum('traffic');
-            $countDay = DB::table('info_traffic')
+            $countDay = DB::table('info_traffics')
             ->where('company', 'JTSE')
                 ->whereYear('date', $this->getPrevTime('year'))
                 ->select(DB::raw('date(date) as day'))
