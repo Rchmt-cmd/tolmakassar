@@ -12,4 +12,6 @@ class info_traffic extends Model
     protected $guarded = [
         'id',
     ];
+
+    
 }

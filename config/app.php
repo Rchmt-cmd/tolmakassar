@@ -162,6 +162,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        
 
         /*
          * Package Service Providers...
@@ -180,6 +181,7 @@ return [
         App\Providers\ViewComposerServiceProvider::class,
 
         'Tymon\JWTAuth\Providers\LaravelServiceProvider',
+        'Barryvdh\Debugbar\ServiceProvider',
 
     ],
 
