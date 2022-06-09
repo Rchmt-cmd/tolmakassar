@@ -21,6 +21,7 @@ use App\Charts\Mmn\LaluLintasBulanan;
 use App\Charts\Mmn\PerbandinganGerbang;
 use App\Charts\Mmn\PerbandinganGolongan;
 use App\Charts\Mmn\LaluLintasHarianGerbang;
+use App\Models\info_traffic;
 
 class InfoTrafficController extends Controller
 {
@@ -29,30 +30,49 @@ class InfoTrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function mmn(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
+    public function mmn(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8, info_traffic $info_traffic)
     {
+        $lastDate = $info_traffic->queryLastDate();
+        $currentYear = $info_traffic->getCurrentTime('year', $lastDate);
+        $currentMonthNumber = $info_traffic->getCurrentTime('monthnumber', $lastDate);
+        $currentMonthFullName = $info_traffic->getCurrentTime('monthfullname', $lastDate);
+        $currentMonth = $info_traffic->getCurrentTime('month', $lastDate);
+
+        $prevYear = $info_traffic->getPrevTime('year', $lastDate);
+        $prevMonthNumber = $info_traffic->getPrevTime('monthnumber', $lastDate);
+        $prevMonthFullName = $info_traffic->getPrevTime('monthfullname', $lastDate);
+        $prevMonth = $info_traffic->getPrevTime('month', $lastDate);
 
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
+            'currentYear' => $currentYear,
+            'currentMonthNumber' => $currentMonthNumber,
+            'currentMonthFullName' => $currentMonthFullName,
+            'currentMonth' => $currentMonth,
+            'prevYear' => $prevYear,
+            'prevMonthNumber' => $prevMonthNumber,
+            'prevMonthFullName' => $prevMonthFullName,
+            'prevMonth' => $prevMonth,
+
             // section 1
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
 
             // section2
-            'graph2' => $chart2->build(),
+            'graph2' => $chart2->build($currentYear, $currentMonthNumber),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
             'chart2' => $chart2,
 
             // section3
-            'graph3' => $chart3->build(),
+            'graph3' => $chart3->build($currentYear),
             'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
             'chart3' => $chart3,
 
             // section4
-            'graph4' => $chart4->build(),
+            'graph4' => $chart4->build($currentYear, $currentMonthNumber),
             'chartTitle4' => 'Komposisi Gerbang',
             'chart4' => $chart4,
-            'graph5' => $chart5->build(),
+            'graph5' => $chart5->build($currentYear, $currentMonthNumber),
             'chartTitle5' => 'Komposisi Golongan',
             'chart5' => $chart5,
 
@@ -61,15 +81,26 @@ class InfoTrafficController extends Controller
             'chartTitle6' => 'Traffic History',
 
             // section4.1
-            'chart7' => $chart7->build(),
+            'chart7' => $chart7->build($currentYear, $currentMonthNumber),
             'chartTitle7' => 'Perbandingan Gerbang',
-            'chart8' => $chart8->build(),
+            'chart8' => $chart8->build($currentYear, $currentMonthNumber),
             'chartTitle8' => 'Perbandingan Gerbang',
         ]);
     }
 
-    public function jtse(JtseLaluLintasHarian $chart, JtseLaluLintasHarianGerbang $chart2, JtseLaluLintasBulanan $chart3, JtseKomposisiGerbang $chart4, JtseKomposisiGolongan $chart5, JtseTrafficHistory $chart6, JtsePerbandinganGerbang $chart7, JtsePerbandinganGolongan $chart8)
+    public function jtse(JtseLaluLintasHarian $chart, JtseLaluLintasHarianGerbang $chart2, JtseLaluLintasBulanan $chart3, JtseKomposisiGerbang $chart4, JtseKomposisiGolongan $chart5, JtseTrafficHistory $chart6, JtsePerbandinganGerbang $chart7, JtsePerbandinganGolongan $chart8, info_traffic $info_traffic)
     {
+        $lastDate = $info_traffic->queryLastDate();
+        $currentYear = $info_traffic->getCurrentTime('year', $lastDate);
+        $currentMonthNumber = $info_traffic->getCurrentTime('monthnumber', $lastDate);
+        $currentMonthFullName = $info_traffic->getCurrentTime('monthfullname', $lastDate);
+        $currentMonth = $info_traffic->getCurrentTime('month', $lastDate);
+
+        $prevYear = $info_traffic->getPrevTime('year', $lastDate);
+        $prevMonthNumber = $info_traffic->getPrevTime('monthnumber', $lastDate);
+        $prevMonthFullName = $info_traffic->getPrevTime('monthfullname', $lastDate);
+        $prevMonth = $info_traffic->getPrevTime('month', $lastDate);
+
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
             // section 1

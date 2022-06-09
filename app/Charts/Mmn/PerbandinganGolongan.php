@@ -14,49 +14,13 @@ class PerbandinganGolongan
         $this->chart = $chart;
     }
 
-    public static function getCurrentTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date));
-        }
-    }
-
-    public function getPrevTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date . ' -1 year'));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date . 'first day of last month'));
-        }
-    }
-
-    public function getGraphData($switch, $time = 'curr')
+    public function getGraphData($switch, $time = 'curr', $year, $month)
     {
         if ($time == 'curr') {
             $data = DB::table('info_traffics')
             ->where('company', 'MMN')
-            ->whereYear('date', self::getCurrentTime('year'))
-            ->whereMonth('date', self::getCurrentTime('monthnumber'))
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
             ->select(DB::raw('class as class, sum(traffic) as traffic'))
             ->groupBy('class')
             ->get()
@@ -64,8 +28,8 @@ class PerbandinganGolongan
         } elseif ($time == 'prev') {
             $data = DB::table('info_traffics')
                 ->where('company', 'MMN')
-                ->whereYear('date', self::getPrevTime('year'))
-                ->whereMonth('date', self::getPrevTime('monthnumber'))
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
                 ->select(DB::raw('class as class, sum(traffic) as traffic'))
                 ->groupBy('class')
                 ->get()
@@ -87,15 +51,15 @@ class PerbandinganGolongan
         }
     }
 
-    public function build(): \ArielMejiaDev\LarapexCharts\HorizontalBar
+    public function build($year, $month): \ArielMejiaDev\LarapexCharts\HorizontalBar
     {
         return $this->chart->horizontalBarChart()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])
             ->setHeight(300)
             ->setGrid()
-            ->addData($this->getPrevTime('year'), $this->getGraphData('traffic', 'prev'))
-            ->addData($this->getCurrentTime('year'), $this->getGraphData('traffic'))
-            ->setXAxis($this->getGraphData('class'));
+            ->addData($year-1, $this->getGraphData('traffic', 'prev', $year, $month))
+            ->addData($year, $this->getGraphData('traffic', 'curr', $year, $month))
+            ->setXAxis($this->getGraphData('class', 'curr', $year, $month));
     }
 }

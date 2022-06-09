@@ -17,43 +17,6 @@ class LaluLintasHarian
     // GETTER
 
     // tambahkan properti untuk memberi nilai default tahun, bulan dan perusahaan
-    public static function getCurrentTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-            ->select(DB::raw('date(date) as date'))
-            ->groupBy('date')
-            ->get('date')
-            ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date));
-        }
-
-        // return $queryDate->date;
-    }
-
-    public function getPrevTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-            ->select(DB::raw('date(date) as date'))
-            ->groupBy('date')
-            ->get('date')
-            ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date . ' -1 year'));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date . 'first day of last month'));
-        }
-    }
 
     // query dan perhitungan data traffic untuk disajikan ke grafik
     protected function getGraphData($switch = 'curr', $year, $month, $company = 'JTSE')
@@ -142,11 +105,11 @@ class LaluLintasHarian
     }
 
     // SETTER
-    public function build(): \ArielMejiaDev\LarapexCharts\LineChart
+    public function build($year, $month): \ArielMejiaDev\LarapexCharts\LineChart
     {
         return $this->chart->lineChart()
-            ->addData( $this->getPrevTime('year'), $this->getGraphData('prev', $this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'JTSE'))
-            ->addData( $this->getCurrentTime('year'), $this->getGraphData('curr',$this->getCurrentTime('year'), $this->getCurrentTime('monthnumber'), 'JTSE'))
+            ->addData( $year-1, $this->getGraphData('prev', $year, $month, 'JTSE'))
+            ->addData( $year, $this->getGraphData('curr',$year, $month, 'JTSE'))
             ->setGrid()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])
