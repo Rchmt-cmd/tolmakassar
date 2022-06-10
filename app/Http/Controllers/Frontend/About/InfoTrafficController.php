@@ -171,7 +171,7 @@ class InfoTrafficController extends Controller
         ]);
     }
 
-    public function mmnGerbang(LaluLintasHarianGerbang $chart)
+    public function mmnGerbang(LaluLintasHarianGerbang $chart2)
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
@@ -184,9 +184,9 @@ class InfoTrafficController extends Controller
             'prevMonthNumber' => $this->prevMonthNumber,
             'prevMonthFullName' => $this->prevMonthFullName,
             'prevMonth' => $this->prevMonth,
-            'graph2' => $chart->build($this->currentYear, $this->currentMonthNumber),
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
-            'chart2' => $chart,
+            'chart2' => $chart2,
         ]);
     }
 
