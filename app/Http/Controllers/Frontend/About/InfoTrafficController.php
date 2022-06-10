@@ -209,7 +209,7 @@ class InfoTrafficController extends Controller
         ]);
     }
 
-    public function mmnKomposisi(KomposisiGerbang $chart1, KomposisiGolongan $chart2)
+    public function mmnKomposisi(KomposisiGerbang $chart1, KomposisiGolongan $chart2, PerbandinganGerbang $chart3, PerbandinganGolongan $chart4)
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 3
@@ -227,6 +227,27 @@ class InfoTrafficController extends Controller
             'graph5' => $chart2->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle5' => 'Komposisi Golongan',
             'chart5' => $chart2,
+            'chart7' => $chart3->build($this->currentYear, $this->currentMonthNumber),
+            'chartTitle7' => 'Perbandingan Gerbang',
+            'chart8' => $chart4->build($this->currentYear, $this->currentMonthNumber),
+            'chartTitle8' => 'Perbandingan Gerbang',
+        ]);
+    }
+
+    public function mmnTrafficHistory(TrafficHistory $chart6)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+                // section5
+                'currentYear' => $this->currentYear,
+                'currentMonthNumber' => $this->currentMonthNumber,
+                'currentMonthFullName' => $this->currentMonthFullName,
+                'currentMonth' => $this->currentMonth,
+                'prevYear' => $this->prevYear,
+                'prevMonthNumber' => $this->prevMonthNumber,
+                'prevMonthFullName' => $this->prevMonthFullName,
+                'prevMonth' => $this->prevMonth,
+            'chart6' => $chart6->build(),
+            'chartTitle6' => 'Traffic History',
         ]);
     }
 
