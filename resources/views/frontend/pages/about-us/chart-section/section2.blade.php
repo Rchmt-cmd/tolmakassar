@@ -1,6 +1,6 @@
 <div class="bg-white rounded shadow p-4">
     <h3><strong>{{ $chartTitle2 }}</strong></h3>
-    <h6>Periode {{ $monthfullname }} {{ $currentYear }}</h6><br>
+    <h6>Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     
     {{-- dropdown --}}
     <div class="dropdown">

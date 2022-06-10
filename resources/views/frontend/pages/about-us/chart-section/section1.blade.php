@@ -8,7 +8,7 @@
 <div class="bg-white rounded shadow p-4">
     {{-- header --}}
     <h3><strong>{{ $chartTitle }}</strong></h3>
-    <h6 id="subtitle">Periode {{ $currentMonthFullname }} {{ $currentYear }}</h6><br>
+    <h6 id="subtitle">Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     {{-- end header --}}
 
     {{-- dropdown --}}
