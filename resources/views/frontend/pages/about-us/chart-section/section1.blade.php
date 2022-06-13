@@ -17,7 +17,7 @@
             Scope
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" onclick="getData('2022', '02')">Januari</a></li>
+            <li><a class="dropdown-item" href="/mmn-harian/01">Januari</a></li>
             <li><a class="dropdown-item">Februari</a></li>
             <li><a class="dropdown-item">Maret</a></li>
         </ul>

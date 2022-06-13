@@ -68,8 +68,8 @@ class LaluLintasHarian
     {
         $date = DB::table('info_traffics')
             ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
+            ->whereYear('date', $month < 1 ? $year-1 : $year)
+            ->whereMonth('date', $month < 1 ? 12 : $month)
             ->select(DB::raw('date(date) as day'))
             ->groupBy('date')
             ->get()
@@ -77,8 +77,8 @@ class LaluLintasHarian
         $countDay = date('d', strtotime($date->day));
 
         $traffic = DB::table('info_traffics')
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
+            ->whereYear('date', $month < 1 ? $year - 1 : $year)
+            ->whereMonth('date', $month < 1 ? 12 : $month)
             ->where('company', $company)
             ->sum('traffic');
         $mean = $traffic / ($countDay);
@@ -93,7 +93,11 @@ class LaluLintasHarian
         if ($switch == 'year') {
             $prevLhr = $this->getLhrData($year - 1, $month, $company);
         } elseif ($switch == 'month') {
-            $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            if($month < 1) {
+                $prevLhr = $this->getLhrData($year - 1, 12, $company);
+            } else {
+                $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            }
         }
 
         $growth = ($currLhr - $prevLhr) / $prevLhr * 100;

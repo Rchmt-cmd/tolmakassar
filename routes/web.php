@@ -32,6 +32,7 @@ Route::get('/mmn', [InfoTrafficController::class, 'mmn'])->name('mmn');
 Route::get('/jtse', [InfoTrafficController::class, 'jtse'])->name('jtse');
 
 Route::get('/mmn-harian', [InfoTrafficController::class, 'mmnHarian'])->name('mmn-harian');
+Route::get('/mmn-harian/{bulan}', [InfoTrafficController::class, 'mmnHarianBulan'])->name('mmn-harian-bulan');
 Route::get('/mmn-gerbang-harian', [InfoTrafficController::class, 'mmnGerbang'])->name('mmn-gerbang-harian');
 Route::get('/mmn-bulanan', [InfoTrafficController::class, 'mmnBulanan'])->name('mmn-bulanan');
 Route::get('/mmn-komposisi', [InfoTrafficController::class, 'mmnKomposisi'])->name('mmn-komposisi');

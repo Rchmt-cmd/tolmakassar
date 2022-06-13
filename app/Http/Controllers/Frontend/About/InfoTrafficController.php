@@ -60,7 +60,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
-            'title' => 'Info Traffic',
+            'title' => 'Makassar Metro Network',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -74,12 +74,30 @@ class InfoTrafficController extends Controller
             'graph' => $chart->build($this->currentYear, $this->currentMonthNumber)
         ]);
     }
+    public function mmnHarianBulan(LaluLintasHarian $chart, $bulan)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 1
+            'title' => 'Makassar Metro Network',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $bulan,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $bulan-1,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'chart' => $chart,
+            'graph' => $chart->build($this->currentYear, $bulan)
+        ]);
+    }
 
     public function jtseHarian(JtseLaluLintasHarian $chart)
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
-            'title' => 'Info Traffic',
+            'title' => 'Jalan Tol Seksi Empat',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -98,7 +116,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
-            'title' => 'Info Traffic',
+            'title' => 'Makassar Metro Network',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -117,7 +135,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
-            'title' => 'Info Traffic',
+            'title' => 'Jalan Tol Seksi Empat',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -136,7 +154,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 3
-            'title' => 'Info Traffic',
+            'title' => 'Makassar Metro Network',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -154,7 +172,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 3
-            'title' => 'Info Traffic',
+            'title' => 'Jalan Tol Seksi Empat',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -173,6 +191,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 3
+            'title' => 'Makassar Metro Network',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -197,6 +216,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 3
+            'title' => 'Jalan Tol Seksi Empat',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -222,6 +242,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
                 // section5
+                'title' => 'Makassar Metro Network',
                 'currentYear' => $this->currentYear,
                 'currentMonthNumber' => $this->currentMonthNumber,
                 'currentMonthFullName' => $this->currentMonthFullName,
@@ -238,6 +259,7 @@ class InfoTrafficController extends Controller
     {
         return view('frontend.pages.about-us.infoTraffic', [
                 // section5
+                'title' => 'Jalan Tol Seksi Empat',
                 'currentYear' => $this->currentYear,
                 'currentMonthNumber' => $this->currentMonthNumber,
                 'currentMonthFullName' => $this->currentMonthFullName,
