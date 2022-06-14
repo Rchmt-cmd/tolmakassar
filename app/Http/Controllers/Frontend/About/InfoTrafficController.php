@@ -22,6 +22,7 @@ use App\Charts\Mmn\PerbandinganGerbang;
 use App\Charts\Mmn\PerbandinganGolongan;
 use App\Charts\Mmn\LaluLintasHarianGerbang;
 use App\Models\info_traffic;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Sum;
 
 class InfoTrafficController extends Controller
 {
@@ -140,9 +141,23 @@ class InfoTrafficController extends Controller
 
     public function test()
     {
+        $graph = DB::table('info_traffics')
+        ->select(DB::raw('company,gate, `date`, SUM(traffic) as traffic'))
+        ->where('company', 'MMN')
+            ->where('gate', 'KALUKU BODOA')
+            ->whereYear('date', '2022')
+            ->whereMonth('date', '05')
+            ->groupBy('date', 'gate', 'company')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($graph as $key => $value) {
+            $data = $graph[$key]->traffic;
+            array_push($a, $data);
+        }
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => 'test',
+            'test' => $a,
         ]);
     }
 
