@@ -44,10 +44,10 @@
             <h6 id="lhr-last-year-title">{{ $currentMonth }} {{ $prevYear }}</h6>
             <div class="row justify-content-start">
                 <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData($prevYear, $currentMonthNumber) }}</strong></h4>
-                @if( $growthYear <= 0)
-                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($growthYear) }}%</span>  
+                @if( $chart->getGrowth('year', $currentYear, $currentMonthNumber) <= 0)
+                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('year', $currentYear, $currentMonthNumber)) }}%</span>  
                 @else
-                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($growthYear) }}%</span>
+                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('year', $currentYear, $currentMonthNumber)) }}%</span>
                 @endif
             </div>
             {{-- end LHR last year --}}
@@ -57,10 +57,10 @@
             <h6 id="lhr-last-month-title">{{ $prevMonth }} {{ $currentYear }}</h6>
             <div class="row">
                 <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData($currentYear, $prevMonthNumber) }}</strong></h4>
-                @if( $growthMonth <= 0)
-                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($growthMonth) }}%</span>  
+                @if( $chart->getGrowth('month', $currentYear, $currentMonthNumber) <= 0)
+                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('month', $currentYear, $currentMonthNumber)) }}%</span>  
                 @else
-                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($growthMonth) }}%</span>
+                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('month', $currentYear, $currentMonthNumber)) }}%</span>
                 @endif
             </div>
             {{-- end LHR last month --}}

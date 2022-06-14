@@ -24,22 +24,18 @@ class LaluLintasHarian
 
         if ($switch == 'curr') 
         {
-            $date = DB::table('info_traffics')
+            $graph = DB::table('info_traffics')
+            ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
             ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
+            ->groupBy('date', 'company')
             ->get()
-            ->last();
-            $countDay = date('d', strtotime($date->day));
+                ->toArray();
             $a = array();
-            for ($day = 1; $day <= ($countDay); $day++) {
-                $graph = DB::table('info_traffics')
-                    ->where('company', $company)
-                    ->whereDate('date', '=', $year . '-' . $month . '-' . $day)
-                    ->sum('traffic');
-                array_push($a, $graph);
+            foreach ($graph as $key => $value) {
+                $data = $graph[$key]->traffic;
+                array_push($a, $data);
             }
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
@@ -67,22 +63,21 @@ class LaluLintasHarian
     // perhitungan data lhr traffic
     public function getLhrData($year, $month, $company = 'JTSE') 
     {
-        $date = DB::table('info_traffics')
-            ->where('company', $company)
+        $graph = DB::table('info_traffics')
+        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+        ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
+            ->groupBy('date', 'company')
             ->get()
-            ->last();
-        $countDay = date('d', strtotime($date->day));
+            ->toArray();
+        $a = array();
+        foreach ($graph as $key => $value) {
+            $data = $graph[$key]->traffic;
+            array_push($a, $data);
+        }
 
-        $traffic = DB::table('info_traffics')
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->where('company', $company)
-            ->sum('traffic');
-        $mean = $traffic / ($countDay);
+        $mean = array_sum($a) / (count($a));
 
         return number_format(round($mean), 0, '.', '.');
     }

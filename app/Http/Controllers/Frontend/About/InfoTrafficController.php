@@ -71,6 +71,7 @@ class InfoTrafficController extends Controller
 
             // section 1
             'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber),
             'chart' => $chart,
 
             // section2
@@ -105,39 +106,39 @@ class InfoTrafficController extends Controller
 
     public function jtse(JtseLaluLintasHarian $chart, JtseLaluLintasHarianGerbang $chart2, JtseLaluLintasBulanan $chart3, JtseKomposisiGerbang $chart4, JtseKomposisiGolongan $chart5, JtseTrafficHistory $chart6, JtsePerbandinganGerbang $chart7, JtsePerbandinganGolongan $chart8, info_traffic $info_traffic)
     {
-        $lastDate = $info_traffic->queryLastDate();
-        $currentYear = $info_traffic->getCurrentTime('year', $lastDate);
-        $currentMonthNumber = $info_traffic->getCurrentTime('monthnumber', $lastDate);
-        $currentMonthFullName = $info_traffic->getCurrentTime('monthfullname', $lastDate);
-        $currentMonth = $info_traffic->getCurrentTime('month', $lastDate);
-
-        $prevYear = $info_traffic->getPrevTime('year', $lastDate);
-        $prevMonthNumber = $info_traffic->getPrevTime('monthnumber', $lastDate);
-        $prevMonthFullName = $info_traffic->getPrevTime('monthfullname', $lastDate);
-        $prevMonth = $info_traffic->getPrevTime('month', $lastDate);
 
         return view('frontend.pages.about-us.infoTraffic', [
             'title' => 'Info Traffic',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+
+            'title' => 'Info Traffic',
             // section 1
-            'graph' => $chart->build(),
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
 
             // section2
-            'graph2' => $chart2->build(),
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
             'chart2' => $chart2,
 
             // section3
-            'graph3' => $chart3->build(),
+            'graph3' => $chart3->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
             'chart3' => $chart3,
 
             // section4
-            'graph4' => $chart4->build(),
+            'graph4' => $chart4->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle4' => 'Komposisi Gerbang',
             'chart4' => $chart4,
-            'graph5' => $chart5->build(),
+            'graph5' => $chart5->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle5' => 'Komposisi Golongan',
             'chart5' => $chart5,
 
@@ -146,9 +147,9 @@ class InfoTrafficController extends Controller
             'chartTitle6' => 'Traffic History',
 
             // section4.1
-            'chart7' => $chart7->build(),
+            'chart7' => $chart7->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle7' => 'Perbandingan Gerbang',
-            'chart8' => $chart8->build(),
+            'chart8' => $chart8->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle8' => 'Perbandingan Gerbang',
         ]);
     }
