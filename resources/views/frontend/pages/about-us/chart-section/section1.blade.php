@@ -1,10 +1,10 @@
-<span id="graph">
+{{-- <span id="graph">
 @php
     $graph = $chart->build($currentYear, $currentMonthNumber);
     $growthYear = $chart->getGrowth('year', $currentYear, $currentMonthNumber);
     $growthMonth = $chart->getGrowth('month', $currentYear, $currentMonthNumber);
 @endphp
-</span>
+</span> --}}
 <div class="bg-white rounded shadow p-4">
     {{-- header --}}
     <h3><strong>{{ $chartTitle }}</strong></h3>
