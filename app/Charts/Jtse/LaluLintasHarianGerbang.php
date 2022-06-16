@@ -15,87 +15,47 @@ class LaluLintasHarianGerbang
     }
 
     // GETTER
-
-    // tambahkan properti untuk memberi nilai default tahun, bulan dan perusahaan
-    public static function getCurrentTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date));
-        }
-
-        // return $queryDate->date;
-    }
-
-    public function getPrevTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date . ' -1 year'));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date . 'first day of last month'));
-        }
-    }
-
     // query dan perhitungan data traffic untuk disajikan ke grafik
-    protected function getGraphData($switch = 'curr', $gate = 'TAMALANREA', $company = 'JTSE')
+    protected function getGraphData($switch = 'curr', $year, $month, $gate = 'TAMALANREA', $company = 'JTSE')
     {
         if ($switch == 'curr') {
-            $date = DB::table('info_traffics')
+            $graph = DB::table('info_traffics')
+            ->select(DB::raw('company,gate, `date`, SUM(traffic) as traffic'))
             ->where('company', $company)
-            ->whereYear('date', $this->getCurrentTime('year'))
-            ->whereMonth('date', $this->getCurrentTime('monthnumber'))
             ->where('gate', $gate)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->groupBy('date', 'gate', 'company')
             ->get()
-            ->last();
-            $countDay = date('d', strtotime($date->day));
+                ->toArray();
             $a = array();
-            for ($day = 1; $day <= ($countDay); $day++) {
-                $graph = DB::table('info_traffics')
-                    ->where('company', $company)
-                    ->where('gate', $gate)
-                    ->whereDate('date', '=', $this->getCurrentTime('year') . '-' . $this->getCurrentTime('monthnumber') . '-' . $day)
-                    ->sum('traffic');
-                array_push($a, $graph);
+            foreach ($graph as $key => $value) {
+                $data = $graph[$key]->traffic;
+                array_push($a, $data);
             }
+
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
-            $date = DB::table('info_traffics')
+            $date =
+            DB::table('info_traffics')
             ->where('company', $company)
-            ->whereYear('date', $this->getCurrentTime('year')-1)
-            ->whereMonth('date', $this->getCurrentTime('monthnumber'))
-            ->where('gate', $gate)
+            ->whereYear('date', $year - 1)
+            ->whereMonth('date', $month)
             ->select(DB::raw('date(date) as day'))
             ->groupBy('date')
             ->get()
             ->last();
             $countDay = date('d', strtotime($date->day));
             $a = array();
-            for ($day = 1; $day <= ($countDay); $day++) {
+            for (
+                $day = 1;
+                $day <= ($countDay);
+                $day++
+            ) {
                 $graph = DB::table('info_traffics')
-                    ->where('company', $company)
-                    ->where('gate', $gate)
-                    ->whereDate('date', date('Y-m-d', strtotime($this->getCurrentTime('year') . '-' . $this->getCurrentTime('monthnumber') . '-' . $day . ' -364 days')))
+                ->where('company', $company)
+                ->where('gate', $gate)
+                    ->whereDate('date', date('Y-m-d', strtotime($year . '-' . $month . '-' . $day . ' -364 days')))
                     ->sum('traffic');
                 array_push($a, $graph);
             }
@@ -106,24 +66,22 @@ class LaluLintasHarianGerbang
     // perhitungan data lhr traffic
     public function getLhrData($year, $month, $gate = 'TAMALANREA', $company = 'JTSE')
     {
-        $date = DB::table('info_traffics')
+        $graph = DB::table('info_traffics')
+        ->select(DB::raw('company, gate, `date`, SUM(traffic) as traffic'))
         ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
             ->where('gate', $gate)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
+            ->groupBy('date', 'gate', 'company')
             ->get()
-            ->last();
-        $countDay = date('d', strtotime($date->day));
+            ->toArray();
+        $a = array();
+        foreach ($graph as $key => $value) {
+            $data = $graph[$key]->traffic;
+            array_push($a, $data);
+        }
 
-        $traffic = DB::table('info_traffics')
-        ->whereYear('date', $year)
-        ->whereMonth('date', $month)
-        ->where('company', $company)
-            ->where('gate', $gate)
-            ->sum('traffic');
-        $mean = $traffic / ($countDay);
+        $mean = array_sum($a) / (count($a));
 
         return number_format(round($mean), 0, '.', '.');
     }
@@ -145,14 +103,14 @@ class LaluLintasHarianGerbang
         return number_format($growth, 1, '.', '.');
     }
 
-    public function build(): \ArielMejiaDev\LarapexCharts\LineChart
+    public function build($year, $month): \ArielMejiaDev\LarapexCharts\LineChart
     {
         return $this->chart->lineChart()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])
             ->setGrid()
-            ->addData($this->getPrevTime('year'), $this->getGraphData('prev' ))
-            ->addData($this->getCurrentTime('year'), $this->getGraphData('curr'))
+            ->addData($year - 1, $this->getGraphData('prev', $year, $month))
+            ->addData($year, $this->getGraphData('curr', $year, $month))
             ->setXAxis(['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31']);
     }
 }
