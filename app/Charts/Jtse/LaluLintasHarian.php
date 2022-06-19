@@ -22,31 +22,31 @@ class LaluLintasHarian
     protected function getGraphData($switch = 'curr', $year, $month, $company = 'JTSE')
     {
 
-        if ($switch == 'curr') 
-        {
+        if ($switch == 'curr') {
             $graph = DB::table('info_traffics')
-            ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-            ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->groupBy('date', 'company')
-            ->get()
+                ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+                ->where('company', $company)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
+                ->groupBy('date', 'company')
+                ->get()
                 ->toArray();
             $a = array();
             foreach ($graph as $key => $value) {
                 $data = $graph[$key]->traffic;
                 array_push($a, $data);
             }
+
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
             $date = DB::table('info_traffics')
-            ->where('company', $company)
-            ->whereYear('date', $year-1)
-            ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
-            ->get()
-            ->last();
+                ->where('company', $company)
+                ->whereYear('date', $year - 1)
+                ->whereMonth('date', $month)
+                ->select(DB::raw('date(date) as day'))
+                ->groupBy('date')
+                ->get()
+                ->last();
             $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
@@ -61,11 +61,11 @@ class LaluLintasHarian
     }
 
     // perhitungan data lhr traffic
-    public function getLhrData($year, $month, $company = 'JTSE') 
+    public function getLhrData($year, $month, $company = 'JTSE')
     {
         $graph = DB::table('info_traffics')
-        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-        ->where('company', $company)
+            ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+            ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
             ->groupBy('date', 'company')
@@ -103,8 +103,8 @@ class LaluLintasHarian
     public function build($year, $month): \ArielMejiaDev\LarapexCharts\LineChart
     {
         return $this->chart->lineChart()
-            ->addData( $year-1, $this->getGraphData('prev', $year, $month, 'JTSE'))
-            ->addData( $year, $this->getGraphData('curr',$year, $month, 'JTSE'))
+            ->addData($year - 1, $this->getGraphData('prev', $year, $month, 'JTSE'))
+            ->addData($year, $this->getGraphData('curr', $year, $month, 'JTSE'))
             ->setGrid()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])

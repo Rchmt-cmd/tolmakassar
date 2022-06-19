@@ -21,13 +21,12 @@ class LaluLintasHarian
     // query dan perhitungan data traffic untuk disajikan ke grafik
     protected function getGraphData($switch = 'curr', $year, $month, $company = 'MMN')
     {
-        if ($switch == 'curr') 
-        {
+        if ($switch == 'curr') {
             $graph = DB::table('info_traffics')
-            ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-            ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
+                ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+                ->where('company', $company)
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
                 ->groupBy('date', 'company')
                 ->get()
                 ->toArray();
@@ -40,13 +39,13 @@ class LaluLintasHarian
             return array_map('intval', $a);
         } elseif ($switch == 'prev') {
             $date = DB::table('info_traffics')
-            ->where('company', $company)
-            ->whereYear('date', $year-1)
-            ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
-            ->get()
-            ->last();
+                ->where('company', $company)
+                ->whereYear('date', $year - 1)
+                ->whereMonth('date', $month)
+                ->select(DB::raw('date(date) as day'))
+                ->groupBy('date')
+                ->get()
+                ->last();
             $countDay = date('d', strtotime($date->day));
             $a = array();
             for ($day = 1; $day <= ($countDay); $day++) {
@@ -61,11 +60,11 @@ class LaluLintasHarian
     }
 
     // perhitungan data lhr traffic
-    public function getLhrData($year, $month, $company = 'MMN') 
+    public function getLhrData($year, $month, $company = 'MMN')
     {
         $graph = DB::table('info_traffics')
-        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-        ->where('company', $company)
+            ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+            ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
             ->groupBy('date', 'company')
@@ -89,7 +88,11 @@ class LaluLintasHarian
         if ($switch == 'year') {
             $prevLhr = $this->getLhrData($year - 1, $month, $company);
         } elseif ($switch == 'month') {
-            $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            if ($month < 1) {
+                $prevLhr = $this->getLhrData($year - 1, 12, $company);
+            } else {
+                $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            }
         }
 
         $growth = ($currLhr - $prevLhr) / $prevLhr * 100;
@@ -104,8 +107,8 @@ class LaluLintasHarian
     {
         $lineChart = $this->chart->lineChart();
         return $lineChart
-            ->addData( $year-1, $this->getGraphData('prev', $year, $month, 'MMN'))
-            ->addData( $year, $this->getGraphData('curr',$year, $month, 'MMN'))
+            ->addData($year - 1, $this->getGraphData('prev', $year, $month, 'MMN'))
+            ->addData($year, $this->getGraphData('curr', $year, $month, 'MMN'))
             ->setGrid()
             ->setFontFamily('poppins')
             ->setColors(['#FFC469', '#25507D'])
