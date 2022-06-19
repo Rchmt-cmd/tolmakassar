@@ -89,6 +89,7 @@ class InfoTrafficController extends Controller
             'prevMonthFullName' => $this->prevMonthFullName,
             'prevMonth' => $this->prevMonth,
             'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber),
             'chart' => $chart,
             'graph' => $chart->build($this->currentYear, $bulan)
         ]);
@@ -404,6 +405,20 @@ class InfoTrafficController extends Controller
 
     public function test()
     {
+        $graph = DB::table('info_traffics')
+        ->select(DB::raw('company,gate, `date`, SUM(traffic) as traffic'))
+        ->where('company', 'MMN')
+            ->where('gate', 'KALUKU BODOA')
+            ->whereYear('date', '2022')
+            ->whereMonth('date', '05')
+            ->groupBy('date', 'gate', 'company')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($graph as $key => $value) {
+            $data = $graph[$key]->traffic;
+            array_push($a, $data);
+        }
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
             'test' => $this->getLhrData('2022', '05'),

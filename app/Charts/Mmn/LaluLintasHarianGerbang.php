@@ -40,8 +40,9 @@ class LaluLintasHarianGerbang
             }
 
             return array_map('intval', $a);
-        } elseif ($switch == 'prev'
-        ) {
+        } 
+        elseif ($switch == 'prev') 
+        {
             $date =
             DB::table('info_traffics')
             ->where('company', 'MMN')
