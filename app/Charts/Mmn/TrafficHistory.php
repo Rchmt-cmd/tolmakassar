@@ -2,6 +2,7 @@
 
 namespace App\Charts\Mmn;
 
+use Illuminate\Support\Facades\DB;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class TrafficHistory
@@ -11,6 +12,22 @@ class TrafficHistory
     public function __construct(LarapexChart $chart)
     {
         $this->chart = $chart;
+    }
+
+    public function trafficHistory()
+    {
+        $data = DB::table('info_traffics')
+            ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
+            ->where('company', 'MMN')
+            ->groupBy('company', 'year')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            $mean = $d / 365;
+            array_push($a, $mean);
+        }
     }
 
     public function build(): \ArielMejiaDev\LarapexCharts\BarChart

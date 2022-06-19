@@ -9,7 +9,7 @@
         <center><h3><strong>{{ $title }}</strong></h3></center>
         @include('frontend.pages.about-us.chart-section.section1')
 
-    @elseif (request()->routeIS('mmn-gerbang-harian') || request()->routeIS('jtse-gerbang-harian'))
+    @elseif (request()->routeIS('mmn-gerbang-harian') || request()->routeIS('jtse-gerbang-harian') || request()->routeIS('mmn-gerbang-harian-detail') || request()->routeIS('jtse-gerbang-harian-detail'))
         <center><h3><strong>{{ $title }}</strong></h3></center>
         @include('frontend.pages.about-us.chart-section.section2')
 

@@ -52,21 +52,22 @@ class LaluLintasBulanan
 
     public function getLhrData($year, $month, $company = 'MMN')
     {
-        $graph = DB::table('info_traffics')
-            ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-            ->where('company', $company)
+        $date = DB::table('info_traffics')
+        ->where('company', $company)
             ->whereYear('date', $year)
             ->whereMonth('date', $month)
-            ->groupBy('date', 'company')
+            ->select(DB::raw('date(date) as day'))
+            ->groupBy('date')
             ->get()
-            ->toArray();
-        $a = array();
-        foreach ($graph as $key => $value) {
-            $data = $graph[$key]->traffic;
-            array_push($a, $data);
-        }
+            ->last();
+        $countDay = date('d', strtotime($date->day));
 
-        $mean = array_sum($a) / (count($a));
+        $traffic = DB::table('info_traffics')
+        ->whereYear('date', $year)
+        ->whereMonth('date', $month)
+        ->where('company', $company)
+            ->sum('traffic');
+        $mean = $traffic / ($countDay);
 
         return number_format(round($mean), 0, '.', '.');
     }

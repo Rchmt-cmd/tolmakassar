@@ -22,6 +22,7 @@ use App\Charts\Mmn\PerbandinganGerbang;
 use App\Charts\Mmn\PerbandinganGolongan;
 use App\Charts\Mmn\LaluLintasHarianGerbang;
 use App\Models\info_traffic;
+use Illuminate\Support\Arr;
 
 class InfoTrafficController extends Controller
 {
@@ -30,7 +31,7 @@ class InfoTrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     protected $lastDate;
     protected $currentYear;
     protected $currentMonth;
@@ -84,7 +85,7 @@ class InfoTrafficController extends Controller
             'currentMonthFullName' => $this->currentMonthFullName,
             'currentMonth' => $this->currentMonth,
             'prevYear' => $this->prevYear,
-            'prevMonthNumber' => $bulan-1,
+            'prevMonthNumber' => $bulan - 1,
             'prevMonthFullName' => $this->prevMonthFullName,
             'prevMonth' => $this->prevMonth,
             'chartTitle' => 'Laporan Lalu Lintas Harian',
@@ -117,6 +118,9 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Makassar Metro Network',
+            'gateList' =>['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
+            'company' => 'MMN',
+            'gate' => 'KALUKU BODOA',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -125,8 +129,31 @@ class InfoTrafficController extends Controller
             'prevMonthNumber' => $this->prevMonthNumber,
             'prevMonthFullName' => $this->prevMonthFullName,
             'prevMonth' => $this->prevMonth,
-            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber),
-            'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, 'KALUKU BODOA'),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
+            'chart2' => $chart2,
+        ]);
+    }
+
+    public function mmnGerbangDetail(LaluLintasHarianGerbang $chart2, $gate)
+    {
+        $g = str_replace('-', ' ', strtoupper($gate));
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 2
+            'title' => 'Makassar Metro Network',
+            'gateList' => ['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
+            'company' => 'MMN',
+            'gate' => $g,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, $g),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
         ]);
     }
@@ -136,6 +163,9 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Jalan Tol Seksi Empat',
+            'gateList' => ['Tamalanrea', 'Biringkanaya', 'Parangloe-Ramp', 'Bira-Barat', 'Bira-Timur'],
+            'company' => 'JTSE',
+            'gate' => 'TAMALANREA',
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -144,8 +174,31 @@ class InfoTrafficController extends Controller
             'prevMonthNumber' => $this->prevMonthNumber,
             'prevMonthFullName' => $this->prevMonthFullName,
             'prevMonth' => $this->prevMonth,
-            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber),
-            'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, 'TAMALANREA'),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
+            'chart2' => $chart2,
+        ]);
+    }
+
+    public function jtseGerbangDetail(JtseLaluLintasHarianGerbang $chart2, $gate)
+    {
+        $g = str_replace('-', ' ', strtoupper($gate));
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 2
+            'title' => 'Jalan Tol Seksi Empat',
+            'gateList' => ['Tamalanrea', 'Biringkanaya', 'Parangloe-Ramp', 'Bira-Barat', 'Bira-Timur'],
+            'company' => 'JTSE',
+            'gate' => $g,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, $g),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
         ]);
     }
@@ -158,7 +211,7 @@ class InfoTrafficController extends Controller
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
-            'currentMonth' => $this->currentMonth,  
+            'currentMonth' => $this->currentMonth,
             'prevYear' => $this->prevYear,
             'prevMonthNumber' => $this->prevMonthNumber,
             'prevMonthFullName' => $this->prevMonthFullName,
@@ -176,7 +229,7 @@ class InfoTrafficController extends Controller
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
-            'currentMonth' => $this->currentMonth,  
+            'currentMonth' => $this->currentMonth,
             'prevYear' => $this->prevYear,
             'prevMonthNumber' => $this->prevMonthNumber,
             'prevMonthFullName' => $this->prevMonthFullName,
@@ -241,16 +294,16 @@ class InfoTrafficController extends Controller
     public function mmnTrafficHistory(TrafficHistory $chart6)
     {
         return view('frontend.pages.about-us.infoTraffic', [
-                // section5
-                'title' => 'Makassar Metro Network',
-                'currentYear' => $this->currentYear,
-                'currentMonthNumber' => $this->currentMonthNumber,
-                'currentMonthFullName' => $this->currentMonthFullName,
-                'currentMonth' => $this->currentMonth,
-                'prevYear' => $this->prevYear,
-                'prevMonthNumber' => $this->prevMonthNumber,
-                'prevMonthFullName' => $this->prevMonthFullName,
-                'prevMonth' => $this->prevMonth,
+            // section5
+            'title' => 'Makassar Metro Network',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
         ]);
@@ -258,27 +311,102 @@ class InfoTrafficController extends Controller
     public function jtseTrafficHistory(JtseTrafficHistory $chart6)
     {
         return view('frontend.pages.about-us.infoTraffic', [
-                // section5
-                'title' => 'Jalan Tol Seksi Empat',
-                'currentYear' => $this->currentYear,
-                'currentMonthNumber' => $this->currentMonthNumber,
-                'currentMonthFullName' => $this->currentMonthFullName,
-                'currentMonth' => $this->currentMonth,
-                'prevYear' => $this->prevYear,
-                'prevMonthNumber' => $this->prevMonthNumber,
-                'prevMonthFullName' => $this->prevMonthFullName,
-                'prevMonth' => $this->prevMonth,
+            // section5
+            'title' => 'Jalan Tol Seksi Empat',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
         ]);
     }
 
+    protected function getGraphData($year, $company = 'MMN')
+    {
+        $data = DB::table('info_traffics')
+            ->select(DB::raw('company, MONTH(`date`) as bulan, SUM(traffic) as `traffic`'))
+            ->whereYear('date', $year)
+            ->where('company', $company)
+            ->groupBy('company', 'bulan')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            array_push($a, $d);
+        }
+
+        return array_map('intval', $a);
+    }
+
+    public function getLhrYtd($switch = 'curr', $year)
+    {
+        $data = DB::table('info_traffics')
+            ->select(DB::raw('company, DATE(`date`) as day, SUM(`traffic`) as traffic'))
+            ->whereYear('date', $switch == 'curr' ? $year : $year - 1)
+            ->where('company', 'MMN')
+            ->groupBy('company', 'day')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            array_push($a, $d);
+        }
+
+        $lhr = round(array_sum($a) / count($a));
+        return number_format(round($lhr), 0, '.', '.');
+    }
+
+    public function trafficHistory()
+    {
+        $data = DB::table('info_traffics')
+            ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
+            ->where('company', 'MMN')
+            ->groupBy('company', 'year')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            $mean = $d / 365;
+            array_push($a, $mean);
+        }
+
+        return $a;
+    }
+
+    public function getLhrData($year, $month, $company = 'MMN')
+    {
+        $graph = DB::table('info_traffics')
+        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+        ->where('company', $company)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->groupBy('date', 'company')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($graph as $key => $value) {
+            $data = $graph[$key]->traffic;
+            array_push($a, $data);
+        }
+
+        $mean = array_sum($a) / (count($a));
+
+        return number_format(round($mean), 0, '.', '.');
+    }
 
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => 'test',
+            'test' => $this->getLhrData('2022', '05'),
         ]);
     }
 
