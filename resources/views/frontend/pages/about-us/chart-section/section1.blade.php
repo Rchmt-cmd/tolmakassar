@@ -1,10 +1,3 @@
-{{-- <span id="graph">
-@php
-    $graph = $chart->build($currentYear, $currentMonthNumber);
-    $growthYear = $chart->getGrowth('year', $currentYear, $currentMonthNumber);
-    $growthMonth = $chart->getGrowth('month', $currentYear, $currentMonthNumber);
-@endphp
-</span> --}}
 <div class="bg-white rounded shadow p-4">
     {{-- header --}}
     <h3><strong>{{ $chartTitle }}</strong></h3>
@@ -14,12 +7,18 @@
     {{-- dropdown --}}
     <div class="dropdown">
         <button class="btn light dark border border-1 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            Scope
+            @if (Request::segment(2))
+                {{ date('F', mktime(0, 0, 0, Request::segment(2))) }}
+            @else
+                {{ $currentMonthFullName }}
+            @endif
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="/mmn-harian/01">Januari</a></li>
-            <li><a class="dropdown-item">Februari</a></li>
-            <li><a class="dropdown-item">Maret</a></li>
+            @foreach ($listMonth as $month)
+                <li>
+                    <a class="dropdown-item" href="/{{ strtolower($company) }}-harian/{{ $month->bulan }}">{{ $month->nama_bulan }}</a>
+                </li>
+            @endforeach
         </ul>
     </div>
     {{-- end dropdown --}}
@@ -41,7 +40,7 @@
 
 
             {{-- LHR Last Year --}}
-            <h6 id="lhr-last-year-title">{{ $currentMonth }} {{ $prevYear }}</h6>
+            <h6 id="lhr-last-year-title">{{ str_replace('-', ' ', date('M-Y', strtotime($date->date . '-1 year'))) }}</h6>
             <div class="row justify-content-start">
                 <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData($prevYear, $currentMonthNumber) }}</strong></h4>
                 @if( $chart->getGrowth('year', $currentYear, $currentMonthNumber) <= 0)
@@ -54,7 +53,7 @@
 
 
             {{-- Lhr last month --}}
-            <h6 id="lhr-last-month-title">{{ $prevMonth }} {{ $currentYear }}</h6>
+            <h6 id="lhr-last-month-title">{{ str_replace('-', ' ', date('M-Y', strtotime($date->date . '-1 month'))) }}</h6>
             <div class="row">
                 <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData($currentYear, $prevMonthNumber) }}</strong></h4>
                 @if( $chart->getGrowth('month', $currentYear, $currentMonthNumber) <= 0)

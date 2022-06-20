@@ -41,6 +41,7 @@ class InfoTrafficController extends Controller
     protected $prevMonth;
     protected $prevMonthNumber;
     protected $prevMonthFullName;
+    protected $listMonth;
 
 
     public function __construct(info_traffic $info_traffic)
@@ -55,13 +56,22 @@ class InfoTrafficController extends Controller
         $this->prevMonthNumber = $info_traffic->getPrevTime('monthnumber', $this->lastDate);
         $this->prevMonthFullName = $info_traffic->getPrevTime('monthfullname', $this->lastDate);
         $this->prevMonth = $info_traffic->getPrevTime('month', $this->lastDate);
+
+        $this->listMonth = $info_traffic->listMonth($this->currentYear);
+
+
     }
 
+
+    // LALU LINTAS HARIAN
     public function mmnHarian(LaluLintasHarian $chart)
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Makassar Metro Network',
+            'company' => 'MMN',
+            'date' => $this->lastDate,
+            'listMonth' => $this->listMonth,
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -80,16 +90,18 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Makassar Metro Network',
+            'date' => $this->lastDate,
+            'company' => 'MMN',
+            'listMonth' => $this->listMonth,
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $bulan,
-            'currentMonthFullName' => $this->currentMonthFullName,
-            'currentMonth' => $this->currentMonth,
+            'currentMonthFullName' => date('F', mktime(0, 0, 0, $bulan)),
+            'currentMonth' => date('M', mktime(0, 0, 0, $bulan)),
             'prevYear' => $this->prevYear,
             'prevMonthNumber' => $bulan - 1,
-            'prevMonthFullName' => $this->prevMonthFullName,
-            'prevMonth' => $this->prevMonth,
+            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan-1)),
+            'prevMonth' => date('M', mktime(0, 0, 0, $bulan-1)),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
-            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber),
             'chart' => $chart,
             'graph' => $chart->build($this->currentYear, $bulan)
         ]);
@@ -100,6 +112,9 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Jalan Tol Seksi Empat',
+            'company' => 'JTSE',
+            'date' => $this->lastDate,
+            'listMonth' => $this->listMonth,
             'currentYear' => $this->currentYear,
             'currentMonthNumber' => $this->currentMonthNumber,
             'currentMonthFullName' => $this->currentMonthFullName,
@@ -114,12 +129,39 @@ class InfoTrafficController extends Controller
         ]);
     }
 
+    public function jtseHarianBulan(JtseLaluLintasHarian $chart, $bulan)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 1
+            'title' => 'Jalan Tol Seksi Empat',
+            'date' => $this->lastDate,
+            'company' => 'JTSE',
+            'listMonth' => $this->listMonth,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $bulan,
+            'currentMonthFullName' => date('F', mktime(0, 0, 0, $bulan)),
+            'currentMonth' => date('M', mktime(0, 0, 0, $bulan)),
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $bulan - 1,
+            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan-1)),
+            'prevMonth' => date('M', mktime(0, 0, 0, $bulan-1)),
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'chart' => $chart,
+            'graph' => $chart->build($this->currentYear, $bulan)
+        ]);
+    }
+
+
+
+
+    // LALU LINTAS GERBANG HARIAN
     public function mmnGerbang(LaluLintasHarianGerbang $chart2)
     {
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Makassar Metro Network',
-            'gateList' =>['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
+            'date' => $this->lastDate,
+            'gateList' => ['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
             'company' => 'MMN',
             'gate' => 'KALUKU BODOA',
             'currentYear' => $this->currentYear,
@@ -142,6 +184,7 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Makassar Metro Network',
+            'date' => $this->lastDate,
             'gateList' => ['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
             'company' => 'MMN',
             'gate' => $g,
@@ -164,6 +207,7 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Jalan Tol Seksi Empat',
+            'date' => $this->lastDate,
             'gateList' => ['Tamalanrea', 'Biringkanaya', 'Parangloe-Ramp', 'Bira-Barat', 'Bira-Timur'],
             'company' => 'JTSE',
             'gate' => 'TAMALANREA',
@@ -187,6 +231,7 @@ class InfoTrafficController extends Controller
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Jalan Tol Seksi Empat',
+            'date' => $this->lastDate,
             'gateList' => ['Tamalanrea', 'Biringkanaya', 'Parangloe-Ramp', 'Bira-Barat', 'Bira-Timur'],
             'company' => 'JTSE',
             'gate' => $g,
@@ -204,6 +249,9 @@ class InfoTrafficController extends Controller
         ]);
     }
 
+
+
+    // LALU LINTAS BULANAN
     public function mmnBulanan(LaluLintasBulanan $chart)
     {
         return view('frontend.pages.about-us.infoTraffic', [
@@ -241,6 +289,9 @@ class InfoTrafficController extends Controller
         ]);
     }
 
+
+
+    // KOMPOSISI GERBANG DAN GOLONGAN
     public function mmnKomposisi(KomposisiGerbang $chart1, KomposisiGolongan $chart2, PerbandinganGerbang $chart3, PerbandinganGolongan $chart4)
     {
         return view('frontend.pages.about-us.infoTraffic', [
@@ -292,6 +343,9 @@ class InfoTrafficController extends Controller
         ]);
     }
 
+
+
+    // TRAFFIC HISTORY
     public function mmnTrafficHistory(TrafficHistory $chart6)
     {
         return view('frontend.pages.about-us.infoTraffic', [
@@ -327,59 +381,15 @@ class InfoTrafficController extends Controller
         ]);
     }
 
-    protected function getGraphData($year, $company = 'MMN')
+    public static function listMonth($year)
     {
-        $data = DB::table('info_traffics')
-            ->select(DB::raw('company, MONTH(`date`) as bulan, SUM(traffic) as `traffic`'))
+        return DB::table('info_traffics')
+            ->select(DB::raw('MONTH(`date`) as bulan, MONTHNAME(`date`) as nama_bulan'))
             ->whereYear('date', $year)
-            ->where('company', $company)
-            ->groupBy('company', 'bulan')
+            ->groupBy('bulan', 'nama_bulan')
+            ->orderBy('bulan')
             ->get()
             ->toArray();
-        $a = array();
-        foreach ($data as $key => $value) {
-            $d = $data[$key]->traffic;
-            array_push($a, $d);
-        }
-
-        return array_map('intval', $a);
-    }
-
-    public function getLhrYtd($switch = 'curr', $year)
-    {
-        $data = DB::table('info_traffics')
-            ->select(DB::raw('company, DATE(`date`) as day, SUM(`traffic`) as traffic'))
-            ->whereYear('date', $switch == 'curr' ? $year : $year - 1)
-            ->where('company', 'MMN')
-            ->groupBy('company', 'day')
-            ->get()
-            ->toArray();
-        $a = array();
-        foreach ($data as $key => $value) {
-            $d = $data[$key]->traffic;
-            array_push($a, $d);
-        }
-
-        $lhr = round(array_sum($a) / count($a));
-        return number_format(round($lhr), 0, '.', '.');
-    }
-
-    public function trafficHistory()
-    {
-        $data = DB::table('info_traffics')
-            ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
-            ->where('company', 'MMN')
-            ->groupBy('company', 'year')
-            ->get()
-            ->toArray();
-        $a = array();
-        foreach ($data as $key => $value) {
-            $d = $data[$key]->traffic;
-            $mean = $d / 365;
-            array_push($a, $mean);
-        }
-
-        return $a;
     }
 
     public function getLhrData($year, $month, $company = 'MMN')
@@ -387,8 +397,8 @@ class InfoTrafficController extends Controller
         $graph = DB::table('info_traffics')
         ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
         ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
+            ->whereYear('date', $month <= 0 ? $year - 1 : $year)
+            ->whereMonth('date', $month <= 0 ? 12 : $month)
             ->groupBy('date', 'company')
             ->get()
             ->toArray();
@@ -403,11 +413,12 @@ class InfoTrafficController extends Controller
         return number_format(round($mean), 0, '.', '.');
     }
 
+    // TESTING
     public function test()
     {
         $graph = DB::table('info_traffics')
-        ->select(DB::raw('company,gate, `date`, SUM(traffic) as traffic'))
-        ->where('company', 'MMN')
+            ->select(DB::raw('company,gate, `date`, SUM(traffic) as traffic'))
+            ->where('company', 'MMN')
             ->where('gate', 'KALUKU BODOA')
             ->whereYear('date', '2022')
             ->whereMonth('date', '05')
@@ -419,9 +430,16 @@ class InfoTrafficController extends Controller
             $data = $graph[$key]->traffic;
             array_push($a, $data);
         }
+        $c = DB::table('info_traffics')
+        ->select(DB::raw('date(date) as date'))
+        ->groupBy('date')
+        ->get('date')
+        ->last();
+
+        $b = $this->listMonth('2022');
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->getLhrData('2022', '05'),
+            'test' => date('M-Y', strtotime($c->date)),
         ]);
     }
 

@@ -23,6 +23,17 @@ class info_traffic extends Model
         ->last();
     }
 
+    public static function listMonth($year)
+    {
+        return DB::table('info_traffics')
+            ->select(DB::raw('MONTH(`date`) as bulan, MONTHNAME(`date`) as nama_bulan'))
+            ->whereYear('date', $year)
+            ->groupBy('bulan', 'nama_bulan')
+            ->orderBy('bulan')
+            ->get()
+            ->toArray();
+    }
+
     public static function getCurrentTime($scope, $date)
     {
         $queryDate = $date;

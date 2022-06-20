@@ -65,8 +65,8 @@ class LaluLintasHarian
         $graph = DB::table('info_traffics')
             ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
             ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
+            ->whereYear('date', $month <= 0 ? $year - 1 : $year)
+            ->whereMonth('date', $month <= 0 ? 12 : $month)
             ->groupBy('date', 'company')
             ->get()
             ->toArray();

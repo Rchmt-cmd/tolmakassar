@@ -5,7 +5,7 @@
 
 <br>
 <div class="container p-0">
-    @if (request()->routeIS('mmn-harian') || request()->routeIS('jtse-harian') || request()->routeIS('mmn-harian-bulan'))
+    @if (request()->routeIS('mmn-harian') || request()->routeIS('jtse-harian') || request()->routeIS('mmn-harian-bulan') || request()->routeIS('jtse-harian-bulan'))
         <center><h3><strong>{{ $title }}</strong></h3></center>
         @include('frontend.pages.about-us.chart-section.section1')
 

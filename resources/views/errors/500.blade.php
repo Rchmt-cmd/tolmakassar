@@ -56,7 +56,7 @@
               <p class="text-white">Congratulations, you broke the internet!
               </p>
             </div>
-            <button class="btn btn-primary btn-lg mt-4"><a href="{{ route('homes') }}" class="text-decoration-none text-white">Back
+            <button class="btn btn-primary btn-lg mt-4"><a href="{{ route('mmn-harian') }}" class="text-decoration-none text-white">Back
                 To Home</a></button>
           </div>
         </div>

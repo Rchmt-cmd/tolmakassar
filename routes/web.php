@@ -42,9 +42,13 @@ Route::get('/mmn-komposisi', [InfoTrafficController::class, 'mmnKomposisi'])->na
 Route::get('/mmn-traffic-history', [InfoTrafficController::class, 'mmnTrafficHistory'])->name('mmn-traffic-history');
 
 Route::get('/jtse-harian', [InfoTrafficController::class, 'jtseHarian'])->name('jtse-harian');
+Route::get('/jtse-harian/{bulan}', [InfoTrafficController::class, 'jtseHarianBulan'])->name('jtse-harian-bulan');
+
 Route::get('/jtse-bulanan', [InfoTrafficController::class, 'jtseBulanan'])->name('jtse-bulanan');
+
 Route::get('/jtse-gerbang-harian', [InfoTrafficController::class, 'jtseGerbang'])->name('jtse-gerbang-harian');
 Route::get('/jtse-gerbang-harian/{gate}', [InfoTrafficController::class, 'jtseGerbangDetail'])->name('jtse-gerbang-harian-detail');
+
 Route::get('/jtse-komposisi', [InfoTrafficController::class, 'jtseKomposisi'])->name('jtse-komposisi');
 Route::get('/jtse-traffic-history', [InfoTrafficController::class, 'jtseTrafficHistory'])->name('jtse-traffic-history');
 
