@@ -40,7 +40,7 @@
 
 
             {{-- LHR Last Year --}}
-            <h6 id="lhr-last-year-title">{{ str_replace('-', ' ', date('M-Y', strtotime($date->date . '-1 year'))) }}</h6>
+            <h6 id="lhr-last-year-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
             <div class="row justify-content-start">
                 <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData($prevYear, $currentMonthNumber) }}</strong></h4>
                 @if( $chart->getGrowth('year', $currentYear, $currentMonthNumber) <= 0)
@@ -53,7 +53,7 @@
 
 
             {{-- Lhr last month --}}
-            <h6 id="lhr-last-month-title">{{ str_replace('-', ' ', date('M-Y', strtotime($date->date . '-1 month'))) }}</h6>
+            <h6 id="lhr-last-month-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
             <div class="row">
                 <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData($currentYear, $prevMonthNumber) }}</strong></h4>
                 @if( $chart->getGrowth('month', $currentYear, $currentMonthNumber) <= 0)

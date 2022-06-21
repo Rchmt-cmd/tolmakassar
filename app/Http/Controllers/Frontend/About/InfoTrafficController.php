@@ -361,6 +361,7 @@ class InfoTrafficController extends Controller
             'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
+            'staticDescription' => $chart6->staticDescription(),
         ]);
     }
     public function jtseTrafficHistory(JtseTrafficHistory $chart6)
@@ -378,68 +379,16 @@ class InfoTrafficController extends Controller
             'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
+            'staticDescription' => $chart6->staticDescription(),
         ]);
-    }
-
-    public static function listMonth($year)
-    {
-        return DB::table('info_traffics')
-            ->select(DB::raw('MONTH(`date`) as bulan, MONTHNAME(`date`) as nama_bulan'))
-            ->whereYear('date', $year)
-            ->groupBy('bulan', 'nama_bulan')
-            ->orderBy('bulan')
-            ->get()
-            ->toArray();
-    }
-
-    public function getLhrData($year, $month, $company = 'MMN')
-    {
-        $graph = DB::table('info_traffics')
-        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-        ->where('company', $company)
-            ->whereYear('date', $month <= 0 ? $year - 1 : $year)
-            ->whereMonth('date', $month <= 0 ? 12 : $month)
-            ->groupBy('date', 'company')
-            ->get()
-            ->toArray();
-        $a = array();
-        foreach ($graph as $key => $value) {
-            $data = $graph[$key]->traffic;
-            array_push($a, $data);
-        }
-
-        $mean = array_sum($a) / (count($a));
-
-        return number_format(round($mean), 0, '.', '.');
     }
 
     // TESTING
     public function test()
     {
-        $graph = DB::table('info_traffics')
-            ->select(DB::raw('company,gate, `date`, SUM(traffic) as traffic'))
-            ->where('company', 'MMN')
-            ->where('gate', 'KALUKU BODOA')
-            ->whereYear('date', '2022')
-            ->whereMonth('date', '05')
-            ->groupBy('date', 'gate', 'company')
-            ->get()
-            ->toArray();
-        $a = array();
-        foreach ($graph as $key => $value) {
-            $data = $graph[$key]->traffic;
-            array_push($a, $data);
-        }
-        $c = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-
-        $b = $this->listMonth('2022');
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => date('M-Y', strtotime($c->date)),
+            'test' => 'ayyo',
         ]);
     }
 

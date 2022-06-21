@@ -37,7 +37,7 @@
             <h6>LHR Gerbang Terkini</h6>
             <h1><strong>{{ $chart2->getLhrData($currentYear, $currentMonthNumber, $gate) }}</strong></h1>
             <br>
-            <h6>{{ $currentMonth }} {{ $prevYear }}</h6>
+            <h6>{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
             <div class="row">
                 <h4 class="col"><strong>{{ $chart2->getLhrData($prevYear, $currentMonthNumber, $gate) }}</strong></h4>
                 @if($chart2->getGrowth('year', $currentYear, $currentMonthNumber, $gate) <= 0)
@@ -47,7 +47,7 @@
                 @endif
             </div>
 
-            <h6>{{ $prevMonth }} {{ $currentYear }}</h6>
+            <h6>{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
             <div class="row">
                 <h4 class="col"><strong>{{ $chart2->getLhrData($currentYear, $prevMonthNumber, $gate) }}</strong></h4>
                 @if($chart2->getGrowth('month', $currentYear, $currentMonthNumber, $gate) <= 0)
