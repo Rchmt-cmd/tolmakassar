@@ -22,11 +22,11 @@ class UserSeeder extends Seeder
 
         $guest->assignRole('aktif');
 
-        $user = User::create([
-            'name' => 'User Role',
-            'email' => 'user@role.test',
-            'password' => bcrypt('12345678')
-        ]);
+        // $user = User::create([
+        //     'name' => 'User Role',
+        //     'email' => 'user@role.test',
+        //     'password' => bcrypt('12345678')
+        // ]);
 
         // $user->assignRole('user');
     }

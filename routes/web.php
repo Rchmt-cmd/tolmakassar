@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\KartuController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Frontend\About\InfoTrafficController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,12 @@ Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 's
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register')->middleware('guest');
 
 Route::post('/admin/delayedpayments',[InfoTrafficController::class,'import'])->name('delayedPay.import');
+
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post'); 
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
 /*Menu About Us*/
 //Sejarah
 // Route::get('/sejarah', 'Frontend\About\Umum\SejarahController@index')->name('sejarah');
