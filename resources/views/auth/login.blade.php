@@ -81,6 +81,14 @@
                                                     <img src="{{asset('apexnew/app-assets/img/Logo_MMN_JTSE.png')}}" alt="" class="img-fluid" width="300" height="230">
                                                 </div>
                                                 <div class="col-lg-6 col-12 px-4 py-3">
+                                                @if(session()->has('message'))
+                                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                    {{ session()->get('message') }}
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                @endif
                                                     <form method="POST" action="{{route('login')}}">
                                                         @csrf
                                                         <h4 class="mb-2 card-title">Login</h4>

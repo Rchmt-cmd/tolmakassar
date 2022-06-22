@@ -33,7 +33,7 @@
 			$this->col[] = ["label"=>"Name","name"=>"name"];
 			$this->col[] = ["label"=>"Email","name"=>"email"];
 			$this->col[] = ["label"=>"Status","name"=>"id_guest","join"=>"roles,name"];
-			$this->col[] = ["label"=>"First Password","name"=>"first_password"];
+			$this->col[] = ["label"=>"Password Status","name"=>"password_status"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

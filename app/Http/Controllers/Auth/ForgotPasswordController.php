@@ -84,9 +84,16 @@ class ForgotPasswordController extends Controller
   
           $user = User::where('email', $request->email)
                       ->update(['password' => Hash::make($request->password)]);
+
+          $updated_at= User::where('email',$request->email)->value('updated_at');
+
+          $changePassAlert = 'Password has been changed at '. $updated_at;
+
+          $chageFirstPass = User::where('email', $request->email)
+                      ->update(['password_status' => $changePassAlert]);
  
           DB::table('password_resets')->where(['email'=> $request->email])->delete();
   
-          return redirect('/login')->with('message', 'Your password has been changed!');
+          return redirect('/')->with('message', 'Your password has been changed!');
       }
 }
