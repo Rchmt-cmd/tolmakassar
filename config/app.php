@@ -162,7 +162,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        
+        \Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -181,7 +181,6 @@ return [
         App\Providers\ViewComposerServiceProvider::class,
 
         'Tymon\JWTAuth\Providers\LaravelServiceProvider',
-        'Barryvdh\Debugbar\ServiceProvider',
 
     ],
 
@@ -239,6 +238,8 @@ return [
 
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+
+        'Excel' => \Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

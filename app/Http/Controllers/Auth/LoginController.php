@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use DB, Auth, Hash, Validator, Session;
+use DB, Hash, Validator, Session;
+
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -40,20 +42,55 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function showLoginForm(){
+    // public function showLoginForm(){
 
-        return view('auth/login');
-    }
+    //     return view('auth/login');
+    // }
 
-    public function login(Request $request){
+    // public function login(Request $request){
 
-        $data = array(
-            'email'=>$request->get('email'),
-            'password'=>$request->get('password')
-        );
+    //     $data = array(
+    //         'email'=>$request->get('email'),
+    //         'password'=>$request->get('password')
+    //     );
 
-        if(Auth::attempt($data)){
-            return redirect()->route('mmn')->with(['success'=>"Selamat Datang ".Auth::user()->name]);
+    //     if(Auth::attempt($data)){
+    //         return redirect()->route('home')->with(['success'=>"Selamat Datang ".Auth::user()->name]);
+    //     }else{
+    //         $datas = DB::table('users')->where('email', $request->email)->get();
+    //         if(count($datas)>0){
+    //             $status = "danger";
+    //             $message = "Password Salah";
+    //         }else{
+    //             $status = "danger";
+    //             $message = "email tidak ada";
+    //         }
+    //         return redirect()->route('login')->with($status,$message);
+    //     }
+    // }
+
+    public function authenticated(Request $request, $user)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+ 
+        if (Auth::attempt($credentials)) {
+            if ($user->hasRole('aktif')){
+                $request->session()->regenerate();
+ 
+                return redirect()->intended('/')->with(['success'=>"Selamat Datang ".Auth::user()->name]);
+            }else{
+                
+                Auth::logout();
+    
+                $request->session()->invalidate();
+            
+                $request->session()->regenerateToken();
+            
+                return redirect('login')->with(['success'=>'Anda Tidak Memiliki Akses ke Web Ini']);
+            }
         }else{
             $datas = DB::table('users')->where('email', $request->email)->get();
             if(count($datas)>0){
@@ -67,8 +104,24 @@ class LoginController extends Controller
         }
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
-        return redirect()->route('login-form')->with(['success'=>'thank you for using our service']);
+    
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+    
+        return redirect('login')->with(['success'=>'thank you for using our service']);
     }
+
+    // protected function authenticated(Request $request, $user)
+    // {
+    //     if ($user->hasRole('aktif')){
+    //         $request->session()->regenerate();
+    //         return redirect()->route('home');
+    //     }
+
+    //     return redirect()->route('register');
+    // }
 }

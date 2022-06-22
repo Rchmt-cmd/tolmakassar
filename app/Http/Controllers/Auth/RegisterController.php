@@ -134,6 +134,6 @@ class RegisterController extends Controller
             }
         }
 
-        return redirect()->route('regis-form')->with([$status=>$message]);
+        return redirect()->route('register')->with([$status=>$message]);
     }
 }

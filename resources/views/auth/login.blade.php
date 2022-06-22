@@ -84,15 +84,15 @@
                                                     <form method="POST" action="{{route('login')}}">
                                                         @csrf
                                                         <h4 class="mb-2 card-title">Login</h4>
-                                                        <p>Selamat datang, harap isi email & password untuk masuk.</p>
+                                                        <p>Selamat Datang di Website Traffic Tol Makassar</p>
                                                         <input type="text" class="form-control mb-3" placeholder="Email" name="email">
                                                         <input type="password" class="form-control mb-2" placeholder="Password" name="password">
                                                         <div class="d-sm-flex justify-content-between mb-3 font-small-2">
-                                                            {{-- <a href="{{route('homes')}}">Kembali ke halaman utama</a> --}}
+                                                            {{-- <a href="{{route('home')}}">Kembali ke halaman utama</a> --}}
                                                             <a href="auth-forgot-password.html" style="visibility: hidden;">Lupa Password?</a>
                                                         </div>
                                                         <div class="d-flex justify-content-between flex-sm-row flex-column">
-                                                            <a href="{{route('regis-form')}}" class="btn bg-light-primary mb-2 mb-sm-0">Registrasi</a>
+                                                            <a href="/admin/login" class="btn bg-light-primary mb-2 mb-sm-0">Admin</a>
                                                             <button type="submit" class="btn btn-primary">Masuk</button>
                                                         </div>
                                                     </form>

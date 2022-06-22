@@ -1,8 +1,9 @@
 <?php
 
+use App\Imports\TundaBayarImport;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 // use Tymon\JWTAuth\Contracts\Providers\Auth;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\KartuController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -61,6 +62,19 @@ Route::get('/test', [InfoTrafficController::class, 'test']);
 
 
 
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/login', [LoginController::class, 'authenticate'])->middleware('guest');
+Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::get('/','FrontController@getIndex')->middleware('auth')->middleware('role:aktif');
+
+
+
+
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register')->middleware('guest');
+
+Route::post('/admin/delayedpayments',[InfoTrafficController::class,'import'])->name('delayedPay.import');
 /*Menu About Us*/
 //Sejarah
 // Route::get('/sejarah', 'Frontend\About\Umum\SejarahController@index')->name('sejarah');
@@ -150,8 +164,6 @@ Auth::routes();
 // Route::get('/tender/{id}', 'Frontend\TenderController@detail')->name('tender-detail');
 
 // // Route::get('/struk-print', 'StrukController@print')->name('print');
-Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('regis-form');
-Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
 // Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login-form');
 // Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login'])->name('login');
 // Route::post('/kartu', [App\Http\Controllers\User\KartuController::class, 'store'])->name('kartu-store');

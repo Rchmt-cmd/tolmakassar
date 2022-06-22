@@ -71,10 +71,10 @@
                         <li class="dropdown nav-item mr-1">
                             <a class="nav-link dropdown-toggle user-dropdown d-flex align-items-end" id="dropdownBasic2" href="javascript:;" data-toggle="dropdown">
                                 <div class="user d-md-flex d-none mr-2">
-                                    <span class="text-right">John Doe</span>
-                                    <span class="text-right text-muted font-small-3">Available</span>
+                                    <span class="text-right">{{ auth()->user()->name }}</span>
+                                    <span class="text-right text-muted font-small-3">{{ auth()->user()->email }}</span>
                                 </div>
-                                <img class="avatar" src="{{ asset('apexnew/app-assets/img/portrait/small/avatar-s-1.png')}}" alt="avatar" height="35" width="35">
+                                <img class="avatar" src="{{ asset('logout.png')}}" alt="avatar" height="35" width="35">
                             </a>
                             <div class="dropdown-menu text-left dropdown-menu-right m-0 pb-0" aria-labelledby="dropdownBasic2">
                                 <div class="dropdown-divider"></div>
@@ -111,7 +111,7 @@
 
             <!-- BEGIN : Footer-->
             <footer class="footer undefined undefined">
-                <p class="clearfix text-muted m-0"><span>Copyright &copy; 2020 &nbsp;</span><a href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent" id="pixinventLink" target="_blank">PIXINVENT</a><span class="d-none d-sm-inline-block">, All rights reserved.</span></p>
+                <p class="clearfix text-muted m-0"><span>Copyright &copy; 2022 &nbsp;</span><span class="d-none d-sm-inline-block">Margautama Nustantara</span></p>
             </footer>
             <!-- End : Footer-->
             <!-- Scroll to top button -->
