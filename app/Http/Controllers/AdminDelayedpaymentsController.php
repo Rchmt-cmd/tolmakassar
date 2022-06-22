@@ -1,20 +1,18 @@
 <?php namespace App\Http\Controllers;
 
-use App\Models\User;
-
 	use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminGuestsController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminDelayedpaymentsController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
 			$this->title_field = "id";
 			$this->limit = "20";
-			$this->orderby = "id,desc";
+			$this->orderby = "date,desc";
 			$this->global_privilege = false;
 			$this->button_table_action = true;
 			$this->button_bulk_action = true;
@@ -24,25 +22,29 @@ use App\Models\User;
 			$this->button_delete = true;
 			$this->button_detail = false;
 			$this->button_show = false;
-			$this->button_filter = false;
+			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "guests";
+			$this->table = "info_traffics";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Email","name"=>"email","join"=>"users,email"];
+			$this->col[] = ["label"=>"Date","name"=>"date"];
+			$this->col[] = ["label"=>"Company","name"=>"company"];
+			$this->col[] = ["label"=>"Gate","name"=>"gate"];
+			$this->col[] = ["label"=>"Class","name"=>"class"];
+			$this->col[] = ["label"=>"Traffic","name"=>"traffic"];
+			$this->col[] = ["label"=>"Source","name"=>"source"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'select2','validation'=>'required|min:1|max:255|unique:guests','width'=>'col-sm-10','datatable'=>'users,email'];
+
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Email','name'=>'email','type'=>'select2','validation'=>'required|min:1|max:255|unique:guests','width'=>'col-sm-10','datatable'=>'users,email'];
 			# OLD END FORM
 
 			/* 
@@ -202,9 +204,22 @@ use App\Models\User;
 	        |
 	        */
 	        $this->load_css = array();
-	        
-	        
 	    }
+
+		public function getAdd() {
+			//Create an Auth
+			if(!CRUDBooster::isUpdate() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {    
+			  CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
+			}
+			$data = [];
+			$data['page_title'] = 'Add Data';
+			// $data['row'] = DB::table('products')->where('id',$id)->first();
+			
+			//Please use cbView method instead view method from laravel
+			return view('delayed_pay',$data);
+		  }
+		
+		  
 
 
 	    /*
@@ -230,7 +245,7 @@ use App\Models\User;
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-	            
+			$query->where('source','delayed');
 	    }
 
 	    /*
@@ -250,11 +265,9 @@ use App\Models\User;
 	    | @arr
 	    |
 	    */
-	    protected $toadmin;
+	    public function hook_before_add(&$postdata) {        
+	        //Your code here
 
-	    public function hook_before_add(&$postdata) {   
-			$this->toadmin = User::where('id',$postdata['email']) -> first();
-			
 	    }
 
 	    /* 
@@ -264,10 +277,9 @@ use App\Models\User;
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {       
-			$this->toadmin->update(['id_guest' => $id]);
-			$this->toadmin->assignRole('admin');
-			// CRUDBooster::redirect($_SERVER['HTTP_REFERER'],$id,"info");
+	    public function hook_after_add($id) {        
+	        //Your code here
+
 	    }
 
 	    /* 
@@ -303,13 +315,8 @@ use App\Models\User;
 	    | 
 	    */
 	    public function hook_before_delete($id) {
-			$deladmin = User::where('id_guest',$id) -> first();
-			$deladmin->removeRole('admin');
-			$deladmin->update(['id_guest' => '']);
-			
-			// $touser = User::where('id_guest',$postdata['id']) -> first();
-			// $touser->assignRole('user');
-			// CRUDBooster::redirect($_SERVER['HTTP_REFERER'],$id,"info");
+	        //Your code here
+
 	    }
 
 	    /* 

@@ -77,7 +77,7 @@ class LoginController extends Controller
         ]);
  
         if (Auth::attempt($credentials)) {
-            if ($user->hasRole('admin')){
+            if ($user->hasRole('aktif')){
                 $request->session()->regenerate();
  
                 return redirect()->intended('/')->with(['success'=>"Selamat Datang ".Auth::user()->name]);
@@ -117,7 +117,7 @@ class LoginController extends Controller
 
     // protected function authenticated(Request $request, $user)
     // {
-    //     if ($user->hasRole('admin')){
+    //     if ($user->hasRole('aktif')){
     //         $request->session()->regenerate();
     //         return redirect()->route('home');
     //     }

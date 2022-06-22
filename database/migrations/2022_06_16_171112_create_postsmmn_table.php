@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGuests extends Migration
+class CreatePostsmmnTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateGuests extends Migration
      */
     public function up()
     {
-        Schema::create('guests', function (Blueprint $table) {
-            $table->id();
-            $table->string('email');
+        Schema::create('postsmmn', function (Blueprint $table) {
+            $table->id()->autoIncrement();
             $table->timestamps();
-            $table->string('name')->nullable();
+            $table->string('title')->nullable();
+            $table->longText('content')->nullable();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateGuests extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guests');
+        Schema::dropIfExists('postsmmn');
     }
 }

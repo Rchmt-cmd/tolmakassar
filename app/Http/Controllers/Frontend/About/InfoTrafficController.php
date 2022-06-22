@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Frontend\About;
 
-use App\Charts\Jtse\KomposisiGerbang as JtseKomposisiGerbang;
-use App\Charts\Jtse\KomposisiGolongan as JtseKomposisiGolongan;
-use App\Charts\Jtse\LaluLintasBulanan as JtseLaluLintasBulanan;
-use App\Charts\Jtse\LaluLintasHarian as JtseLaluLintasHarian;
-use App\Charts\Jtse\LaluLintasHarianGerbang as JtseLaluLintasHarianGerbang;
-use App\Charts\Jtse\PerbandinganGerbang as JtsePerbandinganGerbang;
-use App\Charts\Jtse\PerbandinganGolongan as JtsePerbandinganGolongan;
-use App\Charts\Jtse\TrafficHistory as JtseTrafficHistory;
+use Excel;
 use Illuminate\Http\Request;
+
+use App\Imports\TundaBayarImport;
 use App\Charts\Mmn\TrafficHistory;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +16,14 @@ use App\Charts\Mmn\LaluLintasBulanan;
 use App\Charts\Mmn\PerbandinganGerbang;
 use App\Charts\Mmn\PerbandinganGolongan;
 use App\Charts\Mmn\LaluLintasHarianGerbang;
+use App\Charts\Jtse\TrafficHistory as JtseTrafficHistory;
+use App\Charts\Jtse\KomposisiGerbang as JtseKomposisiGerbang;
+use App\Charts\Jtse\LaluLintasHarian as JtseLaluLintasHarian;
+use App\Charts\Jtse\KomposisiGolongan as JtseKomposisiGolongan;
+use App\Charts\Jtse\LaluLintasBulanan as JtseLaluLintasBulanan;
+use App\Charts\Jtse\PerbandinganGerbang as JtsePerbandinganGerbang;
+use App\Charts\Jtse\PerbandinganGolongan as JtsePerbandinganGolongan;
+use App\Charts\Jtse\LaluLintasHarianGerbang as JtseLaluLintasHarianGerbang;
 
 class InfoTrafficController extends Controller
 {
@@ -295,4 +298,11 @@ class InfoTrafficController extends Controller
     {
         //
     }
+
+    public function import(Request $request)
+    {
+        Excel::import(new TundaBayarImport, $request->file);
+        return redirect('/admin/delayedpayments');
+    }
+    
 }

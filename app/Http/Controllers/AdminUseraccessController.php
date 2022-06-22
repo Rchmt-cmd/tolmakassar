@@ -1,16 +1,18 @@
 <?php namespace App\Http\Controllers;
 
+use App\Models\User;
+
 	use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminPostsMmnController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminUseraccessController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title";
+			$this->title_field = "id";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
@@ -18,32 +20,30 @@
 			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
 			$this->button_add = true;
-			$this->button_edit = true;
+			$this->button_edit = false;
 			$this->button_delete = true;
-			$this->button_detail = true;
-			$this->button_show = true;
+			$this->button_detail = false;
+			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "postsmmn";
+			$this->table = "guests";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Content","name"=>"content"];
+			$this->col[] = ["label"=>"Name","name"=>"email","join"=>"users,name"];
+			$this->col[] = ["label"=>"Email","name"=>"email","join"=>"users,email"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:4|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10','help'=>'Tekan Ctrl + Shift + V untuk melakukan Paste dangan rapih.'];
+			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'select2','validation'=>'required|min:1|max:255|unique:guests','width'=>'col-sm-10','datatable'=>'users,email'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:4|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Email','name'=>'email','type'=>'select2','validation'=>'required|min:1|max:255|unique:guests','width'=>'col-sm-10','datatable'=>'users,email'];
 			# OLD END FORM
 
 			/* 
@@ -251,9 +251,10 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {        
-	        //Your code here
+	    protected $toadmin;
 
+	    public function hook_before_add(&$postdata) {  
+			$this->toadmin = User::where('id',$postdata['email']) -> first();
 	    }
 
 	    /* 
@@ -263,9 +264,10 @@
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {        
-	        //Your code here
-
+	    public function hook_after_add($id) {       
+			$this->toadmin->update(['id_guest' => $id]);
+			$this->toadmin->assignRole('aktif');
+			// CRUDBooster::redirect($_SERVER['HTTP_REFERER'],$id,"info");
 	    }
 
 	    /* 
@@ -301,8 +303,13 @@
 	    | 
 	    */
 	    public function hook_before_delete($id) {
-	        //Your code here
-
+			$deladmin = User::where('id_guest',$id) -> first();
+			$deladmin->removeRole('aktif');
+			$deladmin->update(['id_guest' => '']);
+			
+			// $touser = User::where('id_guest',$postdata['id']) -> first();
+			// $touser->assignRole('nonaktif');
+			// CRUDBooster::redirect($_SERVER['HTTP_REFERER'],$id,"info");
 	    }
 
 	    /* 

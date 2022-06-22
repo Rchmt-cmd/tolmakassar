@@ -1,16 +1,21 @@
 <?php namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\Console\Input\Input;
+
 	use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
 
-	class AdminPostsMmnController extends \crocodicstudio\crudbooster\controllers\CBController {
+	class AdminListusersController extends \crocodicstudio\crudbooster\controllers\CBController {
 
 	    public function cbInit() {
 
 			# START CONFIGURATION DO NOT REMOVE THIS LINE
-			$this->title_field = "title";
+			$this->title_field = "name";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
 			$this->global_privilege = false;
@@ -20,30 +25,31 @@
 			$this->button_add = true;
 			$this->button_edit = true;
 			$this->button_delete = true;
-			$this->button_detail = true;
-			$this->button_show = true;
+			$this->button_detail = false;
+			$this->button_show = false;
 			$this->button_filter = true;
 			$this->button_import = false;
 			$this->button_export = false;
-			$this->table = "postsmmn";
+			$this->table = "users";
 			# END CONFIGURATION DO NOT REMOVE THIS LINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Content","name"=>"content"];
+			$this->col[] = ["label"=>"Name","name"=>"name"];
+			$this->col[] = ["label"=>"Email","name"=>"email"];
+			$this->col[] = ["label"=>"First Password","name"=>"first_password"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
-			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:4|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10','help'=>'Tekan Ctrl + Shift + V untuk melakukan Paste dangan rapih.'];
+			$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:4|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Content','name'=>'content','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			//$this->form[] = ['label'=>'Name','name'=>'name','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
+			//$this->form[] = ['label'=>'Email','name'=>'email','type'=>'email','validation'=>'required|min:1|max:255|email|unique:users','width'=>'col-sm-10','placeholder'=>'Please enter a valid email address'];
 			# OLD END FORM
 
 			/* 
@@ -251,9 +257,23 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {        
-	        //Your code here
 
+		protected $makePass;
+
+		// protected $makeFirstPass;
+	    public function hook_before_add(&$postdata) {        
+	        // $this->makePass = User::where('id',$postdata['email']) -> first();
+
+			$this->makePass=($postdata['email']);
+
+			// $toadmin = User::where('id',$postdata['email']) -> first();
+
+			// $toadmin->assignRole('active');
+
+		// CRUDBooster::redirect($_SERVER['HTTP_REFERER'],$randomString,"info");
+			// $randomPass=Hash::make(Str::random(10));
+
+			// $makeFirstPass->update(['password' => $randomPass]);
 	    }
 
 	    /* 
@@ -263,8 +283,15 @@
 	    | @id = last insert id
 	    | 
 	    */
-	    public function hook_after_add($id) {        
-	        //Your code here
+	    public function hook_after_add($id) {
+			
+			$randomPass = Str::random(10);
+
+			User::where('email', $this->makePass)->update(['password' => $randomPass]);
+
+			User::where('email', $this->makePass)->update(['first_password' => $randomPass]);
+
+			// $this->makePass->update(['first_password' => "sdfds"]);
 
 	    }
 

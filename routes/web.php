@@ -1,8 +1,9 @@
 <?php
 
+use App\Imports\TundaBayarImport;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 // use Tymon\JWTAuth\Contracts\Providers\Auth;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\KartuController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -28,7 +29,7 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/','FrontController@getIndex')->middleware('auth')->middleware('role:admin');
+Route::get('/','FrontController@getIndex')->middleware('auth')->middleware('role:aktif');
 
 // Route::post('/', [LoginController::class, 'login'])->name('login');
  
@@ -39,12 +40,13 @@ Route::get('/jtse', [InfoTrafficController::class, 'jtse'])->name('jtse')->middl
 // testing 
 Route::get('/test', [InfoTrafficController::class, 'test'])->middleware('auth');
 
-// Route::get('/home','FrontController@getIndex')->middleware('auth')->middleware('role:admin');
+// Route::get('/home','FrontController@getIndex')->middleware('auth')->middleware('role:active');
 
 
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
 Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register')->middleware('guest');
 
+Route::post('/admin/delayedpayments',[InfoTrafficController::class,'import'])->name('delayedPay.import');
 /*Menu About Us*/
 //Sejarah
 // Route::get('/sejarah', 'Frontend\About\Umum\SejarahController@index')->name('sejarah');

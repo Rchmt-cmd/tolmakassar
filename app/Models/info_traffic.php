@@ -12,4 +12,7 @@ class info_traffic extends Model
     protected $guarded = [
         'id',
     ];
+
+    protected $fillable = ['date','company','gate','class','traffic','source'];
+
 }
