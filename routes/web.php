@@ -69,7 +69,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 // Route::get('/','FrontController@getIndex')->middleware('auth')->middleware('role:aktif');
 
-
+Route::get('/', [InfoTrafficController::class, 'mmnHarian'])->name('mmn-harian')->middleware('auth')->middleware('role:aktif');
 
 
 Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
