@@ -362,7 +362,7 @@ class InfoTrafficController extends Controller
             'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
-            'staticDescription' => $chart6->staticDescription(),
+            // 'staticDescription' => $chart6->staticDescription(),
             'data' => $chart6->getIndex(),
         ]);
     }
@@ -381,7 +381,7 @@ class InfoTrafficController extends Controller
             'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
-            'staticDescription' => $chart6->staticDescription(),
+            // 'staticDescription' => $chart6->staticDescription(),
             'data' => $chart6->getIndex(),
         ]);
     }

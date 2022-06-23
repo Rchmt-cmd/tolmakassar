@@ -16,19 +16,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($staticDescription as $desc)   
-                    <tr>
-                        <th scope="row">{{ $desc['year'] }}</th>
-                        <td>{{ $desc['description'] }}</td>
-                    </tr>
-                    @endforeach
 
                     @foreach($data as $row)
                         <tr>
                             <th scope="row">{{ $row->title }}</th>
-                            <td>{{  $row->content  }}</td>
+                            <td>{!!  $row->content  !!}</td>
                         </tr>
                     @endforeach
+
                 </tbody>
             </table>
         </div>
