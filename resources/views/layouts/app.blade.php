@@ -57,7 +57,7 @@
                             <li class="nav-item">
                                 <div class="logo">
                                     <a class="logo-text" href="#">
-                                        <div class="logo-img"><img class="logo-img" alt="BSD logo" src="{{ asset('apexnew/app-assets/img/logo_bsd.png') }}"></div>
+                                        <div class="logo-img"><img class="logo-img" alt="BSD logo" src="{{ asset('apexnew/app-assets/img/Logo_MMN_JTSE.png') }}"></div>
                                     </a>
                                 </div>
                             </li>
