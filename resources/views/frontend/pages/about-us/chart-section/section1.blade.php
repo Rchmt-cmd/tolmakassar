@@ -1,25 +1,24 @@
-<span id="graph">
-@php
-    $graph = $chart->build($chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'));
-    $growthYear = $chart->getGrowth('year', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'));
-    $growthMonth = $chart->getGrowth('month', $chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber'));
-@endphp
-</span>
 <div class="bg-white rounded shadow p-4">
     {{-- header --}}
     <h3><strong>{{ $chartTitle }}</strong></h3>
-    <h6 id="subtitle">Periode {{ $chart->getCurrentTime('monthfullname') }} {{ $chart->getCurrentTime('year') }}</h6><br>
+    <h6 id="subtitle">Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     {{-- end header --}}
 
     {{-- dropdown --}}
     <div class="dropdown">
         <button class="btn light dark border border-1 dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            Scope
+            @if (Request::segment(2))
+                {{ date('F', mktime(0, 0, 0, Request::segment(2))) }}
+            @else
+                {{ $currentMonthFullName }}
+            @endif
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" onclick="getData('2022', '02')">Januari</a></li>
-            <li><a class="dropdown-item">Februari</a></li>
-            <li><a class="dropdown-item">Maret</a></li>
+            @foreach ($listMonth as $month)
+                <li>
+                    <a class="dropdown-item" href="/{{ strtolower($company) }}-harian/{{ $month->bulan }}">{{ $month->nama_bulan }}</a>
+                </li>
+            @endforeach
         </ul>
     </div>
     {{-- end dropdown --}}
@@ -35,32 +34,32 @@
         <div class="col">
             {{-- LHR Terkini --}}
             <h6>LHR Terkini</h6>
-            <h1><strong id="lhr-terkini">{{ $chart->getLhrData($chart->getCurrentTime('year'), $chart->getCurrentTime('monthnumber')) }}</strong></h1>
+            <h1><strong id="lhr-terkini">{{ $chart->getLhrData($currentYear, $currentMonthNumber) }}</strong></h1>
             <br>
             {{-- end LHR Terkini --}}
 
 
             {{-- LHR Last Year --}}
-            <h6 id="lhr-last-year-title">{{ $chart->getCurrentTime('month') }} {{ $chart->getPrevTime('year') }}</h6>
+            <h6 id="lhr-last-year-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
             <div class="row justify-content-start">
-                <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData($chart->getPrevTime('year'), $chart->getCurrentTime('monthnumber')) }}</strong></h4>
-                @if( $growthYear <= 0)
-                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($growthYear) }}%</span>  
+                <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData($prevYear, $currentMonthNumber) }}</strong></h4>
+                @if( $chart->getGrowth('year', $currentYear, $currentMonthNumber) <= 0)
+                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('year', $currentYear, $currentMonthNumber)) }}%</span>  
                 @else
-                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($growthYear) }}%</span>
+                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('year', $currentYear, $currentMonthNumber)) }}%</span>
                 @endif
             </div>
             {{-- end LHR last year --}}
 
 
             {{-- Lhr last month --}}
-            <h6 id="lhr-last-month-title">{{ $chart->getPrevTime('month') }} {{ $chart->getCurrentTime('year') }}</h6>
+            <h6 id="lhr-last-month-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
             <div class="row">
-                <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData($chart->getCurrentTime('year'), $chart->getPrevTime('monthnumber')) }}</strong></h4>
-                @if( $growthMonth <= 0)
-                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($growthMonth) }}%</span>  
+                <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData($currentYear, $prevMonthNumber) }}</strong></h4>
+                @if( $chart->getGrowth('month', $currentYear, $currentMonthNumber) <= 0)
+                    <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('month', $currentYear, $currentMonthNumber)) }}%</span>  
                 @else
-                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($growthMonth) }}%</span>
+                    <span id="growth" class="col p-0 text-success">    &#9650; {{ abs($chart->getGrowth('month', $currentYear, $currentMonthNumber)) }}%</span>
                 @endif
             </div>
             {{-- end LHR last month --}}
@@ -73,23 +72,6 @@
 
 {{-- Function --}}
 <script src="{{ $graph->cdn() }}"></script>
-<script>
-    function getData(year, month) {
-        // let graph = document.getElementById('graph');
-        // let subtitle = document.getElementById('subtitle');
-        // let lhrLastYearTitle = document.getElementById('lhr-last-year-title');
-        // let lhrLastMonthTitle = document.getElementById('lhr-last-month-title');
-        // let lhrLastYear = document.getElementById('lhr-last-year');
-        // let lhrLastMonth = document.getElementById('lhr-last-month');
-        let a = document.getElementById('lhr-terkini');
-
-
-        // // subtitle.innerHTML = 'Periode ' + month + ' ' + year;
-
-        // // // lhrLastYearTitle.innerHTML = '{{ $chart->getCurrentTime('month') }} {{ $chart->getPrevTime('year') }}';
-        a.innerHTML = "{{ $chart->getLhrData("+year+", "+month+") }}";
-    }
-</script>
 {{-- end function --}}
 
 {{ $graph->script() }}

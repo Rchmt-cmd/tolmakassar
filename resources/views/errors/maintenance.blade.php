@@ -65,7 +65,7 @@
                                             <div class="maintenance-text w-75 mx-auto mt-4">
                                                 <p>Ice cream caramels lemon drops candy. Cake toffee topping cookie tart wafer gummies. Sweet gummi bears jujubes bonbon gingerbread apple pie marshmallow.</p>
                                             </div>
-                                            <a href="{{route('homes')}}" class="btn btn-warning my-2">Back To Home</a>
+                                            <a href="{{route('mmn-harian')}}" class="btn btn-warning my-2">Back To Home</a>
                                         </div>
                                     </div>
                                 </div>

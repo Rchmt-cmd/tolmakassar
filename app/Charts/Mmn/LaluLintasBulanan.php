@@ -17,10 +17,10 @@ class LaluLintasBulanan
     public static function getCurrentTime($scope)
     {
         $queryDate = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
+            ->select(DB::raw('date(date) as date'))
+            ->groupBy('date')
+            ->get('date')
+            ->last();
         if ($scope == 'year') {
             return date('Y', strtotime($queryDate->date));
         } elseif ($scope == 'month') {
@@ -30,16 +30,15 @@ class LaluLintasBulanan
         } elseif ($scope == 'monthnumber') {
             return date('m', strtotime($queryDate->date));
         }
-
     }
 
     public function getPrevTime($scope)
     {
         $queryDate = DB::table('info_traffics')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
+            ->select(DB::raw('date(date) as date'))
+            ->groupBy('date')
+            ->get('date')
+            ->last();
         if ($scope == 'year') {
             return date('Y', strtotime($queryDate->date . ' -1 year'));
         } elseif ($scope == 'month') {
@@ -65,8 +64,8 @@ class LaluLintasBulanan
 
         $traffic = DB::table('info_traffics')
         ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->where('company', $company)
+        ->whereMonth('date', $month)
+        ->where('company', $company)
             ->sum('traffic');
         $mean = $traffic / ($countDay);
 
@@ -75,7 +74,7 @@ class LaluLintasBulanan
 
     protected function getGraphData($switch = 'curr')
     {
-        if ($switch == 'curr') {    
+        if ($switch == 'curr') {
             $a = array();
             for ($month = 1; $month <= 12; $month++) {
                 $graph = $this->getLhrData($this->getCurrentTime('year'), $month);
@@ -96,11 +95,11 @@ class LaluLintasBulanan
     {
         if ($switch == 'curr') {
             $data = DB::table('info_traffics')
-            ->where('company', 'MMN')
+                ->where('company', 'MMN')
                 ->whereYear('date', $this->getCurrentTime('year'))
                 ->sum('traffic');
             $countDay = DB::table('info_traffics')
-            ->where('company', 'MMN')
+                ->where('company', 'MMN')
                 ->whereYear('date', $this->getCurrentTime('year'))
                 ->select(DB::raw('date(date) as day'))
                 ->groupBy('date')
@@ -111,11 +110,11 @@ class LaluLintasBulanan
             return number_format(round($lhr), 0, '.', '.');
         } elseif ($switch == 'prev') {
             $data = DB::table('info_traffics')
-            ->where('company', 'MMN')
+                ->where('company', 'MMN')
                 ->whereYear('date', $this->getPrevTime('year'))
                 ->sum('traffic');
             $countDay = DB::table('info_traffics')
-            ->where('company', 'MMN')
+                ->where('company', 'MMN')
                 ->whereYear('date', $this->getPrevTime('year'))
                 ->select(DB::raw('date(date) as day'))
                 ->groupBy('date')

@@ -9,7 +9,7 @@ class FrontController extends Controller
 {
     public function getIndex(){
 
-        $data['result'] = DB::table('posts')
+        $data['result'] = DB::table('postsmmn')
         ->get();
 
         return view('home',$data);

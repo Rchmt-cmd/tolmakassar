@@ -81,15 +81,28 @@
                                                     <img src="{{asset('apexnew/app-assets/img/Logo_MMN_JTSE.png')}}" alt="" class="img-fluid" width="300" height="230">
                                                 </div>
                                                 <div class="col-lg-6 col-12 px-4 py-3">
+                                                @if(session()->has('message'))
+                                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                                    {{ session()->get('message') }}
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                    </div>
+                                                @endif
                                                     <form method="POST" action="{{route('login')}}">
                                                         @csrf
                                                         <h4 class="mb-2 card-title">Login</h4>
                                                         <p>Selamat Datang di Website Traffic Tol Makassar</p>
                                                         <input type="text" class="form-control mb-3" placeholder="Email" name="email">
                                                         <input type="password" class="form-control mb-2" placeholder="Password" name="password">
-                                                        <div class="d-sm-flex justify-content-between mb-3 font-small-2">
+                                                        <!-- <div class="d-sm-flex justify-content-between mb-3 font-small-2">
                                                             {{-- <a href="{{route('home')}}">Kembali ke halaman utama</a> --}}
                                                             <a href="auth-forgot-password.html" style="visibility: hidden;">Lupa Password?</a>
+                                                        </div> -->
+                                                        <div class="d-sm-flex justify-content-between mb-3 font-small-2">
+                                                            <label>
+                                                                <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                                                            </label>
                                                         </div>
                                                         <div class="d-flex justify-content-between flex-sm-row flex-column">
                                                             <a href="/admin/login" class="btn bg-light-primary mb-2 mb-sm-0">Admin</a>

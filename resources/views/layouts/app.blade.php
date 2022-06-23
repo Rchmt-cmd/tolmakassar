@@ -57,7 +57,7 @@
                             <li class="nav-item">
                                 <div class="logo">
                                     <a class="logo-text" href="#">
-                                        <div class="logo-img"><img class="logo-img" alt="BSD logo" src="{{ asset('apexnew/app-assets/img/logo_bsd.png') }}"></div>
+                                        <div class="logo-img"><img class="logo-img" alt="BSD logo" src="{{ asset('apexnew/app-assets/img/Logo_MMN_JTSE.png') }}"></div>
                                     </a>
                                 </div>
                             </li>
@@ -78,12 +78,27 @@
                             </a>
                             <div class="dropdown-menu text-left dropdown-menu-right m-0 pb-0" aria-labelledby="dropdownBasic2">
                                 <div class="dropdown-divider"></div>
+                                
+                                <a class="dropdown-item" href="{{ route('forget.password.get') }}">
+                                    <div class="d-flex align-items-center">
+                                        <i class="ft-arrow-right mr-2"></i>
+                                        <span>Reset Password</span>
+                                    </div>
+                                </a>
+
                                 <a class="dropdown-item" href="{{route('logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                     <div class="d-flex align-items-center">
                                         <i class="ft-power mr-2"></i>
                                         <span>Logout</span>
                                     </div>
                                 </a>
+
+                                <!-- <a href="{{ route('forget.password.get') }}">Reset Password</a> -->
+
+                                <!-- <form id="resetPass-form" action="{{ route('forget.password.get') }}" method="POST" class="d-none">
+                                        @csrf
+                                </form> -->
+
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                 </form>

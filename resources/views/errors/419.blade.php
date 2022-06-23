@@ -54,7 +54,7 @@
 			            <div class="w-75 error-text mx-auto mt-4">
 			              <p class="text-white">Don't panic! It could be worst.</p>
 			            </div>
-			            <button class="btn btn-primary btn-lg mt-3"><a href="{{ route('homes') }}" class="text-decoration-none text-white">Back
+			            <button class="btn btn-primary btn-lg mt-3"><a href="{{ route('mmn-harian') }}" class="text-decoration-none text-white">Back
 			                To Home</a></button>
 			          </div>
 			        </div>

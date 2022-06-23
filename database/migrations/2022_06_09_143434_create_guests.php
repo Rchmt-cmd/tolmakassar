@@ -17,6 +17,7 @@ class CreateGuests extends Migration
             $table->id();
             $table->string('email');
             $table->timestamps();
+            $table->string('name')->nullable();
         });
     }
 

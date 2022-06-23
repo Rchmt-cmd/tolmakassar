@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Frontend\About;
 
-use App\Charts\Jtse\KomposisiGerbang as JtseKomposisiGerbang;
-use App\Charts\Jtse\KomposisiGolongan as JtseKomposisiGolongan;
-use App\Charts\Jtse\LaluLintasBulanan as JtseLaluLintasBulanan;
-use App\Charts\Jtse\LaluLintasHarian as JtseLaluLintasHarian;
-use App\Charts\Jtse\LaluLintasHarianGerbang as JtseLaluLintasHarianGerbang;
-use App\Charts\Jtse\PerbandinganGerbang as JtsePerbandinganGerbang;
-use App\Charts\Jtse\PerbandinganGolongan as JtsePerbandinganGolongan;
-use App\Charts\Jtse\TrafficHistory as JtseTrafficHistory;
+use Excel;
+use App\Models\info_traffic;
+
 use Illuminate\Http\Request;
+use App\Imports\TundaBayarImport;
 use App\Charts\Mmn\TrafficHistory;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +17,15 @@ use App\Charts\Mmn\LaluLintasBulanan;
 use App\Charts\Mmn\PerbandinganGerbang;
 use App\Charts\Mmn\PerbandinganGolongan;
 use App\Charts\Mmn\LaluLintasHarianGerbang;
+use App\Charts\Jtse\TrafficHistory as JtseTrafficHistory;
+use App\Charts\Jtse\KomposisiGerbang as JtseKomposisiGerbang;
+use App\Charts\Jtse\LaluLintasHarian as JtseLaluLintasHarian;
+use App\Charts\Jtse\KomposisiGolongan as JtseKomposisiGolongan;
+use App\Charts\Jtse\LaluLintasBulanan as JtseLaluLintasBulanan;
+use App\Charts\Jtse\PerbandinganGerbang as JtsePerbandinganGerbang;
+use App\Charts\Jtse\PerbandinganGolongan as JtsePerbandinganGolongan;
+use App\Charts\Jtse\LaluLintasHarianGerbang as JtseLaluLintasHarianGerbang;
+
 
 class InfoTrafficController extends Controller
 {
@@ -29,204 +34,382 @@ class InfoTrafficController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function mmn(LaluLintasHarian $chart, LaluLintasBulanan $chart3, LaluLintasHarianGerbang $chart2, KomposisiGerbang $chart4, KomposisiGolongan $chart5, TrafficHistory $chart6, PerbandinganGerbang $chart7, PerbandinganGolongan $chart8)
-    {
 
+    protected $lastDate;
+    protected $currentYear;
+    protected $currentMonth;
+    protected $currentMonthNumber;
+    protected $currentMonthFullName;
+    protected $prevYear;
+    protected $prevMonth;
+    protected $prevMonthNumber;
+    protected $prevMonthFullName;
+    protected $listMonth;
+
+
+    public function __construct(info_traffic $info_traffic)
+    {
+        $this->lastDate = $info_traffic->queryLastDate();
+        $this->currentYear = $info_traffic->getCurrentTime('year', $this->lastDate);
+        $this->currentMonthNumber = $info_traffic->getCurrentTime('monthnumber', $this->lastDate);
+        $this->currentMonthFullName = $info_traffic->getCurrentTime('monthfullname', $this->lastDate);
+        $this->currentMonth = $info_traffic->getCurrentTime('month', $this->lastDate);
+
+        $this->prevYear = $info_traffic->getPrevTime('year', $this->lastDate);
+        $this->prevMonthNumber = $info_traffic->getPrevTime('monthnumber', $this->lastDate);
+        $this->prevMonthFullName = $info_traffic->getPrevTime('monthfullname', $this->lastDate);
+        $this->prevMonth = $info_traffic->getPrevTime('month', $this->lastDate);
+
+        $this->listMonth = $info_traffic->listMonth($this->currentYear);
+    }
+
+
+    // LALU LINTAS HARIAN
+    public function mmnHarian(LaluLintasHarian $chart)
+    {
         return view('frontend.pages.about-us.infoTraffic', [
-            'title' => 'Info Traffic',
             // section 1
+            'title' => 'Makassar Metro Network',
+            'company' => 'MMN',
+            'date' => $this->lastDate,
+            'listMonth' => $this->listMonth,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber)
+        ]);
+    }
+    public function mmnHarianBulan(LaluLintasHarian $chart, $bulan)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 1
+            'title' => 'Makassar Metro Network',
+            'date' => $this->lastDate,
+            'company' => 'MMN',
+            'listMonth' => $this->listMonth,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $bulan,
+            'currentMonthFullName' => date('F', mktime(0, 0, 0, $bulan)),
+            'currentMonth' => date('M', mktime(0, 0, 0, $bulan)),
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $bulan - 1,
+            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan - 1)),
+            'prevMonth' => date('M', mktime(0, 0, 0, $bulan - 1)),
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'chart' => $chart,
+            'graph' => $chart->build($this->currentYear, $bulan)
+        ]);
+    }
 
-            // section2
-            'graph2' => $chart2->build(),
-            'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
+    public function jtseHarian(JtseLaluLintasHarian $chart)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 1
+            'title' => 'Jalan Tol Seksi Empat',
+            'company' => 'JTSE',
+            'date' => $this->lastDate,
+            'listMonth' => $this->listMonth,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'chart' => $chart,
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber)
+        ]);
+    }
+
+    public function jtseHarianBulan(JtseLaluLintasHarian $chart, $bulan)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 1
+            'title' => 'Jalan Tol Seksi Empat',
+            'date' => $this->lastDate,
+            'company' => 'JTSE',
+            'listMonth' => $this->listMonth,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $bulan,
+            'currentMonthFullName' => date('F', mktime(0, 0, 0, $bulan)),
+            'currentMonth' => date('M', mktime(0, 0, 0, $bulan)),
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $bulan - 1,
+            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan - 1)),
+            'prevMonth' => date('M', mktime(0, 0, 0, $bulan - 1)),
+            'chartTitle' => 'Laporan Lalu Lintas Harian',
+            'chart' => $chart,
+            'graph' => $chart->build($this->currentYear, $bulan)
+        ]);
+    }
+
+
+
+
+    // LALU LINTAS GERBANG HARIAN
+    public function mmnGerbang(LaluLintasHarianGerbang $chart2)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 2
+            'title' => 'Makassar Metro Network',
+            'date' => $this->lastDate,
+            'gateList' => ['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
+            'company' => 'MMN',
+            'gate' => 'KALUKU BODOA',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, 'KALUKU BODOA'),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
+        ]);
+    }
 
-            // section3
-            'graph3' => $chart3->build(),
+    public function mmnGerbangDetail(LaluLintasHarianGerbang $chart2, $gate)
+    {
+        $g = str_replace('-', ' ', strtoupper($gate));
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 2
+            'title' => 'Makassar Metro Network',
+            'date' => $this->lastDate,
+            'gateList' => ['Cambaya', 'Parangloe', 'Kaluku-Bodoa', 'Tallo-Timur', 'Tallo-Barat'],
+            'company' => 'MMN',
+            'gate' => $g,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, $g),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
+            'chart2' => $chart2,
+        ]);
+    }
+
+    public function jtseGerbang(JtseLaluLintasHarianGerbang $chart2)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 2
+            'title' => 'Jalan Tol Seksi Empat',
+            'date' => $this->lastDate,
+            'gateList' => ['Tamalanrea', 'Biringkanaya', 'Parangloe-Ramp', 'Bira-Barat', 'Bira-Timur'],
+            'company' => 'JTSE',
+            'gate' => 'TAMALANREA',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, 'TAMALANREA'),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
+            'chart2' => $chart2,
+        ]);
+    }
+
+    public function jtseGerbangDetail(JtseLaluLintasHarianGerbang $chart2, $gate)
+    {
+        $g = str_replace('-', ' ', strtoupper($gate));
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 2
+            'title' => 'Jalan Tol Seksi Empat',
+            'date' => $this->lastDate,
+            'gateList' => ['Tamalanrea', 'Biringkanaya', 'Parangloe-Ramp', 'Bira-Barat', 'Bira-Timur'],
+            'company' => 'JTSE',
+            'gate' => $g,
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, $g),
+            'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
+            'chart2' => $chart2,
+        ]);
+    }
+
+
+
+    // LALU LINTAS BULANAN
+    public function mmnBulanan(LaluLintasBulanan $chart)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 3
+            'title' => 'Makassar Metro Network',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph3' => $chart->build($this->currentYear),
             'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
-            'chart3' => $chart3,
+            'chart3' => $chart,
+        ]);
+    }
+    public function jtseBulanan(JtseLaluLintasBulanan $chart)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 3
+            'title' => 'Jalan Tol Seksi Empat',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph3' => $chart->build($this->currentYear),
+            'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
+            'chart3' => $chart,
+        ]);
+    }
 
-            // section4
-            'graph4' => $chart4->build(),
+
+
+    // KOMPOSISI GERBANG DAN GOLONGAN
+    public function mmnKomposisi(KomposisiGerbang $chart1, KomposisiGolongan $chart2, PerbandinganGerbang $chart3, PerbandinganGolongan $chart4)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 3
+            'title' => 'Makassar Metro Network',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph4' => $chart1->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle4' => 'Komposisi Gerbang',
-            'chart4' => $chart4,
-            'graph5' => $chart5->build(),
+            'chart4' => $chart1,
+            'graph5' => $chart2->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle5' => 'Komposisi Golongan',
-            'chart5' => $chart5,
-
-            // section5
-            'chart6' => $chart6->build(),
-            'chartTitle6' => 'Traffic History',
-
-            // section4.1
-            'chart7' => $chart7->build(),
+            'chart5' => $chart2,
+            'chart7' => $chart3->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle7' => 'Perbandingan Gerbang',
-            'chart8' => $chart8->build(),
+            'chart8' => $chart4->build($this->currentYear, $this->currentMonthNumber),
+            'chartTitle8' => 'Perbandingan Gerbang',
+        ]);
+    }
+    public function jtseKomposisi(JtseKomposisiGerbang $chart1, JtseKomposisiGolongan $chart2, JtsePerbandinganGerbang $chart3, JtsePerbandinganGolongan $chart4)
+    {
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section 3
+            'title' => 'Jalan Tol Seksi Empat',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'graph4' => $chart1->build($this->currentYear, $this->currentMonthNumber),
+            'chartTitle4' => 'Komposisi Gerbang',
+            'chart4' => $chart1,
+            'graph5' => $chart2->build($this->currentYear, $this->currentMonthNumber),
+            'chartTitle5' => 'Komposisi Golongan',
+            'chart5' => $chart2,
+            'chart7' => $chart3->build($this->currentYear, $this->currentMonthNumber),
+            'chartTitle7' => 'Perbandingan Gerbang',
+            'chart8' => $chart4->build($this->currentYear, $this->currentMonthNumber),
             'chartTitle8' => 'Perbandingan Gerbang',
         ]);
     }
 
-    public function jtse(JtseLaluLintasHarian $chart, JtseLaluLintasHarianGerbang $chart2, JtseLaluLintasBulanan $chart3, JtseKomposisiGerbang $chart4, JtseKomposisiGolongan $chart5, JtseTrafficHistory $chart6, JtsePerbandinganGerbang $chart7, JtsePerbandinganGolongan $chart8)
+
+
+    // TRAFFIC HISTORY
+    public function mmnTrafficHistory(TrafficHistory $chart6)
     {
         return view('frontend.pages.about-us.infoTraffic', [
-            'title' => 'Info Traffic',
-            // section 1
-            'graph' => $chart->build(),
-            'chartTitle' => 'Laporan Lalu Lintas Harian',
-            'chart' => $chart,
-
-            // section2
-            'graph2' => $chart2->build(),
-            'chartTitle2' => 'Laporan Lalu Lintas Harian Per Gerbang',
-            'chart2' => $chart2,
-
-            // section3
-            'graph3' => $chart3->build(),
-            'chartTitle3' => 'Laporan Lalu Lintas Bulanan',
-            'chart3' => $chart3,
-
-            // section4
-            'graph4' => $chart4->build(),
-            'chartTitle4' => 'Komposisi Gerbang',
-            'chart4' => $chart4,
-            'graph5' => $chart5->build(),
-            'chartTitle5' => 'Komposisi Golongan',
-            'chart5' => $chart5,
-
             // section5
+            'title' => 'Makassar Metro Network',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
-
-            // section4.1
-            'chart7' => $chart7->build(),
-            'chartTitle7' => 'Perbandingan Gerbang',
-            'chart8' => $chart8->build(),
-            'chartTitle8' => 'Perbandingan Gerbang',
+            // 'staticDescription' => $chart6->staticDescription(),
+            'data' => $chart6->getIndex(),
         ]);
     }
-    public static function getCurrentTime($scope)
+    public function jtseTrafficHistory(JtseTrafficHistory $chart6)
     {
-        $queryDate = DB::table('info_traffic')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date));
-        }
-
-        // return $queryDate->date;
+        return view('frontend.pages.about-us.infoTraffic', [
+            // section5
+            'title' => 'Jalan Tol Seksi Empat',
+            'currentYear' => $this->currentYear,
+            'currentMonthNumber' => $this->currentMonthNumber,
+            'currentMonthFullName' => $this->currentMonthFullName,
+            'currentMonth' => $this->currentMonth,
+            'prevYear' => $this->prevYear,
+            'prevMonthNumber' => $this->prevMonthNumber,
+            'prevMonthFullName' => $this->prevMonthFullName,
+            'prevMonth' => $this->prevMonth,
+            'chart6' => $chart6->build(),
+            'chartTitle6' => 'Traffic History',
+            // 'staticDescription' => $chart6->staticDescription(),
+            'data' => $chart6->getIndex(),
+        ]);
     }
 
-    public function getPrevTime($scope)
+    public function trafficHistory()
     {
-        $queryDate = DB::table('info_traffic')
-        ->select(DB::raw('date(date) as date'))
-        ->groupBy('date')
-        ->get('date')
-        ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date . ' -1 year'));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date . 'first day of last month'));
-        }
-    }
-
-    // query dan perhitungan data traffic untuk disajikan ke grafik
-    protected function getGraphData($switch = 'curr', $year, $month, $company = 'MMN')
-    {
-        $date = DB::table('info_traffic')
-        ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
+        $data = DB::table('info_traffics')
+            ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
+            ->where('company', 'MMN')
+            ->groupBy('company', 'year')
             ->get()
-            ->last();
-        $countDay = date('d', strtotime($date->day));
-
-        if ($switch == 'curr') {
-            $a = array();
-            for ($day = 1; $day <= ($countDay); $day++) {
-                $graph = DB::table('info_traffic')
-                ->where('company', $company)
-                    ->whereDate('date', '=', $year . '-' . $month . '-' . $day)
-                    ->sum('traffic');
-                array_push($a, $graph);
-            }
-            return array_map('intval', $a);
-        } elseif ($switch == 'prev') {
-            $a = array();
-            for ($day = 1; $day <= ($countDay); $day++) {
-                $graph = DB::table('info_traffic')
-                ->where('company', $company)
-                    ->whereDate('date', date('Y-m-d', strtotime($year . '-' . $month . '-' . $day . ' -364 days')))
-                    ->sum('traffic');
-                array_push($a, $graph);
-            }
-            return array_map('intval', $a);
-        }
-    }
-
-    // perhitungan data lhr traffic
-    public function getLhrData($year, $month, $company = 'MMN')
-    {
-        $date = DB::table('info_traffic')
-        ->where('company', $company)
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->select(DB::raw('date(date) as day'))
-            ->groupBy('date')
-            ->get()
-            ->last();
-        $countDay = date('d', strtotime($date->day));
-
-        $traffic = DB::table('info_traffic')
-        ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->where('company', $company)
-            ->sum('traffic');
-        $mean = $traffic / ($countDay);
-
-        return number_format(round($mean), 0, '.', '.');
-    }
-
-    public function getGrowth($switch, $year, $month, $company = 'MMN')
-    {
-        $currLhr = $this->getLhrData($year, $month, $company);
-
-        if ($switch == 'year') {
-            $prevLhr = $this->getLhrData($year - 1, $month, $company);
-        } elseif ($switch == 'month') {
-            $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            ->toArray();
+        $a = array();
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            $mean = $d / 365;
+            $mean = number_format(round($mean), 0, '.', '.');
+            array_push($a, $mean);
         }
 
-        $growth = ($currLhr - $prevLhr) / $prevLhr * 100;
-
-
-
-        return number_format($growth, 1, '.', '.');
+        return $a;
     }
-
-
-
+    // TESTING
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->getLhrData('2022', '03', 'MMN'),
+            'test' => $this->trafficHistory(),
         ]);
     }
 
@@ -294,5 +477,11 @@ class InfoTrafficController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new TundaBayarImport, $request->file);
+        return redirect('/admin/delayedpayments');
     }
 }

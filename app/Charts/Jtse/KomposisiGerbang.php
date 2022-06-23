@@ -14,49 +14,13 @@ class KomposisiGerbang
         $this->chart = $chart;
     }
 
-    public static function getCurrentTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-            ->select(DB::raw('date(date) as date'))
-            ->groupBy('date')
-            ->get('date')
-            ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date));
-        }
-    }
-
-    public function getPrevTime($scope)
-    {
-        $queryDate = DB::table('info_traffics')
-            ->select(DB::raw('date(date) as date'))
-            ->groupBy('date')
-            ->get('date')
-            ->last();
-        if ($scope == 'year') {
-            return date('Y', strtotime($queryDate->date . ' -1 year'));
-        } elseif ($scope == 'month') {
-            return date('M', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthfullname') {
-            return date('F', strtotime($queryDate->date . 'first day of last month'));
-        } elseif ($scope == 'monthnumber') {
-            return date('m', strtotime($queryDate->date . 'first day of last month'));
-        }
-    }
-
-    public function getGraphData($switch, $time = 'curr')
+    public function getGraphData($switch, $time = 'curr', $year, $month)
     {
         if ($time == 'curr') {
             $data = DB::table('info_traffics')
                 ->where('company', 'JTSE')
-                ->whereYear('date', self::getCurrentTime('year'))
-                ->whereMonth('date', self::getCurrentTime('monthnumber'))
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
                 ->select(DB::raw('gate as gate, sum(traffic) as traffic'))
                 ->groupBy('gate')
                 ->get()
@@ -64,14 +28,14 @@ class KomposisiGerbang
 
             $total = DB::table('info_traffics')
                 ->where('company', 'JTSE')
-                ->whereYear('date', self::getCurrentTime('year'))
-                ->whereMonth('date', self::getCurrentTime('monthnumber'))
+                ->whereYear('date', $year)
+                ->whereMonth('date', $month)
                 ->sum('traffic');
         } elseif ($time == 'prev') {
             $data = DB::table('info_traffics')
                 ->where('company', 'JTSE')
-                ->whereYear('date', self::getPrevTime('year'))
-                ->whereMonth('date', self::getPrevTime('monthnumber'))
+                ->whereYear('date', $year-1)
+                ->whereMonth('date', $month)
                 ->select(DB::raw('gate as gate, sum(traffic) as traffic'))
                 ->groupBy('gate')
                 ->get()
@@ -79,8 +43,8 @@ class KomposisiGerbang
 
             $total = DB::table('info_traffics')
                 ->where('company', 'JTSE')
-                ->whereYear('date', self::getPrevTime('year'))
-                ->whereMonth('date', self::getPrevTime('monthnumber'))
+                ->whereYear('date', $year-1)
+                ->whereMonth('date', $month)
                 ->sum('traffic');
         }
 
@@ -103,12 +67,12 @@ class KomposisiGerbang
         }
     }
 
-    public function build(): \ArielMejiaDev\LarapexCharts\DonutChart
+    public function build($year, $month): \ArielMejiaDev\LarapexCharts\DonutChart
     {
         return $this->chart->donutChart()
             ->setFontFamily('poppins')
             ->setColors(['#25507D', '#5A5CE6', '#54D352', '#A8E96F', '#716FE9', '#FF9D05'])
-            ->addData($this->getGraphData('percentage'))
-            ->setLabels($this->getGraphData('gate'));
+            ->addData($this->getGraphData('percentage', 'curr', $year, $month))
+            ->setLabels($this->getGraphData('gate', 'curr', $year, $month));
     }
 }
