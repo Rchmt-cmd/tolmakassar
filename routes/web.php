@@ -26,33 +26,33 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 /*Menu Home(login)*/
 //Home
 // Route::get('/', [LoginController::class, 'showLoginForm'])->name('homes');
-Route::get('/', [LoginController::class, 'showLoginForm'])->name('login-form');
-Route::post('/', [LoginController::class, 'login'])->name('login');
+// Route::get('/', [LoginController::class, 'showLoginForm'])->name('login-form');
+// Route::post('/', [LoginController::class, 'login'])->name('login');
 
 // Info Traffic
-Route::get('/mmn', [InfoTrafficController::class, 'mmn'])->name('mmn');
-Route::get('/jtse', [InfoTrafficController::class, 'jtse'])->name('jtse');
+Route::get('/mmn', [InfoTrafficController::class, 'mmn'])->name('mmn')->middleware('auth')->middleware('role:aktif');
+Route::get('/jtse', [InfoTrafficController::class, 'jtse'])->name('jtse')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/mmn-harian', [InfoTrafficController::class, 'mmnHarian'])->name('mmn-harian');
-Route::get('/mmn-harian/{bulan}', [InfoTrafficController::class, 'mmnHarianBulan'])->name('mmn-harian-bulan');
+Route::get('/mmn-harian', [InfoTrafficController::class, 'mmnHarian'])->name('mmn-harian')->middleware('auth')->middleware('role:aktif');
+Route::get('/mmn-harian/{bulan}', [InfoTrafficController::class, 'mmnHarianBulan'])->name('mmn-harian-bulan')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/mmn-gerbang-harian', [InfoTrafficController::class, 'mmnGerbang'])->name('mmn-gerbang-harian');
-Route::get('/mmn-gerbang-harian/{gate}', [InfoTrafficController::class, 'mmnGerbangDetail'])->name('mmn-gerbang-harian-detail');
+Route::get('/mmn-gerbang-harian', [InfoTrafficController::class, 'mmnGerbang'])->name('mmn-gerbang-harian')->middleware('auth')->middleware('role:aktif');
+Route::get('/mmn-gerbang-harian/{gate}', [InfoTrafficController::class, 'mmnGerbangDetail'])->name('mmn-gerbang-harian-detail')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/mmn-bulanan', [InfoTrafficController::class, 'mmnBulanan'])->name('mmn-bulanan');
-Route::get('/mmn-komposisi', [InfoTrafficController::class, 'mmnKomposisi'])->name('mmn-komposisi');
-Route::get('/mmn-traffic-history', [InfoTrafficController::class, 'mmnTrafficHistory'])->name('mmn-traffic-history');
+Route::get('/mmn-bulanan', [InfoTrafficController::class, 'mmnBulanan'])->name('mmn-bulanan')->middleware('auth')->middleware('role:aktif');
+Route::get('/mmn-komposisi', [InfoTrafficController::class, 'mmnKomposisi'])->name('mmn-komposisi')->middleware('auth')->middleware('role:aktif');
+Route::get('/mmn-traffic-history', [InfoTrafficController::class, 'mmnTrafficHistory'])->name('mmn-traffic-history')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/jtse-harian', [InfoTrafficController::class, 'jtseHarian'])->name('jtse-harian');
-Route::get('/jtse-harian/{bulan}', [InfoTrafficController::class, 'jtseHarianBulan'])->name('jtse-harian-bulan');
+Route::get('/jtse-harian', [InfoTrafficController::class, 'jtseHarian'])->name('jtse-harian')->middleware('auth')->middleware('role:aktif');
+Route::get('/jtse-harian/{bulan}', [InfoTrafficController::class, 'jtseHarianBulan'])->name('jtse-harian-bulan')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/jtse-bulanan', [InfoTrafficController::class, 'jtseBulanan'])->name('jtse-bulanan');
+Route::get('/jtse-bulanan', [InfoTrafficController::class, 'jtseBulanan'])->name('jtse-bulanan')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/jtse-gerbang-harian', [InfoTrafficController::class, 'jtseGerbang'])->name('jtse-gerbang-harian');
-Route::get('/jtse-gerbang-harian/{gate}', [InfoTrafficController::class, 'jtseGerbangDetail'])->name('jtse-gerbang-harian-detail');
+Route::get('/jtse-gerbang-harian', [InfoTrafficController::class, 'jtseGerbang'])->name('jtse-gerbang-harian')->middleware('auth')->middleware('role:aktif');
+Route::get('/jtse-gerbang-harian/{gate}', [InfoTrafficController::class, 'jtseGerbangDetail'])->name('jtse-gerbang-harian-detail')->middleware('auth')->middleware('role:aktif');
 
-Route::get('/jtse-komposisi', [InfoTrafficController::class, 'jtseKomposisi'])->name('jtse-komposisi');
-Route::get('/jtse-traffic-history', [InfoTrafficController::class, 'jtseTrafficHistory'])->name('jtse-traffic-history');
+Route::get('/jtse-komposisi', [InfoTrafficController::class, 'jtseKomposisi'])->name('jtse-komposisi')->middleware('auth')->middleware('role:aktif')->middleware('auth')->middleware('role:aktif');
+Route::get('/jtse-traffic-history', [InfoTrafficController::class, 'jtseTrafficHistory'])->name('jtse-traffic-history')->middleware('auth')->middleware('role:aktif')->middleware('auth')->middleware('role:aktif');
 
 
 // testing 
