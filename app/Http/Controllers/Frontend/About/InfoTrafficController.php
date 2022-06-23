@@ -386,12 +386,32 @@ class InfoTrafficController extends Controller
         ]);
     }
 
+    public function getLhrData($year, $month, $company = 'MMN')
+    {
+        $graph = DB::table('info_traffics')
+        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
+        ->where('company', $company)
+            ->whereYear('date', $month <= 0 ? $year - 1 : $year)
+            ->whereMonth('date', $month <= 0 ? 12 : $month)
+            ->groupBy('date', 'company')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($graph as $key => $value) {
+            $data = $graph[$key]->traffic;
+            array_push($a, $data);
+        }
+
+        $mean = array_sum($a) / (count($a));
+
+        return number_format(round($mean), 0, '.', '.');
+    }
     // TESTING
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => 'ayyo',
+            'test' => $this->getLhrData('2022', '0', 'MMN'),
         ]);
     }
 

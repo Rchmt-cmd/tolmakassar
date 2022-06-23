@@ -93,7 +93,11 @@ class LaluLintasHarianGerbang
         if ($switch == 'year') {
             $prevLhr = $this->getLhrData($year - 1, $month,$gate);
         } elseif ($switch == 'month') {
-            $prevLhr = $this->getLhrData($year, $month - 1,$gate);
+            if ($month <= 1) {
+                $prevLhr = $this->getLhrData($year - 1, 12, $gate);
+            } else {
+                $prevLhr = $this->getLhrData($year, $month - 1, $gate);
+            }
         }
 
         $growth = ($currLhr - $prevLhr) / $prevLhr * 100;

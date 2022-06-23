@@ -89,7 +89,11 @@ class LaluLintasHarian
         if ($switch == 'year') {
             $prevLhr = $this->getLhrData($year - 1, $month, $company);
         } elseif ($switch == 'month') {
-            $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            if ($month <= 1) {
+                $prevLhr = $this->getLhrData($year - 1, 12, $company);
+            } else {
+                $prevLhr = $this->getLhrData($year, $month - 1, $company);
+            }
         }
 
         $growth = ($currLhr - $prevLhr) / $prevLhr * 100;
