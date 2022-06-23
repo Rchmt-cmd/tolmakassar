@@ -67,6 +67,10 @@ class InfoTrafficController extends Controller
     // LALU LINTAS HARIAN
     public function mmnHarian(LaluLintasHarian $chart)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last year'));
+        // return $lastyear;
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Makassar Metro Network',
@@ -83,11 +87,18 @@ class InfoTrafficController extends Controller
             'prevMonth' => $this->prevMonth,
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
-            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber)
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber),
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
     public function mmnHarianBulan(LaluLintasHarian $chart, $bulan)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . '0' . $bulan . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear .'0' . $bulan . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear .'0' . $bulan . '01' . 'last year'));
+        // return $lastyear;
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Makassar Metro Network',
@@ -104,12 +115,18 @@ class InfoTrafficController extends Controller
             'prevMonth' => date('M', mktime(0, 0, 0, $bulan - 1)),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
-            'graph' => $chart->build($this->currentYear, $bulan)
+            'graph' => $chart->build($this->currentYear, $bulan),
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 
     public function jtseHarian(JtseLaluLintasHarian $chart)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last year'));
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Jalan Tol Seksi Empat',
@@ -126,12 +143,18 @@ class InfoTrafficController extends Controller
             'prevMonth' => $this->prevMonth,
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
-            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber)
+            'graph' => $chart->build($this->currentYear, $this->currentMonthNumber),
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 
     public function jtseHarianBulan(JtseLaluLintasHarian $chart, $bulan)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . '0' . $bulan . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . '0' . $bulan . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . '0' . $bulan . '01' . 'last year'));
         return view('frontend.pages.about-us.infoTraffic', [
             // section 1
             'title' => 'Jalan Tol Seksi Empat',
@@ -148,7 +171,10 @@ class InfoTrafficController extends Controller
             'prevMonth' => date('M', mktime(0, 0, 0, $bulan - 1)),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
-            'graph' => $chart->build($this->currentYear, $bulan)
+            'graph' => $chart->build($this->currentYear, $bulan),
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 
@@ -158,6 +184,9 @@ class InfoTrafficController extends Controller
     // LALU LINTAS GERBANG HARIAN
     public function mmnGerbang(LaluLintasHarianGerbang $chart2)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last year'));
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Makassar Metro Network',
@@ -176,11 +205,17 @@ class InfoTrafficController extends Controller
             'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, 'KALUKU BODOA'),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 
     public function mmnGerbangDetail(LaluLintasHarianGerbang $chart2, $gate)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last year'));
         $g = str_replace('-', ' ', strtoupper($gate));
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
@@ -200,11 +235,17 @@ class InfoTrafficController extends Controller
             'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, $g),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 
     public function jtseGerbang(JtseLaluLintasHarianGerbang $chart2)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last year'));
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
             'title' => 'Jalan Tol Seksi Empat',
@@ -223,11 +264,17 @@ class InfoTrafficController extends Controller
             'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, 'TAMALANREA'),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 
     public function jtseGerbangDetail(JtseLaluLintasHarianGerbang $chart2, $gate)
     {
+        $currentdate = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01'));
+        $lastmonth = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last month'));
+        $lastyear = date('Y-M-d', strtotime($this->currentYear . $this->currentMonthNumber . '01' . 'last year'));
         $g = str_replace('-', ' ', strtoupper($gate));
         return view('frontend.pages.about-us.infoTraffic', [
             // section 2
@@ -247,6 +294,9 @@ class InfoTrafficController extends Controller
             'graph2' => $chart2->build($this->currentYear, $this->currentMonthNumber, $g),
             'chartTitle2' => 'Laporan Lalu Lintas Harian Gerbang',
             'chart2' => $chart2,
+            'lastmonth' => $lastmonth,
+            'lastyear' => $lastyear,
+            'currentdate' => $currentdate
         ]);
     }
 

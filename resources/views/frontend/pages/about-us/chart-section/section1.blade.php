@@ -34,7 +34,7 @@
         <div class="col">
             {{-- LHR Terkini --}}
             <h6>LHR Terkini</h6>
-            <h1><strong id="lhr-terkini">{{ $chart->getLhrData($currentYear, $currentMonthNumber) }}</strong></h1>
+            <h1><strong id="lhr-terkini">{{ $chart->getLhrData(date('Y', strtotime($currentdate)), date('m', strtotime($currentdate))) }}</strong></h1>
             <br>
             {{-- end LHR Terkini --}}
 
@@ -42,7 +42,7 @@
             {{-- LHR Last Year --}}
             <h6 id="lhr-last-year-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
             <div class="row justify-content-start">
-                <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData($prevYear, $currentMonthNumber) }}</strong></h4>
+                <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData(date('Y', strtotime($lastyear)), date('m', strtotime($lastyear))) }}</strong></h4>
                 @if( $chart->getGrowth('year', $currentYear, $currentMonthNumber) <= 0)
                     <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('year', $currentYear, $currentMonthNumber)) }}%</span>  
                 @else
@@ -55,7 +55,7 @@
             {{-- Lhr last month --}}
             <h6 id="lhr-last-month-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
             <div class="row">
-                <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData($currentYear, $prevMonthNumber) }}</strong></h4>
+                <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData(date('Y', strtotime($lastmonth)), date('m', strtotime($lastmonth))) }}</strong></h4>
                 @if( $chart->getGrowth('month', $currentYear, $currentMonthNumber) <= 0)
                     <span id="growth" class="col p-0 text-danger">    &#9660; {{ abs($chart->getGrowth('month', $currentYear, $currentMonthNumber)) }}%</span>  
                 @else
