@@ -418,7 +418,7 @@ class CBSeeder extends Seeder
                 'component_name' => 'table',
                 'area_name' => 'area5',
                 'sorting' => '0',
-                'config' => '{"name":"Traffic Toll Makassar","sql":"SELECT date,company,date,class,traffic,source FROM info_traffics"}',
+                'config' => '{"SELECT date,company,date,class,traffic,source FROM info_traffics ORDER BY date DESC LIMIT 100"}',
             ],
         ];
 
