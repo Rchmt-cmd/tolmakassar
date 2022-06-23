@@ -22,6 +22,13 @@
                         <td>{{ $desc['description'] }}</td>
                     </tr>
                     @endforeach
+
+                    @foreach($data as $row)
+                        <tr>
+                            <th scope="row">{{ $row->title }}</th>
+                            <td>{{  $row->content  }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

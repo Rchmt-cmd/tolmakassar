@@ -61,8 +61,6 @@ class InfoTrafficController extends Controller
         $this->prevMonth = $info_traffic->getPrevTime('month', $this->lastDate);
 
         $this->listMonth = $info_traffic->listMonth($this->currentYear);
-
-
     }
 
 
@@ -102,8 +100,8 @@ class InfoTrafficController extends Controller
             'currentMonth' => date('M', mktime(0, 0, 0, $bulan)),
             'prevYear' => $this->prevYear,
             'prevMonthNumber' => $bulan - 1,
-            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan-1)),
-            'prevMonth' => date('M', mktime(0, 0, 0, $bulan-1)),
+            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan - 1)),
+            'prevMonth' => date('M', mktime(0, 0, 0, $bulan - 1)),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
             'graph' => $chart->build($this->currentYear, $bulan)
@@ -146,8 +144,8 @@ class InfoTrafficController extends Controller
             'currentMonth' => date('M', mktime(0, 0, 0, $bulan)),
             'prevYear' => $this->prevYear,
             'prevMonthNumber' => $bulan - 1,
-            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan-1)),
-            'prevMonth' => date('M', mktime(0, 0, 0, $bulan-1)),
+            'prevMonthFullName' => date('F', mktime(0, 0, 0, $bulan - 1)),
+            'prevMonth' => date('M', mktime(0, 0, 0, $bulan - 1)),
             'chartTitle' => 'Laporan Lalu Lintas Harian',
             'chart' => $chart,
             'graph' => $chart->build($this->currentYear, $bulan)
@@ -365,6 +363,7 @@ class InfoTrafficController extends Controller
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
             'staticDescription' => $chart6->staticDescription(),
+            'data' => $chart6->getIndex(),
         ]);
     }
     public function jtseTrafficHistory(JtseTrafficHistory $chart6)
@@ -383,35 +382,34 @@ class InfoTrafficController extends Controller
             'chart6' => $chart6->build(),
             'chartTitle6' => 'Traffic History',
             'staticDescription' => $chart6->staticDescription(),
+            'data' => $chart6->getIndex(),
         ]);
     }
 
-    public function getLhrData($year, $month, $company = 'MMN')
+    public function trafficHistory()
     {
-        $graph = DB::table('info_traffics')
-        ->select(DB::raw('company, `date`, SUM(traffic) as traffic'))
-        ->where('company', $company)
-            ->whereYear('date', $month <= 0 ? $year - 1 : $year)
-            ->whereMonth('date', $month <= 0 ? 12 : $month)
-            ->groupBy('date', 'company')
+        $data = DB::table('info_traffics')
+            ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
+            ->where('company', 'MMN')
+            ->groupBy('company', 'year')
             ->get()
             ->toArray();
         $a = array();
-        foreach ($graph as $key => $value) {
-            $data = $graph[$key]->traffic;
-            array_push($a, $data);
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            $mean = $d / 365;
+            $mean = number_format(round($mean), 0, '.', '.');
+            array_push($a, $mean);
         }
 
-        $mean = array_sum($a) / (count($a));
-
-        return number_format(round($mean), 0, '.', '.');
+        return $a;
     }
     // TESTING
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->getLhrData('2022', '0', 'MMN'),
+            'test' => $this->trafficHistory(),
         ]);
     }
 
@@ -486,5 +484,4 @@ class InfoTrafficController extends Controller
         Excel::import(new TundaBayarImport, $request->file);
         return redirect('/admin/delayedpayments');
     }
-    
 }

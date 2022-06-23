@@ -28,7 +28,7 @@ class PerbandinganGolongan
         } elseif ($time == 'prev') {
             $data = DB::table('info_traffics')
                 ->where('company', 'MMN')
-                ->whereYear('date', $year)
+                ->whereYear('date', $year-1)
                 ->whereMonth('date', $month)
                 ->select(DB::raw('class as class, sum(traffic) as traffic'))
                 ->groupBy('class')

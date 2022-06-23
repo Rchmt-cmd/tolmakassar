@@ -2,6 +2,7 @@
 
 namespace App\Charts\Jtse;
 
+use Illuminate\Support\Facades\DB;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class TrafficHistory
@@ -11,6 +12,34 @@ class TrafficHistory
     public function __construct(LarapexChart $chart)
     {
         $this->chart = $chart;
+    }
+
+    public function getIndex()
+    {
+        $data = DB::table('postsjtse')
+        ->get()
+            ->toArray();
+
+        return $data;
+    }
+
+    public function trafficHistory()
+    {
+        $data = DB::table('info_traffics')
+        ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
+        ->where('company', 'JTSE')
+            ->groupBy('company', 'year')
+            ->get()
+            ->toArray();
+        $a = array();
+        foreach ($data as $key => $value) {
+            $d = $data[$key]->traffic;
+            $mean = $d / 365;
+            $mean = number_format(round($mean), 0, '.', '.');
+            array_push($a, $mean);
+        }
+
+        return $a;
     }
 
     public function staticDescription()
@@ -56,10 +85,6 @@ class TrafficHistory
                 'year' => '2021',
                 'description' => 'Covid 19 still continue impact to decrease traffic',
             ],
-            '11' => [
-                'year' => '2022',
-                'description' => 'Covid 19 still continue impact to decrease traffic',
-            ],
         ];
     }
 
@@ -69,7 +94,7 @@ class TrafficHistory
             ->setFontFamily('poppins')
             ->setColors(['#25507D'])
             ->setGrid()
-            ->addData('Traffic History', [11250, 16592, 21411, 26034, 30795, 35574, 40316, 42423, 37656, 39614, 41954, 39845, 26396, 30329, 33162])
-            ->setXAxis(['2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']);
+            ->addData('Traffic History', [11250, 16592, 21411, 26034, 30795, 35574, 40316, 42423, 37656, 39614, 41954, 39845, 26396, 30329])
+            ->setXAxis(['2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021']);
     }
 }

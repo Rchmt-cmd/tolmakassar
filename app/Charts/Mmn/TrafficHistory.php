@@ -14,6 +14,15 @@ class TrafficHistory
         $this->chart = $chart;
     }
 
+    public function getIndex()
+    {
+        $data = DB::table('postsmmn')
+            ->get()
+            ->toArray();
+
+        return $data;
+    }
+
     public function trafficHistory()
     {
         $data = DB::table('info_traffics')
@@ -26,8 +35,11 @@ class TrafficHistory
         foreach ($data as $key => $value) {
             $d = $data[$key]->traffic;
             $mean = $d / 365;
+            $mean = number_format(round($mean), 0, '.', '.');
             array_push($a, $mean);
         }
+
+        return $a;
     }
 
     public function staticDescription()
@@ -73,10 +85,6 @@ class TrafficHistory
                 'year' => '2021',
                 'description' => 'Covid 19 still continue impact to decrease traffic',
             ],
-            '11' => [
-                'year' => '2022',
-                'description' => 'Covid 19 still continue impact to decrease traffic',
-            ],
         ];
     }
 
@@ -86,7 +94,7 @@ class TrafficHistory
             ->setFontFamily('poppins')
             ->setColors(['#25507D'])
             ->setGrid()
-            ->addData('Traffic History', [14588, 18147, 21138, 22508, 24474, 26562, 27919, 28096, 26401, 26201, 25096, 34789, 38980, 43972, 48412, 54035, 55604, 57232, 58501, 62732, 62479, 56382, 39665, 44629, 47344])
-            ->setXAxis(['1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']);
+            ->addData('Traffic History', [14588, 18147, 21138, 22508, 24474, 26562, 27919, 28096, 26401, 26201, 25096, 34789, 38980, 43972, 48412, 54035, 55604, 57232, 58501, 62732, 62479, 56382, 39665, 44629])
+            ->setXAxis(['1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021']);
     }
 }
