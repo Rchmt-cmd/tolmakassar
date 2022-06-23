@@ -245,7 +245,7 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-			$query->where('source','delayed');
+			$query->where('source','tunda bayar');
 	    }
 
 	    /*

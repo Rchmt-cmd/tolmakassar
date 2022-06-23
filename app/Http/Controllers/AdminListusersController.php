@@ -37,7 +37,7 @@ use Symfony\Component\Console\Input\Input;
 			$this->col = [];
 			$this->col[] = ["label"=>"Name","name"=>"name"];
 			$this->col[] = ["label"=>"Email","name"=>"email"];
-			$this->col[] = ["label"=>"First Password","name"=>"first_password"];
+			$this->col[] = ["label"=>"Password Status","name"=>"password_status"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
@@ -287,11 +287,11 @@ use Symfony\Component\Console\Input\Input;
 			
 			$randomPass = Str::random(10);
 
-			User::where('email', $this->makePass)->update(['password' => $randomPass]);
+			User::where('email', $this->makePass)->update(['password' => bcrypt($randomPass)]);
 
-			User::where('email', $this->makePass)->update(['first_password' => $randomPass]);
+			User::where('email', $this->makePass)->update(['password_status' => $randomPass]);
 
-			// $this->makePass->update(['first_password' => "sdfds"]);
+			// $this->makePass->update(['password_status' => "sdfds"]);
 
 	    }
 
