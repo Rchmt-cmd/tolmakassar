@@ -30,8 +30,8 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 // Route::post('/', [LoginController::class, 'login'])->name('login');
 
 // Info Traffic
-Route::get('/mmn', [InfoTrafficController::class, 'mmn'])->name('mmn')->middleware('auth')->middleware('role:aktif');
-Route::get('/jtse', [InfoTrafficController::class, 'jtse'])->name('jtse')->middleware('auth')->middleware('role:aktif');
+// Route::get('/mmn', [InfoTrafficController::class, 'mmn'])->name('mmn')->middleware('auth')->middleware('role:aktif');
+// Route::get('/jtse', [InfoTrafficController::class, 'jtse'])->name('jtse')->middleware('auth')->middleware('role:aktif');
 
 Route::get('/mmn-harian', [InfoTrafficController::class, 'mmnHarian'])->name('mmn-harian')->middleware('auth')->middleware('role:aktif');
 Route::get('/mmn-harian/{bulan}', [InfoTrafficController::class, 'mmnHarianBulan'])->name('mmn-harian-bulan')->middleware('auth')->middleware('role:aktif');
@@ -67,7 +67,7 @@ Route::get('/login', [LoginController::class, 'index'])->name('login')->middlewa
 Route::post('/login', [LoginController::class, 'authenticate'])->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::get('/','FrontController@getIndex')->middleware('auth')->middleware('role:aktif');
+// Route::get('/','FrontController@getIndex')->middleware('auth')->middleware('role:aktif');
 
 
 

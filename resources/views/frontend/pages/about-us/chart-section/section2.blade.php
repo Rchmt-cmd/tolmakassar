@@ -35,11 +35,11 @@
         {{-- description --}}
         <div class="col">
             <h6>LHR Gerbang Terkini</h6>
-            <h1><strong>{{ $chart2->getLhrData($currentYear, $currentMonthNumber, $gate) }}</strong></h1>
+            <h1><strong>{{ $chart2->getLhrData(date('Y', strtotime($currentdate)), date('m', strtotime($currentdate)), $gate) }}</strong></h1>
             <br>
             <h6>{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
             <div class="row">
-                <h4 class="col"><strong>{{ $chart2->getLhrData($prevYear, $currentMonthNumber, $gate) }}</strong></h4>
+                <h4 class="col"><strong>{{ $chart2->getLhrData(date('Y', strtotime($lastyear)), date('m', strtotime($lastyear)), $gate) }}</strong></h4>
                 @if($chart2->getGrowth('year', $currentYear, $currentMonthNumber, $gate) <= 0)
                     <span class="col p-0 text-danger">    &#9660; {{ abs($chart2->getGrowth('year', $currentYear, $currentMonthNumber, $gate)) }}%</span>  
                 @else
@@ -49,7 +49,7 @@
 
             <h6>{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
             <div class="row">
-                <h4 class="col"><strong>{{ $chart2->getLhrData($currentYear, $prevMonthNumber, $gate) }}</strong></h4>
+                <h4 class="col"><strong>{{ $chart2->getLhrData(date('Y', strtotime($lastmonth)), date('m', strtotime($lastmonth)), $gate) }}</strong></h4>
                 @if($chart2->getGrowth('month', $currentYear, $currentMonthNumber, $gate) <= 0)
                     <span class="col p-0 text-danger">    &#9660; {{ abs($chart2->getGrowth('month', $currentYear, $currentMonthNumber, $gate)) }}%</span>  
                 @else
