@@ -72,8 +72,8 @@ Route::post('/logout', [LoginController::class, 'logout']);
 Route::get('/', [InfoTrafficController::class, 'mmnHarian'])->name('mmn-harian')->middleware('auth')->middleware('role:aktif');
 
 
-Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
-Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register')->middleware('guest');
+// Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register')->middleware('guest');
+// Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register')->middleware('guest');
 
 Route::post('/admin/delayedpayments',[InfoTrafficController::class,'import'])->name('delayedPay.import');
 
