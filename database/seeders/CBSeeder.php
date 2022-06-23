@@ -479,7 +479,7 @@ class CBSeeder extends Seeder
                 'created_at' => date('Y-m-d H:i:s'),
                 'name' => 'login_background_image',
                 'label' => 'Login Background Image',
-                'content' => null,
+                'content' => 'uploads/2022-06/toll_road_bmn4.jpg',
                 'content_input_type' => 'upload_image',
                 'group_setting' => cbLang('login_register_style'),
                 'dataenum' => null,
