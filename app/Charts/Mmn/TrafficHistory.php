@@ -23,23 +23,30 @@ class TrafficHistory
         return $data;
     }
 
-    public function trafficHistory()
+    public function trafficHistory($switch)
     {
         $data = DB::table('info_traffics')
-            ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
-            ->where('company', 'MMN')
+        ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
+        ->where('company', 'MMN')
             ->groupBy('company', 'year')
             ->get()
             ->toArray();
-        $a = array();
+        $traffic = array();
+        $year = array();
         foreach ($data as $key => $value) {
             $d = $data[$key]->traffic;
+            $y = $data[$key]->year;
             $mean = $d / 365;
-            $mean = number_format(round($mean), 0, '.', '.');
-            array_push($a, $mean);
+            $mean = round($mean);
+            array_push($traffic, $mean);
+            array_push($year, $y);
         }
 
-        return $a;
+        if ($switch == 'year') {
+            return $year;
+        } elseif ($switch == 'traffic') {
+            return $traffic;
+        }
     }
 
     // public function staticDescription()
@@ -90,11 +97,13 @@ class TrafficHistory
 
     public function build(): \ArielMejiaDev\LarapexCharts\BarChart
     {
+        $staticTraffic = [14588, 18147, 21138, 22508, 24474, 26562, 27919, 28096, 26401, 26201, 25096, 34789, 38980, 43972, 48412, 54035, 55604, 57232, 58501, 62732, 62479, 56382, 39665, 44629];
+        $staticYear = ['1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021'];
         return $this->chart->barChart()
             ->setFontFamily('poppins')
             ->setColors(['#25507D'])
             ->setGrid()
-            ->addData('Traffic History', [14588, 18147, 21138, 22508, 24474, 26562, 27919, 28096, 26401, 26201, 25096, 34789, 38980, 43972, 48412, 54035, 55604, 57232, 58501, 62732, 62479, 56382, 39665, 44629])
-            ->setXAxis(['1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021']);
+            ->addData('Traffic History', array_merge($staticTraffic, $this->trafficHistory('traffic')))
+            ->setXAxis(array_merge($staticYear, $this->trafficHistory('year')));
     }
 }

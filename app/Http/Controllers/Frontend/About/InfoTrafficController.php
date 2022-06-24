@@ -436,7 +436,7 @@ class InfoTrafficController extends Controller
         ]);
     }
 
-    public function trafficHistory()
+    public function trafficHistory($switch)
     {
         $data = DB::table('info_traffics')
             ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
@@ -444,22 +444,29 @@ class InfoTrafficController extends Controller
             ->groupBy('company', 'year')
             ->get()
             ->toArray();
-        $a = array();
+        $traffic = array();
+        $year = array();
         foreach ($data as $key => $value) {
             $d = $data[$key]->traffic;
+            $y = $data[$key]->year;
             $mean = $d / 365;
-            $mean = number_format(round($mean), 0, '.', '.');
-            array_push($a, $mean);
+            $mean = round($mean);
+            array_push($traffic, $mean);
+            array_push($year, $y);
         }
 
-        return $a;
+        if ($switch == 'year') {
+            return $year;
+        }elseif ($switch == 'traffic') {
+            return $traffic;
+        }
     }
     // TESTING
     public function test()
     {
         return view('frontend.pages.about-us.test', [
             'title' => 'Info Traffic',
-            'test' => $this->trafficHistory(),
+            'test' => $this->trafficHistory('traffic'),
         ]);
     }
 

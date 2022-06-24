@@ -23,7 +23,7 @@ class TrafficHistory
         return $data;
     }
 
-    public function trafficHistory()
+    public function trafficHistory($switch)
     {
         $data = DB::table('info_traffics')
         ->select(DB::raw('company, YEAR(`date`) as year, SUM(`traffic`) as traffic'))
@@ -31,15 +31,22 @@ class TrafficHistory
             ->groupBy('company', 'year')
             ->get()
             ->toArray();
-        $a = array();
+        $traffic = array();
+        $year = array();
         foreach ($data as $key => $value) {
             $d = $data[$key]->traffic;
+            $y = $data[$key]->year;
             $mean = $d / 365;
-            $mean = number_format(round($mean), 0, '.', '.');
-            array_push($a, $mean);
+            $mean = round($mean);
+            array_push($traffic, $mean);
+            array_push($year, $y);
         }
 
-        return $a;
+        if ($switch == 'year') {
+            return $year;
+        } elseif ($switch == 'traffic') {
+            return $traffic;
+        }
     }
 
     // public function staticDescription()
@@ -90,11 +97,13 @@ class TrafficHistory
 
     public function build(): \ArielMejiaDev\LarapexCharts\BarChart
     {
+        $staticTraffic = [11250, 16592, 21411, 26034, 30795, 35574, 40316, 42423, 37656, 39614, 41954, 39845, 26396, 30329];
+        $staticYear = ['2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021'];
         return $this->chart->barChart()
             ->setFontFamily('poppins')
             ->setColors(['#25507D'])
             ->setGrid()
-            ->addData('Traffic History', [11250, 16592, 21411, 26034, 30795, 35574, 40316, 42423, 37656, 39614, 41954, 39845, 26396, 30329])
-            ->setXAxis(['2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021']);
+            ->addData('Traffic History', array_merge($staticTraffic, $this->trafficHistory('traffic')))
+            ->setXAxis(array_merge($staticYear, $this->trafficHistory('year')));
     }
 }
