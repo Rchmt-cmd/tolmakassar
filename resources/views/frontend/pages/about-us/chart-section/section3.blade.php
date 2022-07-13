@@ -3,11 +3,12 @@
         /* For tablets: */
     /* .scr-phone {display: inline;} */
     .traffic-phone{width: 650px;}
+    .title-phone{font-size: 20px;}
     }
 </style>
 
 <div class="bg-white rounded shadow p-4">
-    <h3><strong>{{ $chartTitle3 }}</strong></h3>
+    <h3 class="title-phone"><strong>{{ $chartTitle3 }}</strong></h3>
     <h6>Update {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     
     <div class="row align-items-center">

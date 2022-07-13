@@ -4,6 +4,7 @@
     /* .scr-phone {display: inline;} */
     .scr-pc {display: none;}
     .traffic-phone{width: 650px;}
+    .title-phone{font-size: 20px;}
     }
 
     @media only screen and (min-width: 767px) {
@@ -15,7 +16,7 @@
 
 
 <div class="bg-white rounded shadow p-4">
-    <h3><strong>{{ $chartTitle6 }}</strong></h3>
+        <h3 class="title-phone"><strong>{{ $chartTitle6 }}</strong></h3>
 
     {{-- chart --}}
 

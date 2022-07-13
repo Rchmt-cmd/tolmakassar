@@ -72,7 +72,7 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
     <div class="wrapper">
-        <div class="m-0 p-0 header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center" role="navigation" data-menu="menu-wrapper">
+        <div class="m-0 p-0 header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center" role="navigation" data-menu="menu-wrapper" style="width:100%;">
             <!-- Horizontal menu content-->
             <div class="main-menu-content center-layout container p-0" data-menu="menu-container">
                 @include('frontend.partials.menu')
@@ -103,7 +103,7 @@
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
     <!-- END Notification Sidebar-->
-    <div class="sidenav-overlay"></div>
+    <div class="sidenav-overlay" style="width:100px;"></div>
     <div class="drag-target"></div>
     <!-- BEGIN VENDOR JS-->
     <script src="{{ asset('apex/vendors/js/core/jquery-3.2.1.min.js') }}" type="text/javascript"></script>

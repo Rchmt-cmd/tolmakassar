@@ -1,7 +1,14 @@
+<style>
+    @media only screen and (max-width: 767px) {
+        /* For tablets: */
+    /* .scr-phone {display: inline;} */
+    .title-phone{font-size: 20px;}
+    }
+</style>
 
     <div class="row m-0 justify-content-between">
         <div class=" col p-4 bg-white rounded shadow ">
-            <h3><strong>{{ $chartTitle4 }}</strong></h3>
+            <h3 class="title-phone"><strong>{{ $chartTitle4 }}</strong></h3>
             <h6>Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
             {!! $graph4->container() !!} <br><br>
             <h3><strong>Perbandingan Per Gerbang</strong></h3>
