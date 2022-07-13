@@ -2,7 +2,7 @@
     @media only screen and (max-width: 767px) {
         /* For tablets: */
     /* .scr-phone {display: inline;} */
-    .traffic-phone{width: 650px;}
+    .traffic-phone1{width: 650px;}
     .title-phone{font-size: 20px;}
     }
 </style>
@@ -12,6 +12,8 @@
     <h3 class="title-phone"><strong>{{ $chartTitle }}</strong></h3>
     <h6 id="subtitle">Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     {{-- end header --}}
+
+
 
     {{-- dropdown --}}
     <div class="d-flex flex-row">
@@ -38,13 +40,16 @@
 
     <div class="row align-items-center">
         {{-- chart --}}
-        <div class="container align-items-center" align="center" style="overflow: auto; white-space: nowrap;">
-            <div class="align-items-center traffic-phone col-10">
-            {!! $graph->container() !!}
-        </div>
-        </div>
-        {{-- end chart --}}
+        <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap;">
+        
+        <div class="traffic-phone1">
 
+                {!! $graph->container() !!}
+              </div>
+    </div>
+            
+        {{-- end chart --}}
+  
         {{-- description --}}
         <div class="col">
             {{-- LHR Terkini --}}

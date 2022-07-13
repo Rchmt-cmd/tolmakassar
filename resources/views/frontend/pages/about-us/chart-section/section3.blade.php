@@ -14,11 +14,13 @@
     <div class="row align-items-center">
         
         {{-- chart --}}
-        <div class="container align-items-center" align="center" style="overflow: auto; white-space: nowrap;">
-            <div class="align-items-center traffic-phone col-10">
-            {!! $graph3->container() !!}
-        </div>
-        </div>
+        <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap;">
+        
+        <div class="traffic-phone">
+
+                {!! $graph3->container() !!}
+              </div>
+    </div>
     
         {{-- description --}}
         <div class="col">
