@@ -14,7 +14,7 @@
     <div class="row align-items-center">
         
         {{-- chart --}}
-        <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap;">
+        <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap; overflow-y: hidden;">
         
         <div class="traffic-phone">
 
@@ -27,9 +27,16 @@
             <h6>LHR YTD Aktual</h6>
             <h1><strong>{{ $chart3->getLhrYtd('curr', $currentYear) }}</strong></h1>
             <br>
-            <h6>Aktual {{ $prevYear }}</h6>
+            
+            <div class="col">
+                
             <div class="row justify-content-start">
-                <h4 class="col-7"><strong>{{ $chart3->getLhrYtd('prev', $currentYear) }}</strong></h4>
+                
+            <h6>Aktual {{ $prevYear }}</h6>
+            </div>
+            
+            <div class="row justify-content-start">
+                <h4 class=""><strong>{{ $chart3->getLhrYtd('prev', $currentYear) }}</strong></h4>
                 @if($chart3->getGrowth($currentYear) <= 0)
                     <span class="col p-0 text-danger">    &#9660; {{ $chart3->getGrowth($currentYear) }} %</span>
                 @else
