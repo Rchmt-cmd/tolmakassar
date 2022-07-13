@@ -1,3 +1,11 @@
+<style>
+    @media only screen and (max-width: 767px) {
+        /* For tablets: */
+    /* .scr-phone {display: inline;} */
+    .traffic-phone{width: 650px;}
+    }
+</style>
+
 <div class="bg-white rounded shadow p-4">
     <h3><strong>{{ $chartTitle2 }}</strong></h3>
     <h6>Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
@@ -28,8 +36,10 @@
         {{-- header --}}
         
         {{-- chart --}}
-        <div class=" col-10 ">
+        <div class="container align-items-center" align="center" style="overflow: auto; white-space: nowrap;">
+            <div class="align-items-center traffic-phone col-10">
             {!! $graph2->container() !!}
+        </div>
         </div>
     
         {{-- description --}}

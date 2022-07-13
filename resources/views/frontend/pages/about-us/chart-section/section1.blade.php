@@ -1,3 +1,11 @@
+<style>
+    @media only screen and (max-width: 767px) {
+        /* For tablets: */
+    /* .scr-phone {display: inline;} */
+    .traffic-phone{width: 650px;}
+    }
+</style>
+
 <div class="bg-white rounded shadow p-4">
     {{-- header --}}
     <h3><strong>{{ $chartTitle }}</strong></h3>
@@ -29,8 +37,10 @@
 
     <div class="row align-items-center">
         {{-- chart --}}
-        <div class=" col-10 ">
+        <div class="container align-items-center" align="center" style="overflow: auto; white-space: nowrap;">
+            <div class="align-items-center traffic-phone col-10">
             {!! $graph->container() !!}
+        </div>
         </div>
         {{-- end chart --}}
 
