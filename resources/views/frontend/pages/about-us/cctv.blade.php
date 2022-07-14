@@ -4,35 +4,88 @@
 @section('content')
 
 <br>
-<div class="container-fluid p-0">
+<div class="container p-0">
     <h3>
         <strong>
-            <center>MMN-JTSE Gate CCTV</center>
+            <center>MMN - JTSE Gate CCTV</center>
         </strong>
     </h3>
-    <center>
-        {{-- <div class="btn-group" role="group" aria-label="Basic example">
-            <button type="button" class="btn btn-secondary">Bira Timur</button>
-            <button type="button" class="btn btn-secondary">Bira Barat</button>
-            <button type="button" class="btn btn-secondary">BRK</button>
-            <button type="button" class="btn btn-secondary">Parangloe</button>
-            <button type="button" class="btn btn-secondary">Tamalanrea</button>
-            <button type="button" class="btn btn-secondary">Tallo Barat</button>
-            <button type="button" class="btn btn-secondary">Tallo Timur</button>
-            <button type="button" class="btn btn-secondary">Kaluku Bodoa</button>
-            <button type="button" class="btn btn-secondary">Cambayya</button>
-        </div> --}}
-        <iframe src="https://rtsp.me/embed/39bTz6QT/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/S69Ris4F/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/N27sND99/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/rnRTEEH2/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/ibRSzNie/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/yQttKZTy/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/SGYdzFKd/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/7NrFN59h/" width="480" height="270"></iframe>
-        <iframe src="https://rtsp.me/embed/SSHyYNHD/" width="480" height="270"></iframe>
-    </center>
+    <br>
+    <div class="row">
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/39bTz6QT/"></iframe>
+                    <h6><strong>Bira Timur</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/S69Ris4F/"></iframe>
+                    <h6><strong>Bira Barat</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/N27sND99/"></iframe>
+                    <h6><strong>Biringkanaya</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/rnRTEEH2/"></iframe>
+                    <h6><strong>Parangloe</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/ibRSzNie/"></iframe>
+                    <h6><strong>Tamalanrea</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/yQttKZTy/"></iframe>
+                    <h6><strong>Tallo Barat</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/SGYdzFKd/"></iframe>
+                    <h6><strong>Tallo Timur</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/7NrFN59h/"></iframe>
+                    <h6><strong>Kaluku Bodoa</strong></h6>
+                </center>
+            </div>
+        </div>
+        <div class="col mb-3">
+            <div class="bg-white rounded shadow p-3">
+                <center>
+                    <iframe src="https://rtsp.me/embed/SSHyYNHD/"></iframe>
+                    <h6><strong>Cambaya</strong></h6>
+                </center>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script></script>
+
 @endsection

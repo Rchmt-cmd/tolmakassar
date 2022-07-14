@@ -65,6 +65,18 @@
             </li>
         </ul>
     </li>
+    <li class="nav-item">
+        <a class=" nav-link d-flex align-items-center" href="/map">
+            <i class="ft-map"></i>
+            <span data-i18n="Dashboard">Tol Map</span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class=" nav-link d-flex align-items-center" href="/cctv">
+            <i class="ft-video"></i>
+            <span data-i18n="Dashboard">CCTV</span>
+        </a>
+    </li>
 </ul>
 
 <!--     
