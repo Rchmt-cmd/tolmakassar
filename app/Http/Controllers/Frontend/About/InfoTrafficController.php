@@ -461,6 +461,16 @@ class InfoTrafficController extends Controller
             return $traffic;
         }
     }
+
+    public function map()
+    {
+        return view('frontend.pages.about-us.maps');
+    }
+
+    public function cctv()
+    {
+        return view('frontend.pages.about-us.cctv');
+    }
     // TESTING
     public function test()
     {

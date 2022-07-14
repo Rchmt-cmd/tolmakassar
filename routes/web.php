@@ -54,6 +54,8 @@ Route::get('/jtse-gerbang-harian/{gate}', [InfoTrafficController::class, 'jtseGe
 Route::get('/jtse-komposisi', [InfoTrafficController::class, 'jtseKomposisi'])->name('jtse-komposisi')->middleware('auth')->middleware('role:aktif')->middleware('auth')->middleware('role:aktif');
 Route::get('/jtse-traffic-history', [InfoTrafficController::class, 'jtseTrafficHistory'])->name('jtse-traffic-history')->middleware('auth')->middleware('role:aktif')->middleware('auth')->middleware('role:aktif');
 
+Route::get('/map', [InfoTrafficController::class, 'map'])->name('map')->middleware('auth')->middleware('role:aktif');
+Route::get('/cctv', [InfoTrafficController::class, 'cctv'])->name('cctv')->middleware('auth')->middleware('role:aktif');
 
 // testing 
 Route::get('/test', [InfoTrafficController::class, 'test']);
