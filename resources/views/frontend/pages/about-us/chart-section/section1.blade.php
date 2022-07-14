@@ -1,8 +1,19 @@
+<style>
+    @media only screen and (max-width: 767px) {
+        /* For tablets: */
+    /* .scr-phone {display: inline;} */
+    .traffic-phone1{width: 650px;}
+    .title-phone{font-size: 20px;}
+    }
+</style>
+
 <div class="bg-white rounded shadow p-4">
     {{-- header --}}
-    <h3><strong>{{ $chartTitle }}</strong></h3>
+    <h3 class="title-phone"><strong>{{ $chartTitle }}</strong></h3>
     <h6 id="subtitle">Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     {{-- end header --}}
+
+
 
     {{-- dropdown --}}
     <div class="d-flex flex-row">
@@ -29,11 +40,16 @@
 
     <div class="row align-items-center">
         {{-- chart --}}
-        <div class=" col-10 ">
-            {!! $graph->container() !!}
-        </div>
-        {{-- end chart --}}
+        <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap; overflow-y: hidden;">
+        
+        <div class="traffic-phone1">
 
+                {!! $graph->container() !!}
+              </div>
+    </div>
+            
+        {{-- end chart --}}
+  
         {{-- description --}}
         <div class="col">
             {{-- LHR Terkini --}}
@@ -45,10 +61,13 @@
 
 
             {{-- LHR Last Year --}}
+            <div class="col">
+                <div class="row justify-content-start">
             <h6 id="lhr-last-year-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .
                 $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
+                </div>
             <div class="row justify-content-start">
-                <h4 class="col-7"><strong id="lhr-last-year">{{ $chart->getLhrData(date('Y', strtotime($lastyear)),
+                <h4 class=""><strong id="lhr-last-year">{{ $chart->getLhrData(date('Y', strtotime($lastyear)),
                         date('m', strtotime($lastyear))) }}</strong></h4>
                 @if( $chart->getGrowth('year', $currentYear, $currentMonthNumber) <= 0) <span id="growth"
                     class="col p-0 text-danger"> &#9660; {{ abs($chart->getGrowth('year', $currentYear,
@@ -58,14 +77,18 @@
                         $currentYear, $currentMonthNumber)) }}%</span>
                     @endif
             </div>
+            </div>
             {{-- end LHR last year --}}
 
 
             {{-- Lhr last month --}}
+            <div class="col">
+                <div class="row justify-content-start">
             <h6 id="lhr-last-month-title">{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .
-                $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
+                $currentMonthNumber . '-' . '01' . '-1 month'))) }} </h6>
+                </div>
             <div class="row">
-                <h4 class="col-7"><strong id="lhr-last-month">{{ $chart->getLhrData(date('Y', strtotime($lastmonth)),
+                <h4 class=""><strong id="lhr-last-month">{{ $chart->getLhrData(date('Y', strtotime($lastmonth)),
                         date('m', strtotime($lastmonth))) }}</strong></h4>
                 @if( $chart->getGrowth('month', $currentYear, $currentMonthNumber) <= 0) <span id="growth"
                     class="col p-0 text-danger"> &#9660; {{ abs($chart->getGrowth('month', $currentYear,
@@ -74,6 +97,7 @@
                     <span id="growth" class="col p-0 text-success"> &#9650; {{ abs($chart->getGrowth('month',
                         $currentYear, $currentMonthNumber)) }}%</span>
                     @endif
+            </div>
             </div>
             {{-- end LHR last month --}}
 

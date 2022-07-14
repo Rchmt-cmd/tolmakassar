@@ -1,5 +1,14 @@
+<style>
+    @media only screen and (max-width: 767px) {
+        /* For tablets: */
+    /* .scr-phone {display: inline;} */
+    .traffic-phone{width: 650px;}
+    .title-phone{font-size: 20px;}
+    }
+</style>
+
 <div class="bg-white rounded shadow p-4">
-    <h3><strong>{{ $chartTitle2 }}</strong></h3>
+    <h3 class="title-phone"><strong>{{ $chartTitle2 }}</strong></h3>
     <h6>Periode {{ $currentMonthFullName }} {{ $currentYear }}</h6><br>
     
     {{-- dropdown --}}
@@ -28,28 +37,44 @@
         {{-- header --}}
         
         {{-- chart --}}
-        <div class=" col-10 ">
-            {!! $graph2->container() !!}
-        </div>
+        <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap; overflow-y: hidden;">
+        
+        <div class="traffic-phone">
+
+                {!! $graph2->container() !!}
+              </div>
+    </div>
     
         {{-- description --}}
         <div class="col">
             <h6>LHR Gerbang Terkini</h6>
             <h1><strong>{{ $chart2->getLhrData(date('Y', strtotime($currentdate)), date('m', strtotime($currentdate)), $gate) }}</strong></h1>
             <br>
+            
+            <div class="col">
+                
+            <div class="row justify-content-start">
             <h6>{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 year'))) }}</h6>
-            <div class="row">
-                <h4 class="col"><strong>{{ $chart2->getLhrData(date('Y', strtotime($lastyear)), date('m', strtotime($lastyear)), $gate) }}</strong></h4>
+            </div>
+            
+            <div class="row justify-content-start">
+                <h4 class=""><strong>{{ $chart2->getLhrData(date('Y', strtotime($lastyear)), date('m', strtotime($lastyear)), $gate) }}</strong></h4>
                 @if($chart2->getGrowth('year', $currentYear, $currentMonthNumber, $gate) <= 0)
                     <span class="col p-0 text-danger">    &#9660; {{ abs($chart2->getGrowth('year', $currentYear, $currentMonthNumber, $gate)) }}%</span>  
                 @else
                     <span class="col p-0 text-success">    &#9650; {{ abs($chart2->getGrowth('year', $currentYear, $currentMonthNumber, $gate)) }}%</span>
                 @endif
             </div>
+            </div>
+            
 
+            <div class="col">
+                
+            <div class="row justify-content-start">
             <h6>{{ str_replace('-', ' ', date('M-Y', strtotime($currentYear . '-' .  $currentMonthNumber . '-' . '01' . '-1 month'))) }}</h6>
+            </div>
             <div class="row">
-                <h4 class="col"><strong>{{ $chart2->getLhrData(date('Y', strtotime($lastmonth)), date('m', strtotime($lastmonth)), $gate) }}</strong></h4>
+                <h4 class=""><strong>{{ $chart2->getLhrData(date('Y', strtotime($lastmonth)), date('m', strtotime($lastmonth)), $gate) }}</strong></h4>
                 @if($chart2->getGrowth('month', $currentYear, $currentMonthNumber, $gate) <= 0)
                     <span class="col p-0 text-danger">    &#9660; {{ abs($chart2->getGrowth('month', $currentYear, $currentMonthNumber, $gate)) }}%</span>  
                 @else
