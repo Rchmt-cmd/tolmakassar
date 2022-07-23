@@ -1,8 +1,21 @@
 <style>
     @media only screen and (max-width: 767px) {
-        /* For tablets: */
+    
+    /* For tablets: */
     /* .scr-phone {display: inline;} */
-    .title-phone{font-size: 20px;}
+    .traffic-phone1 {
+    width: 650px;
+    }
+    
+    .title-phone {
+    font-size: 20px;
+    }
+    }
+
+    @media only screen and (max-width: 555px) {
+        .title-phone2 {
+        font-size: 10px;
+        }
     }
 </style>
 
@@ -13,7 +26,7 @@
             {!! $graph4->container() !!} <br><br>
             <h3><strong>Perbandingan Per Gerbang</strong></h3>
             <h6>{{ $currentYear }} vs {{ $prevYear }}</h6><br>
-            <table class="table table-hover table-sm text-small">
+            <table class="table table-hover table-sm text-small  text-wrap title-phone2">
                 <thead>
                     <tr>
                         <th scope="col-9"></th>
@@ -37,7 +50,12 @@
                     </tr>
                 </tbody>
             </table>
-            {!! $chart7->container() !!}
+            <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap; overflow-y: hidden;">
+            
+                <div class="traffic-phone1">
+                    {!! $chart7->container() !!}
+                </div>
+            </div>
         </div>
 
 
@@ -71,7 +89,12 @@
                     </tr>
                 </tbody>
             </table>
-            {!! $chart8->container() !!}
+            <div class="container align-items-center col-10" style="overflow: auto; white-space: nowrap; overflow-y: hidden;">
+            
+                <div class="traffic-phone1">
+                    {!! $chart8->container() !!}
+                </div>
+            </div>
         </div>
     </div>
 

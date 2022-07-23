@@ -16,16 +16,23 @@ class DataTrafficApiController extends Controller
     public function store(Request $request)
     {
         $trafficsData = $request->all();
+
         foreach ($trafficsData['traffics'] as $value) {
-            $traffic = new info_traffic;
-            $traffic->date = $value['date'];
-            $traffic->company = $value['company'];
-            $traffic->gate = $value['gate'];
-            $traffic->class = $value['class'];
-            $traffic->traffic = $value['traffic'];
-            $traffic->source = $value['source'];
-            $traffic->save();
+            info_traffic::updateOrCreate(
+                [
+                    'date' => $value['date'],
+                    'company' => $value['company'],
+                    'gate' => $value['gate'],
+                    'class' => $value['class'],
+                    'source' => $value['source'],
+                ],
+                [
+                    'traffic' => $value['traffic'],
+                ]
+            );
         }
+
+        
         return response()->json(['success' => 'Data Traffic Berhasil Ditambahkan']);
     }
 }

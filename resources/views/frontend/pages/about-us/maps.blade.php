@@ -28,7 +28,7 @@
         <div class="traffic-phone1">
             <a href="{{ asset('apexnew/app-assets/img/tol-map.png') }}" target="_blank">
                 <div class="bg-white rounded shadow p-0">
-                    <img class="img-fluid rounded" src="{{ asset('apexnew/app-assets/img/tol-map.png') }}">
+                    <img class="img-fluid rounded" src="{{ asset('apexnew/app-assets/img/tol-map.jpg') }}">
                 </div>
             </a>
         </div>

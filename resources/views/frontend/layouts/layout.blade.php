@@ -11,6 +11,7 @@
     <title>MMN & JTSE Toll</title>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <link rel="stylesheet" href="css/app.css">
+    
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ CRUDBooster::getSetting('favicon')?asset(CRUDBooster::getSetting('favicon')):asset('uploads/2022-06/mmn.png') }}">
@@ -53,6 +54,10 @@
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet" href="{{asset('apexnew/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css')}}">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css" rel="stylesheet">
+
+    
+
+
     <script type="text/javascript" src="{{ asset('apexnew/app-assets/js/flashphoner.js') }}"></script>
     {{-- bootstrap 5 --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -96,7 +101,7 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////////-->
     <div class="wrapper">
-        <div class="m-0 p-0 header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center" role="navigation" data-menu="menu-wrapper" style="width:100%;">
+        <div class="m-0 p-0 header-navbar navbar-expand-sm navbar navbar-horizontal navbar-fixed navbar-light navbar-shadow menu-border navbar-brand-center responsive-navbar" role="navigation" data-menu="menu-wrapper">
             <!-- Horizontal menu content-->
             <div class="main-menu-content center-layout container p-0" data-menu="menu-container">
                 @include('frontend.partials.menu')
@@ -127,8 +132,7 @@
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
     <!-- END Notification Sidebar-->
-    <div class="sidenav-overlay" style="width:100px;"></div>
-    <div class="drag-target"></div>
+    
     <!-- BEGIN VENDOR JS-->
     <script src="{{ asset('apex/vendors/js/core/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('apex/vendors/js/core/popper.min.js') }}" type="text/javascript"></script>

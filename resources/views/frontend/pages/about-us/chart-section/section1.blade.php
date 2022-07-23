@@ -31,7 +31,7 @@
 
     .dd-button {
         display: inline-block;
-        border: 1px solid gray;
+        border: 2px solid rgb(216, 216, 216);
         border-radius: 4px;
         padding: 10px 30px 10px 20px;
         background-color: #ffffff;
